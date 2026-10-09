@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5c94fc">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CyberSentinel">
+<meta name="description" content="Learn cybersecurity with an offline AI tutor, lessons, quizzes and hands-on labs. Runs on any phone, tablet or computer.">
+<title>CyberSentinel: Learn Cybersecurity</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--sky1:#5c94fc;--sky2:#b8dcff;--ink:#1b1b2f;--card:#fff8e1;--mut:#5a4a2a;--brick:#c84c0c;--cloud:#fff;--hill:#3aa63a;--hillb:#1d6b1d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sky1:#0b1033;--sky2:#2b2f70;--ink:#f3eeff;--card:#241f3d;--mut:#b9b0d9;--cloud:#6b6fa8;--hill:#1e6b2e;--hillb:#0f3d1a}}
+:root[data-theme="dark"]{--sky1:#0b1033;--sky2:#2b2f70;--ink:#f3eeff;--card:#241f3d;--mut:#b9b0d9;--cloud:#6b6fa8;--hill:#1e6b2e;--hillb:#0f3d1a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;min-height:100vh;background-color:var(--sky1);background-image:linear-gradient(var(--sky1),var(--sky2));background-attachment:fixed;color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.px{font-family:'Press Start 2P','Courier New',monospace;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:14px}
+.hud{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;color:#fff;text-shadow:2px 2px 0 #000;flex-wrap:wrap}
+.hud .t{font-size:16px}.hud .s{font-size:9px;margin-top:6px}.hud b{color:#ffd400;font-weight:400}
+#mute{background:none;border:0;font-size:22px;cursor:pointer;padding:0 4px}
+.stage{position:relative;height:120px;margin-top:10px;overflow:hidden;border-radius:10px;border:4px solid #000}
+.cloud{position:absolute;width:56px;height:20px;background:var(--cloud);border-radius:20px;box-shadow:18px -10px 0 4px var(--cloud),38px 0 0 0 var(--cloud);animation:drift 38s linear infinite}
+.c1{top:14px;left:-120px}.c2{top:40px;left:-120px;animation-delay:-19s;transform:scale(.7)}
+@keyframes drift{to{left:110%}}
+.hill{position:absolute;bottom:24px;background:var(--hill);border:3px solid var(--hillb);border-radius:50% 50% 0 0}
+.h1{left:8%;width:150px;height:60px}.h2{left:58%;width:200px;height:80px}
+.ground{position:absolute;left:0;right:0;bottom:0;height:24px;background:linear-gradient(transparent 11px,#0006 11px 13px,transparent 13px),repeating-linear-gradient(90deg,var(--brick) 0 30px,#0005 30px 32px)}
+#hero{position:absolute;bottom:24px;left:4%;font-size:32px;transition:left .9s ease;line-height:1}
+.flag{position:absolute;bottom:24px;right:4%;font-size:32px;line-height:1}
+.win #hero{animation:jump .5s infinite}.win .flag{animation:jump .8s infinite}
+@keyframes jump{50%{transform:translateY(-18px)}}
+.pop{position:absolute;left:50%;top:30px;font:14px 'Press Start 2P','Courier New',monospace;color:#ffd400;text-shadow:2px 2px 0 #000;animation:up 1.1s forwards}
+@keyframes up{to{transform:translateY(-30px);opacity:0}}
+.card{background:var(--card);border:4px solid #000;border-radius:8px;padding:12px 14px;margin-top:12px;box-shadow:0 4px 0 #0006}
+.card h2{font:11px 'Press Start 2P','Courier New',monospace;color:var(--mut);margin:0 0 10px}
+ul{list-style:none;margin:0;padding:0}li{display:flex;align-items:center;gap:10px;padding:4px 0}
+.qb{flex:none;width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;background:#fbd000;border:3px solid #000;border-radius:4px;box-shadow:inset -3px -3px 0 #b8860b,inset 3px 3px 0 #ffe97a;font:13px 'Press Start 2P','Courier New',monospace;color:#7a4b00}
+li.done .qb{background:#43b047;box-shadow:inset -3px -3px 0 #2a7a2e,inset 3px 3px 0 #7be07f;color:#fff}li.done span:last-child{text-decoration:line-through;opacity:.7}
+.lip{margin-top:12px;background:#2fb23a;color:#fff;border:4px solid #1d6b1d;border-radius:8px 8px 0 0;padding:6px 10px;font:10px 'Press Start 2P','Courier New',monospace;text-shadow:2px 2px 0 #1d6b1d}
+#term{background:#0a0f14;color:#cfe8dc;font:13.5px/1.45 ui-monospace,Menlo,Consolas,monospace;border:4px solid #1d6b1d;border-top:0;border-radius:0 0 10px 10px;padding:12px;height:42vh;min-height:240px;overflow-y:auto}
+.l{white-space:pre-wrap;word-break:break-word}.cmd{color:#7fd6ff}.err{color:#ff8a80}.ok{color:#5df2a4}.info{color:#f0c674}.dim{color:#7d8d99}
+.row{display:flex;gap:8px;margin-top:10px}
+#in{flex:1;min-width:0;font:16px ui-monospace,Menlo,Consolas,monospace;padding:10px 12px;border-radius:6px;border:4px solid #000;background:var(--card);color:var(--ink)}
+button{font:inherit;cursor:pointer}
+button.go{background:#43b047;color:#fff;border:4px solid #000;border-radius:6px;padding:0 16px;font:11px 'Press Start 2P','Courier New',monospace;box-shadow:0 4px 0 #000}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chips button{font:12.5px ui-monospace,Menlo,Consolas,monospace;background:var(--brick);color:#fff;border:3px solid #000;border-radius:4px;padding:6px 10px;box-shadow:0 3px 0 #000}
+.chips button:active,button.go:active{transform:translateY(3px);box-shadow:none}
+footer{color:#fff;text-shadow:1px 1px 0 #000;font-size:12px;margin:14px 0}
+:focus-visible{outline:3px solid #ffd400;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.chips button,#mute,button.go,.tools button{min-height:44px}
+#mute{min-width:44px}
+.tools{display:flex;gap:8px;margin-top:10px}
+.tools button{flex:1;background:var(--card);color:var(--ink);border:3px solid #000;border-radius:4px;font:13px ui-monospace,Menlo,Consolas,monospace;box-shadow:0 3px 0 #000}
+.tools button:active{transform:translateY(3px);box-shadow:none}
+@media (max-width:480px){.hud .t{font-size:13px}}
+@supports (height:1dvh){#term{height:42dvh}}
+[hidden]{display:none!important}
+li{align-items:flex-start}
+li.done .tt{text-decoration:line-through;opacity:.7}
+.tabs{display:flex;gap:8px;margin-top:12px}
+.tabs button{flex:1;min-height:44px;background:var(--card);color:var(--ink);border:3px solid #000;border-radius:6px;font:10px 'Press Start 2P','Courier New',monospace;box-shadow:0 3px 0 #000}
+.tabs button[aria-selected=true]{background:#ffd400;color:#000}
+.intro{font-size:14px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:12px}
+.mc{background:var(--card);border:4px solid #000;border-radius:8px;padding:12px;box-shadow:0 4px 0 #0006;display:flex;flex-direction:column;gap:8px}
+.mc.lock{opacity:.6}
+.mh{display:flex;align-items:center;gap:10px}.mh .os{font-size:28px}.mh>div{flex:1;min-width:0}
+.mut{color:var(--mut);font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.badge{font:9px 'Press Start 2P','Courier New',monospace;padding:5px 7px;border:2px solid #000;border-radius:4px;color:#000}
+.easy{background:#5df2a4}.medium{background:#ffd400}.hard{background:#ff8a80}
+.mf{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto;font-size:13px}
+.mc button.go{padding:0 12px;min-height:44px}
+.tx{flex:1;min-width:0}.tt{font-weight:700}.tq{font-size:13px;color:var(--mut)}
+.try{margin-top:6px;background:var(--brick);color:#fff;border:3px solid #000;border-radius:4px;padding:6px 10px;min-height:36px;font:12px ui-monospace,Menlo,Consolas,monospace;box-shadow:0 3px 0 #000;max-width:100%;overflow-wrap:anywhere;text-align:left}
+.try:active{transform:translateY(3px);box-shadow:none}
+#mode{margin:0;white-space:nowrap}
+.rk{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;border-bottom:2px dashed var(--mut)}
+.rk.me{background:#ffd40040;font-weight:700}
+.tabs{flex-wrap:wrap}.tabs button{flex:1 1 28%}
+.hpb{height:14px;background:#0004;border:3px solid #000;border-radius:6px;overflow:hidden;margin:4px 0 8px}
+.hpb i{display:block;height:100%;background:#43b047;transition:width .2s}
+.hpb.tm i{background:#ffd400;transition:none}
+.alert{font:13px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#0a0f14;color:#cfe8dc;padding:10px;border-radius:6px;border:3px solid #000;margin:8px 0;white-space:pre-wrap;word-break:break-word}
+.acts{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin:10px 0}
+.acts .try{margin:0;min-height:44px}
+#bracket button.go,#darena button.go,#arena button.go{margin-top:10px}
+#top button{flex:1 1 22%;font-size:9px}
+#sub{margin-top:8px}#sub button{font-size:9px;min-height:40px}
+.pt{margin:8px 0;line-height:1.55}
+.msg{padding:8px 10px;border-radius:8px;margin:8px 0;border:3px solid #000;max-width:94%;white-space:pre-wrap;word-break:break-word;font-size:14px}
+.msg.me{background:#ffd400;color:#000;margin-left:auto}.msg.bot{background:var(--card)}
+#chat{max-height:46vh;overflow-y:auto}
+.ti{width:100%;min-width:0;font:16px ui-monospace,Menlo,Consolas,monospace;padding:8px 10px;border:3px solid #000;border-radius:6px;background:var(--card);color:var(--ink);margin-top:6px}
+.row .ti{flex:1;margin-top:0}
+.fcard{width:100%;min-height:120px;margin-top:8px;background:var(--card);color:var(--ink);border:4px solid #000;border-radius:8px;padding:14px;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:left;box-shadow:0 4px 0 #000}
+button:disabled{opacity:.55;cursor:default}
+summary{min-height:32px;cursor:pointer}
+#tchips button{font:12.5px system-ui,sans-serif}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:10px 0}
+.ptile{border:3px solid #000;border-radius:6px;padding:8px;display:flex;flex-direction:column;gap:2px;box-shadow:0 3px 0 #0006}
+.ptile b{font:15px 'Press Start 2P','Courier New',monospace;color:var(--brick)}.ptile span{font-weight:700}
+.pbar{height:16px;border:3px solid #000;border-radius:4px;background:#0003;overflow:hidden;margin-top:6px}.pbar i{display:block;height:100%;background:#43b047}
+.plist{margin:8px 0}.plist>b{display:block;font-size:13px;margin-bottom:2px}.tagl{display:inline-block;border:2px solid #000;border-radius:4px;padding:1px 6px;margin:2px 4px 2px 0;font-size:12.5px}
+.rec{border:3px solid #000;border-radius:6px;padding:8px 10px;margin:8px 0}.rec .go{margin-top:6px}
+.msg .src{font:9px/1.6 'Press Start 2P','Courier New',monospace;opacity:.8;margin-bottom:6px;white-space:normal}
+.msg .th{font-weight:800;color:var(--brick)}.msg code{background:#0002;border-radius:3px;padding:0 4px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.code{position:relative;margin:6px 0;border:3px solid #000;border-radius:6px;background:#0a0f14}
+.code pre{margin:0;padding:10px 74px 10px 10px;color:#cfe8dc;font:13px/1.45 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word}
+.code button{position:absolute;top:5px;right:5px;background:var(--brick);color:#fff;border:2px solid #000;border-radius:4px;font:9px 'Press Start 2P','Courier New',monospace;padding:6px}
+.fus{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;white-space:normal}.fus button{background:var(--brick);color:#fff;border:2px solid #000;border-radius:14px;padding:5px 10px;font:12.5px system-ui,sans-serif;box-shadow:0 2px 0 #000}
+.msg.bot .try{margin-top:8px}.msg.me{border-color:#000}.msg.bot{border-left-width:8px}
+.dots::after{content:'';animation:dots 1.2s steps(4) infinite}@keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+#tin{resize:vertical;min-height:48px;font-size:15px}.airow{margin:3px 0}.aist details{margin:8px 0}.aist summary{cursor:pointer;font-weight:700}
+#top button{flex:1 1 18%}
+.gb{max-width:620px;margin:12px auto 0;background:#dc0a2d;border:4px solid #000;border-radius:14px 14px 40px 14px;padding:12px;box-shadow:0 6px 0 #0007}
+.gbtop{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.gbled{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#bff,#29a8ff 55%,#0a5aa8);border:3px solid #000}
+.gbdot{width:9px;height:9px;border-radius:50%;border:2px solid #000}.gbdot.r{background:#ff5050}.gbdot.y{background:#ffd400}.gbdot.g{background:#43b047}
+.gbtitle{margin-left:auto;font:9px 'Press Start 2P','Courier New',monospace;color:#fff;text-shadow:2px 2px 0 #000}
+.scr{position:relative;background:#222;border:4px solid #000;border-radius:6px;overflow:hidden;aspect-ratio:3/2}
+#advcv{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+.scr.flash{animation:flash .15s steps(1) 4}
+@keyframes flash{50%{filter:invert(1) brightness(1.6)}}
+#advbt{position:absolute;inset:0;background:linear-gradient(#f8f8e8 0 55%,#cfeab0 55%);font-family:'Press Start 2P','Courier New',monospace}
+.pf{position:absolute;border-radius:50%;background:#a8d878;border:3px solid #6aa84f}
+.pf.f{right:6%;top:30%;width:38%;height:14%}.pf.m{left:4%;bottom:6%;width:42%;height:15%}
+.spr{position:absolute;line-height:1;transition:transform .2s}
+.spr.f{right:15%;top:6%;font-size:clamp(40px,11vw,68px)}
+.spr.m{left:13%;bottom:12%;font-size:clamp(48px,13vw,80px)}
+.spr.hit{animation:hit .5s}.spr.m.lunge{transform:translate(18px,-12px)}.spr.f.lunge{transform:translate(-18px,12px)}
+.spr.faint{transform:translateY(60px);opacity:0;transition:all .5s}
+@keyframes hit{0%,40%,80%{opacity:0}20%,60%,100%{opacity:1;transform:translateX(4px)}}
+.ib{position:absolute;background:#f8f8d8;border:3px solid #383838;border-radius:8px 2px 8px 2px;padding:6px 8px;font-size:clamp(7px,1.9vw,10px);color:#202020;min-width:42%;box-shadow:3px 3px 0 #0003}
+.ib.f{left:4%;top:7%}.ib.m{right:4%;bottom:12%}
+.ib .nm{display:flex;justify-content:space-between;gap:6px}
+.ib .hp{display:flex;align-items:center;gap:4px;margin-top:5px}.ib .hp b{color:#f8a800;font-size:.85em}
+.ib .bar{flex:1;height:7px;background:#506858;border:2px solid #383838;border-radius:4px;overflow:hidden}
+.ib .bar i{display:block;height:100%;background:#48d048;transition:width .6s}
+.ib .bar i.y{background:#f8c800}.ib .bar i.r{background:#f84848}
+.ib .num{text-align:right;margin-top:3px;font-size:.85em}
+.dlg{position:relative;margin-top:8px;background:#fff;border:4px solid #383838;outline:3px solid #fff;outline-offset:-9px;border-radius:8px;padding:12px 30px 12px 14px;min-height:74px;font:clamp(9px,2.3vw,11px)/1.9 'Press Start 2P','Courier New',monospace;color:#202020;cursor:pointer;white-space:pre-wrap;word-break:break-word}
+.dlg .more{position:absolute;right:12px;bottom:8px;color:#e83838;animation:bob .6s infinite}
+@keyframes bob{50%{transform:translateY(3px)}}
+.amenu{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:8px}
+.amenu button{min-height:44px;background:#fff;color:#202020;border:3px solid #383838;border-radius:8px;font:10px 'Press Start 2P','Courier New',monospace;box-shadow:0 3px 0 #000;padding:6px 8px;text-align:left}
+.amenu button.k{background:#ffd400}.amenu button.mv{font:12px ui-monospace,Menlo,Consolas,monospace}
+.amenu button.mv small{display:block;font:8px 'Press Start 2P','Courier New',monospace;color:#7a4b00;margin-bottom:4px}
+.amenu button:active{transform:translateY(3px);box-shadow:none}
+.amenu .note{grid-column:1/-1;font:12px ui-monospace,Menlo,Consolas,monospace;background:#0a0f14;color:#f0c674;border:3px solid #000;border-radius:6px;padding:8px;white-space:pre-wrap}
+.pad{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding:0 6px;user-select:none;-webkit-user-select:none;touch-action:none}
+.dpad{display:grid;grid-template-columns:repeat(3,46px);grid-template-rows:repeat(3,46px)}
+.dpad button,.ab button{background:#303030;color:#ddd;border:3px solid #000;font-size:16px;touch-action:none}
+.dpad button{border-radius:6px}.dpad .u{grid-column:2}.dpad .l{grid-row:2;grid-column:1}.dpad .r{grid-row:2;grid-column:3}.dpad .d{grid-row:3;grid-column:2}
+.dpad .c{grid-row:2;grid-column:2;background:#303030;border:0}
+.ab{display:flex;gap:14px;transform:rotate(-20deg)}
+.ab button{width:56px;height:56px;border-radius:50%;background:#a01848;color:#fff;font:12px 'Press Start 2P','Courier New',monospace;box-shadow:0 4px 0 #000}
+.ab button:active,.dpad button:active{transform:translateY(2px);box-shadow:none}
+.party{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.pm{display:flex;align-items:center;gap:8px;background:#fff8;border:3px solid #000;border-radius:8px;padding:6px 8px;color:var(--ink)}
+.pm .e{font-size:26px}.pm b{font:8px 'Press Start 2P','Courier New',monospace;display:block}.pm .mut{font-size:11px}
+.pm .hpb{height:10px;margin:3px 0 0;border-width:2px}
+.dex{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.dex div{border:3px solid #000;border-radius:8px;padding:6px 8px;font-size:12px;background:#fff8}
+.dex div b{font:9px 'Press Start 2P','Courier New',monospace;display:block;margin-bottom:4px}
+.dex div.no{opacity:.5}
+#advcode{max-height:34vh;overflow-y:auto;margin-top:8px}
+#advcrow{margin-top:8px}
+.legend{font-size:13px;line-height:1.6}
+
+#advmenu .cont{grid-column:1/-1;background:#ffd400;color:#202020;animation:pulse 1s infinite}@keyframes pulse{50%{filter:brightness(1.15)}}
+
+#advbt canvas,.pm canvas.e,.dex canvas.dx{image-rendering:pixelated;image-rendering:crisp-edges}
+#advbbg{position:absolute;inset:0;width:100%;height:100%}
+.spr{height:auto;font-size:0}.spr.f{right:16%;top:10%;width:22%}.spr.m{left:12%;bottom:12%;top:auto;width:28%}
+.spr.hit{animation:hit .5s steps(2)}
+.ib{border-radius:0;border:3px solid #202020;background:#f8f8d8;box-shadow:inset -3px -3px 0 #d0d0a8,4px 4px 0 #202020}
+.ib .bar{border-radius:0;height:8px;background:#303030}.ib .bar i{transition:width .6s steps(10)}
+#advbt.enter{animation:bin .45s steps(6)}@keyframes bin{from{clip-path:inset(0 50% 0 50%)}to{clip-path:inset(0)}}
+.pm canvas.e{width:44px;height:44px;flex:none}
+.dex canvas.dx{width:32px;height:32px;float:right;margin-left:6px}
+
+#advcv,#advbcv{image-rendering:pixelated;image-rendering:crisp-edges}
+#advbcv{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+#advbt .ib,#advbt .spr,#advbbg{opacity:0;pointer-events:none}
+.dlg{border-radius:0;border:4px solid #202020;outline:0;box-shadow:inset 0 0 0 3px #f8f8f8,inset 0 0 0 7px #4878a8,inset 0 0 0 9px #202020;padding:16px 34px 16px 18px}
+.amenu button{border-radius:0;border:3px solid #202020;box-shadow:inset 0 0 0 2px #f8f8f8,inset 0 0 0 4px #d0d0d0,3px 3px 0 #202020}
+.amenu button:hover::before,.amenu button:focus-visible::before{content:'▶ ';color:#d83030}
+/* ===== NEON PIXEL THEME ===== */
+:root:not(#_){--bg:#050505;--bg2:#101010;--neon:#00FF41;--neon2:#00C853;--txt:#fff;--line:#252525;--sky1:#050505;--sky2:#050505;--ink:#e6e6e6;--card:#101010;--mut:#888;--brick:#00C853;--cloud:#252525;--hill:#0d3d1a;--hillb:#00C853;color-scheme:dark}
+body{background:#050505 linear-gradient(#ffffff07 1px,transparent 1px) 0 0/24px 24px,#050505 linear-gradient(90deg,#ffffff07 1px,transparent 1px) 0 0/24px 24px;background-color:#050505;background-attachment:fixed;color:var(--ink)}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:80;background:repeating-linear-gradient(transparent 0 2px,#0000001a 2px 3px)}
+body.locked .wrap{display:none}#auth[hidden]{display:none!important}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+*:focus-visible{outline:2px solid var(--neon);outline-offset:2px}
+.ic{display:inline-flex}.ic svg{width:18px;height:18px;display:block}.ic.sm svg{width:12px;height:12px}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:0;box-shadow:none;position:relative}
+.card::before{content:'';position:absolute;left:-1px;top:-1px;width:8px;height:8px;background:var(--neon)}
+.card h2{color:var(--neon)}
+button.go{background:var(--neon);color:#000;border:2px solid #000;border-radius:0;box-shadow:0 0 0 1px var(--neon),0 0 12px #00ff4140;transition:box-shadow .15s}
+button.go:hover{box-shadow:0 0 0 1px var(--neon),0 0 20px #00ff4190}button.go:disabled{opacity:.6}
+.try,.chips button,.fus button,.code button,.tools button{background:transparent;color:var(--neon);border:1px solid var(--neon2);border-radius:0;box-shadow:none}
+.try:hover,.chips button:hover,.fus button:hover,.code button:hover,.tools button:hover{background:#00ff4118}
+.tabs button{background:var(--bg2);color:#aaa;border:1px solid var(--line);border-radius:0;box-shadow:none;transition:color .15s,border-color .15s}
+.tabs button:hover{color:var(--neon);border-color:var(--neon2)}
+.tabs button[aria-selected=true]{background:#00ff4114;color:var(--neon);border-color:var(--neon);box-shadow:0 0 10px #00ff4140,inset 0 0 0 1px var(--neon)}
+.mc,.fcard,.ptile,.rec,.tagl,.pm,.dex div{background:var(--bg2);border:1px solid var(--line);border-radius:0;box-shadow:none;color:var(--ink)}
+.ptile b,.msg .th{color:var(--neon)}
+.pbar,.hpb{border:1px solid var(--line);border-radius:0;background:#000}.pbar i,.hpb i{background:var(--neon)}
+.msg{border-radius:0;border:1px solid var(--line)}.msg.me{background:var(--neon);color:#000;border-color:var(--neon)}.msg.bot{background:#0b0b0b;border-left:4px solid var(--neon)}
+.msg code{background:#00ff4120;color:#b8ffc8}
+.ti,#in{background:#000;color:var(--ink);border:1px solid var(--line);border-radius:0}
+.alert,.code{background:#000;border:1px solid var(--line);border-radius:0}
+.lip{background:#00ff4114;color:var(--neon);border:1px solid var(--neon2);border-radius:0}#term{background:#000;border:1px solid var(--neon2);border-top:0;border-radius:0}
+.rk{border-bottom:1px dashed var(--line)}.rk.me{background:#00ff4118;color:var(--neon)}
+.qb{background:#000;color:var(--neon);border:1px solid var(--neon2);border-radius:0;box-shadow:none}li.done .qb{background:var(--neon);color:#000;box-shadow:none}
+.badge{border-radius:0}.stage{border:1px solid var(--line);border-radius:0}
+footer{color:var(--mut);text-shadow:none}
+.gb{background:#0c0c0c;border:1px solid var(--neon2);border-radius:0 0 28px 0;box-shadow:0 0 18px #00ff4122}.gbtitle{color:var(--neon);text-shadow:none}
+/* header + nav */
+.hud{align-items:center;padding:4px 0 10px;border-bottom:1px solid var(--line);text-shadow:none;color:var(--txt);gap:8px}
+.logo{display:flex;align-items:center;gap:10px;background:none;border:0;color:var(--txt);cursor:pointer;padding:4px;text-align:left}
+.logo .ic svg{width:34px;height:34px;color:var(--neon);filter:drop-shadow(0 0 6px #00ff4180)}
+.logo .t{font:14px 'Press Start 2P','Courier New',monospace;display:block}.logo em,.hmt span,.authlogo h1 span{color:var(--neon);font-style:normal}
+.logo .s{font:7px 'Press Start 2P','Courier New',monospace;color:var(--mut);display:block;margin-top:5px;letter-spacing:1px}
+.hudst{font:8px/1.8 'Press Start 2P','Courier New',monospace;color:var(--mut);margin-left:auto;text-align:right}.hud b{color:var(--neon)}
+.hbtn,#mute{background:var(--bg2);border:1px solid var(--line);color:var(--neon);min-width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;padding:0 9px;font:8px 'Press Start 2P','Courier New',monospace;border-radius:0}
+.hbtn:hover,#mute:hover{border-color:var(--neon)}
+#profname{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prof{position:relative}#profmenu{position:absolute;right:0;top:46px;background:var(--bg2);border:1px solid var(--neon2);width:240px;padding:12px;z-index:60;box-shadow:0 0 18px #00ff4130;font-size:13px}
+#profmenu b{display:block;color:var(--neon);font:9px 'Press Start 2P','Courier New',monospace;margin-bottom:6px;word-break:break-all}#profmenu .go{width:100%;min-height:40px;margin-top:10px}
+#top{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+#top button{flex:1 1 0;min-width:80px;min-height:40px;display:flex;align-items:center;justify-content:center;gap:6px;font:8px 'Press Start 2P','Courier New',monospace;padding:4px}
+.sub{margin-top:6px}
+/* main menu */
+#home{text-align:center;padding:22px 0 6px}
+.hmlogo .ic svg{width:72px;height:72px;color:var(--neon);filter:drop-shadow(0 0 10px #00ff4199)}
+.hmt{font:clamp(18px,4.6vw,30px) 'Press Start 2P','Courier New',monospace;margin:14px 0 22px;color:#fff;letter-spacing:1px}
+.hmw{font:clamp(11px,2.6vw,16px)/1.6 'Press Start 2P','Courier New',monospace;color:#fff;margin:0 0 10px;word-break:break-word}.hmw span{color:var(--neon)}
+.hms{font:clamp(8px,2vw,11px) 'Press Start 2P','Courier New',monospace;color:var(--mut);margin:0 0 24px;letter-spacing:1px}
+.tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;max-width:820px;margin:0 auto}
+.tile{grid-column:span 2;background:var(--bg2);border:1px solid var(--line);color:var(--ink);padding:22px 14px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;position:relative;min-height:200px;font:inherit;border-radius:0;transition:border-color .15s,transform .15s,background .15s}
+.tile:nth-child(4){grid-column:2/span 2}.tile:nth-child(5){grid-column:4/span 2}
+.tile::before,.tile::after{content:'';position:absolute;width:8px;height:8px;background:var(--line);transition:background .15s}.tile::before{left:-1px;top:-1px}.tile::after{right:-1px;bottom:-1px}
+.tile .ic svg{width:52px;height:52px;color:var(--neon)}
+.tile b{font:13px 'Press Start 2P','Courier New',monospace;color:#fff}
+.tile .d{font-size:13.5px;color:#9a9a9a;line-height:1.45}
+.tile small{font:8px/1.6 'Press Start 2P','Courier New',monospace;color:var(--neon2);margin-top:auto}
+.tile:hover,.tile:focus-visible{border-color:var(--neon);background:#00ff410d;transform:translateY(-3px);outline:none;animation:nb 1.6s steps(4) infinite}
+.tile:hover::before,.tile:hover::after,.tile:focus-visible::before,.tile:focus-visible::after{background:var(--neon)}
+.tile:hover b,.tile:focus-visible b{color:var(--neon)}
+.tile.sel{animation:tsel .22s steps(3)}
+.hmstat{margin-top:22px;font:8px/1.8 'Press Start 2P','Courier New',monospace;color:var(--mut)}
+@keyframes nb{0%,100%{box-shadow:0 0 0 1px var(--neon),0 0 8px #00ff4155}50%{box-shadow:0 0 0 1px var(--neon),0 0 24px #00ff41aa}}
+@keyframes tsel{0%{transform:scale(1)}50%{transform:scale(.94);background:#00ff4130}100%{transform:scale(1)}}
+@keyframes pxin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wrap>section:not([hidden]){animation:pxin .3s steps(6)}
+/* achievements */
+.ach{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.ach div{border:1px solid var(--line);padding:8px 10px;font-size:12.5px;color:var(--mut);display:grid;grid-template-columns:auto 1fr;column-gap:8px;align-items:center}
+.ach div span:last-child{grid-column:1/-1;margin-top:4px}.ach div b{font:8px/1.5 'Press Start 2P','Courier New',monospace;color:#bbb}
+.ach div.on{border-color:var(--neon2);color:#cfeedd}.ach div.on b,.ach div.on .ic{color:var(--neon)}
+/* auth screen */
+#auth{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 14px;box-sizing:border-box}
+.authbox{width:100%;max-width:430px;background:var(--bg2);border:1px solid var(--line);padding:26px 22px;position:relative;box-sizing:border-box;animation:pxin .45s steps(8)}
+.authbox::before,.authbox::after{content:'';position:absolute;width:10px;height:10px;background:var(--neon)}.authbox::before{left:-1px;top:-1px}.authbox::after{right:-1px;bottom:-1px}
+.authlogo{text-align:center}.authlogo .ic svg{width:64px;height:64px;color:var(--neon);filter:drop-shadow(0 0 10px #00ff4199)}
+.authlogo h1{font:clamp(16px,5vw,21px) 'Press Start 2P','Courier New',monospace;color:#fff;margin:14px 0 8px}
+.authsub{font:8px/1.9 'Press Start 2P','Courier New',monospace;color:var(--mut);text-align:center;margin:0 0 18px}
+.authtabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);margin-bottom:8px}
+.authtabs button{background:none;border:0;color:var(--mut);padding:12px 6px;font:10px 'Press Start 2P','Courier New',monospace;cursor:pointer}
+.authtabs button[aria-selected=true]{background:#00ff4118;color:var(--neon);box-shadow:inset 0 -3px 0 var(--neon)}
+#authf label{display:block;font:8px 'Press Start 2P','Courier New',monospace;color:#ccc;margin:14px 0 6px;letter-spacing:1px}
+#authf input[type=text],#authf input[type=password]{width:100%;box-sizing:border-box;background:#000;border:1px solid #333;color:#fff;padding:11px 12px;font:16px ui-monospace,Menlo,Consolas,monospace;border-radius:0;min-width:0}
+#authf input:focus{border-color:var(--neon);outline:none;box-shadow:0 0 0 1px var(--neon),0 0 10px #00ff4140}
+#authf input[aria-invalid=true]{border-color:#ff5c5c}
+.pwrow{display:flex}.pwrow input{flex:1}.pwrow button{background:#000;border:1px solid #333;border-left:0;color:var(--neon);font:8px 'Press Start 2P','Courier New',monospace;padding:0 10px;cursor:pointer;min-width:66px}
+.ferr{color:#ff7070;font-size:12.5px;margin-top:4px}.ferr:empty{display:none}#apwhelp{margin-top:5px}
+#authf label.chk{display:flex;align-items:center;gap:8px;font:13px system-ui,sans-serif;color:#bbb;letter-spacing:0}.chk input{accent-color:#00FF41;width:18px;height:18px}
+#aremw[hidden],#acwrap[hidden],#apwhelp[hidden]{display:none}
+.aerr{color:#ff7070;border:1px solid #ff5c5c66;background:#ff000012;padding:8px 10px;margin-top:12px;font-size:13px}.aerr:empty{display:none}
+.big{width:100%;min-height:50px;margin-top:16px;font-size:12px}
+.spin{display:inline-block;width:10px;height:10px;background:#000;margin-right:10px;vertical-align:-1px;animation:spin .8s steps(4) infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.aswitch{text-align:center;font-size:13.5px;color:var(--mut);margin:16px 0 0}.linkb{background:none;border:0;color:var(--neon);text-decoration:underline;cursor:pointer;font:inherit;padding:4px}
+.ademo{margin-top:18px;border-top:1px dashed var(--line);padding-top:12px;font-size:12px;color:var(--mut);line-height:1.55}.ademo .ic{color:var(--neon);vertical-align:-1px}.ademo b{color:#bbb}
+.ademo summary{color:var(--neon);cursor:pointer;margin-top:6px}.ademo code{color:#b8ffc8}
+#auth footer{font:9px 'Press Start 2P','Courier New',monospace;color:var(--neon);margin-top:20px;letter-spacing:2px}
+@media (max-width:700px){.tiles{grid-template-columns:1fr 1fr;gap:10px}.tile,.tile:nth-child(4){grid-column:span 1;min-height:180px}.tile:nth-child(5){grid-column:1/-1;justify-self:center;width:calc(50% - 5px)}
+ #top button{flex:1 1 calc(25% - 6px);min-width:0;font-size:7px;flex-direction:column;gap:3px;min-height:48px}.logo .s{display:none}.hudst{font-size:7px}}
+@media (max-width:420px){.tiles{grid-template-columns:1fr}.tile,.tile:nth-child(4),.tile:nth-child(5){grid-column:1/-1;width:auto;min-height:0}.logo .t{font-size:11px}.logo .ic svg{width:26px;height:26px}#profname{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (max-width:700px){#profmenu{position:fixed;left:8px;right:8px;top:64px;width:auto}}
+.atemp{border:1px solid #ffcc00;color:#ffcc00;padding:8px;margin:0 0 10px;font-size:12px}
+</style>
+</head>
+<body>
+<div id="auth" hidden>
+ <div class="authbox">
+  <div class="authlogo"><span class="ic" data-ic="shield"></span><h1>CYBER<span>SENTINEL</span></h1></div>
+  <p class="authsub">YOUR CYBERSECURITY ADVENTURE STARTS HERE</p>
+  <div class="authtabs" role="tablist" aria-label="Log in or sign up"><button type="button" role="tab" id="atLogin" aria-controls="authf">LOG IN</button><button type="button" role="tab" id="atSign" aria-controls="authf">SIGN UP</button></div>
+  <form id="authf" novalidate aria-labelledby="authh">
+   <h2 id="authh" class="vh">LOG IN</h2>
+   <label for="auid">USERNAME OR EMAIL</label>
+   <input id="auid" type="text" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="120" aria-describedby="auid-e" required>
+   <div class="ferr" id="auid-e" aria-live="polite"></div>
+   <label for="apw">PASSWORD</label>
+   <div class="pwrow"><input id="apw" type="password" name="password" autocomplete="current-password" maxlength="128" aria-describedby="apw-e apwhelp" required><button type="button" id="apwt" aria-controls="apw" aria-pressed="false" aria-label="Show password">SHOW</button></div>
+   <div class="ferr" id="apw-e" aria-live="polite"></div>
+   <div class="mut" id="apwhelp" hidden>At least 8 characters, with a letter and a number.</div>
+   <div id="acwrap" hidden>
+    <label for="apw2">CONFIRM PASSWORD</label>
+    <input id="apw2" type="password" name="confirm" autocomplete="new-password" maxlength="128" aria-describedby="apw2-e">
+    <div class="ferr" id="apw2-e" aria-live="polite"></div>
+   </div>
+   <label class="chk" id="aremw"><input type="checkbox" id="arem"> Remember me on this device (30 days)</label>
+   <div id="aerr" class="aerr" role="alert"></div>
+   <button class="go big" id="asub" type="submit">LOG IN</button>
+   <p class="aswitch"><span id="aswtxt">New to CyberSentinel?</span> <button type="button" id="asw" class="linkb">Create an account</button></p>
+  </form>
+  <div class="ademo" id="ademo"><span class="ic sm" data-ic="lock"></span> <b id="authmode">LOCAL DEMO ACCOUNTS</b>: accounts and progress are saved only in this browser on this device. Passwords are stored as salted PBKDF2 hashes, never as plain text. There is no server yet, so this is not a secure online login.
+   <details><summary>How to enable real accounts</summary>Set <code>AUTH_CONFIG.mode = 'remote'</code> and <code>apiBase</code> to an auth server (for example Supabase Auth, Firebase Authentication, or your own API). Instructions are in AUTH_SETUP.md.</details></div>
+ </div>
+ <footer>LEARN. EXPLORE. DEFEND.</footer>
+</div>
+<script>
+/* ===== AUTH LAYER =====
+ mode 'local'  : demo accounts stored in this browser only (salted PBKDF2-SHA256 hashes, never plain text). NOT server-grade security.
+ mode 'remote' : set apiBase to a server exposing POST /auth/register, /auth/login, /auth/logout (JSON {username,password} -> {user:{id,name}}, httpOnly session cookie). See AUTH_SETUP.md. */
+const AUTH_CONFIG={mode:'local',apiBase:'',iterations:150000,sessionHoursDefault:12,rememberDays:30,maxFails:5,lockMs:30000};
+const authEnc=new TextEncoder(),authB64=u=>btoa(String.fromCharCode(...u)),authUnB64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+function authEq(a,b){if(a.length!==b.length)return false;let r=0;for(let i=0;i<a.length;i++)r|=a.charCodeAt(i)^b.charCodeAt(i);return r===0}
+/* Storage that keeps working when the browser blocks csLS (sandboxed previews, private modes): falls back to window.name, which survives reloads in this tab only. */
+const csMem=(()=>{let d={};try{const n=JSON.parse(window.name||'{}');if(n&&n.__cs)d=n.__cs}catch(e){}
+ const put=()=>{try{window.name=JSON.stringify({__cs:d})}catch(e){}};
+ return {getItem:k=>k in d?d[k]:null,setItem:(k,v)=>{d[k]=String(v);put()},removeItem:k=>{delete d[k];put()}}})();
+function csStore(n){try{const s=window[n],t='__cs_t';s.setItem(t,'1');s.removeItem(t);return s}catch(e){return null}}
+const csLS=csStore('localStorage')||csMem,csSS=csStore('sessionStorage')||csLS,csTemp=csLS===csMem;
+/* Pure-JS PBKDF2-HMAC-SHA256, used only when crypto.subtle is unavailable (http:// pages, some in-app browsers). Same output as WebCrypto. */
+const csK=new Uint32Array([0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2]);
+const csH0=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+function csBlk(H,M,o){const W=csBlk.W||(csBlk.W=new Uint32Array(64));for(let i=0;i<16;i++)W[i]=M[o+i];
+ for(let i=16;i<64;i++){const x=W[i-15],y=W[i-2];W[i]=(((x>>>7|x<<25)^(x>>>18|x<<14)^(x>>>3))+W[i-7]+((y>>>17|y<<15)^(y>>>19|y<<13)^(y>>>10))+W[i-16])|0}
+ let a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+ for(let i=0;i<64;i++){const t1=(h+((e>>>6|e<<26)^(e>>>11|e<<21)^(e>>>25|e<<7))+((e&f)^(~e&g))+csK[i]+W[i])|0,t2=(((a>>>2|a<<30)^(a>>>13|a<<19)^(a>>>22|a<<10))+((a&b)^(a&c)^(b&c)))|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0}
+ H[0]=H[0]+a|0;H[1]=H[1]+b|0;H[2]=H[2]+c|0;H[3]=H[3]+d|0;H[4]=H[4]+e|0;H[5]=H[5]+f|0;H[6]=H[6]+g|0;H[7]=H[7]+h|0}
+function csSha(bytes){const l=bytes.length,n=((l+9+63)>>6)<<4,M=new Uint32Array(n);for(let i=0;i<l;i++)M[i>>2]|=bytes[i]<<(24-(i&3)*8);M[l>>2]|=0x80<<(24-(l&3)*8);M[n-1]=l*8;M[n-2]=Math.floor(l/0x20000000);
+ const H=Uint32Array.from(csH0);for(let o=0;o<n;o+=16)csBlk(H,M,o);return H}
+const csW2B=H=>{const r=new Uint8Array(H.length*4);H.forEach((w,i)=>{r[i*4]=w>>>24;r[i*4+1]=w>>>16;r[i*4+2]=w>>>8;r[i*4+3]=w});return r};
+async function csPbkdf2(pw,salt,iter){let k=authEnc.encode(pw);if(k.length>64)k=csW2B(csSha(k));const ip=new Uint32Array(16),op=new Uint32Array(16);
+ for(let i=0;i<16;i++){let w=0;for(let j=0;j<4;j++)w=w<<8|(k[i*4+j]||0);ip[i]=w^0x36363636;op[i]=w^0x5c5c5c5c}
+ const IH=Uint32Array.from(csH0),OH=Uint32Array.from(csH0);csBlk(IH,ip,0);csBlk(OH,op,0);
+ const fin=(st,data,len)=>{const H=Uint32Array.from(st);const l=len,n=((l+9+63)>>6)<<4,M=new Uint32Array(n);for(let i=0;i<l;i++)M[i>>2]|=data[i]<<(24-(i&3)*8);M[l>>2]|=0x80<<(24-(l&3)*8);M[n-1]=(l+64)*8;for(let o=0;o<n;o+=16)csBlk(H,M,o);return H};
+ const s1=new Uint8Array(salt.length+4);s1.set(salt);s1[salt.length+3]=1;let U=fin(OH,csW2B(fin(IH,s1,s1.length)),32);const T=Uint32Array.from(U);
+ const M=new Uint32Array(16);M[8]=0x80000000;M[15]=(64+32)*8;
+ for(let r=1;r<iter;r++){for(const st of [IH,OH]){const H=Uint32Array.from(st);M.set(U);csBlk(H,M,0);U=H}for(let i=0;i<8;i++)T[i]^=U[i];if(r%20000===0)await new Promise(z=>setTimeout(z))}
+ return csW2B(T)}
+const csRand=n=>{const b=new Uint8Array(n);try{crypto.getRandomValues(b)}catch(e){for(let i=0;i<n;i++)b[i]=Math.random()*256|0}return b};
+async function authHash(pw,salt,iter){if(window.crypto&&crypto.subtle){try{const k=await crypto.subtle.importKey('raw',authEnc.encode(pw),'PBKDF2',false,['deriveBits']);return new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},k,256))}catch(e){}}return csPbkdf2(pw,salt,iter)}
+const LocalAuth={
+ users(){try{return JSON.parse(csLS.getItem('cs_users')||'{}')}catch(e){return {}}},
+ async register(name,pw){const key=name.toLowerCase(),u=this.users();if(u[key])throw new Error('An account with that username or email already exists on this device. Log in instead.');
+  const salt=csRand(16),h=await authHash(pw,salt,AUTH_CONFIG.iterations),id='u'+Date.now().toString(36)+authB64(csRand(4)).replace(/[^a-z0-9]/gi,'');
+  u[key]={id,name,salt:authB64(salt),hash:authB64(h),iter:AUTH_CONFIG.iterations,created:Date.now()};csLS.setItem('cs_users',JSON.stringify(u));return {id,name}},
+ async login(name,pw){const r=this.users()[name.toLowerCase()],h=await authHash(pw,r?authUnB64(r.salt):new Uint8Array(16),r?r.iter:AUTH_CONFIG.iterations);
+  if(!r||!authEq(authB64(h),r.hash))throw new Error('Incorrect username/email or password.');return {id:r.id,name:r.name}},
+ logout(){}};
+const RemoteAuth={
+ async call(p,body){let r;try{r=await fetch(AUTH_CONFIG.apiBase+p,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})}catch(e){throw new Error('Cannot reach the login server. Check your connection.')}
+  const j=await r.json().catch(()=>({}));if(!r.ok||!j.user)throw new Error(j.error||'Login server error ('+r.status+').');return j.user},
+ register(n,p){return this.call('/auth/register',{username:n,password:p})},login(n,p){return this.call('/auth/login',{username:n,password:p})},
+ logout(){return fetch(AUTH_CONFIG.apiBase+'/auth/logout',{method:'POST',credentials:'include'}).catch(()=>{})}};
+const Auth={cur:null,
+ api(){return AUTH_CONFIG.mode==='remote'?RemoteAuth:LocalAuth},
+ read(){for(const st of [csSS,csLS]){try{const s=JSON.parse(st.getItem('cs_session')||'null');if(s&&s.exp>Date.now()&&s.mode===AUTH_CONFIG.mode)return s;if(s)st.removeItem('cs_session')}catch(e){}}return null},
+ dataKey(){return this.cur?'cq2:'+this.cur.uid:null},
+ start(u,remember){const s={uid:u.id,name:u.name,mode:AUTH_CONFIG.mode,exp:Date.now()+(remember?AUTH_CONFIG.rememberDays*864e5:AUTH_CONFIG.sessionHoursDefault*36e5)};
+  (remember?csLS:csSS).setItem('cs_session',JSON.stringify(s));
+  try{const old=csLS.getItem('cq2');if(old&&!csLS.getItem('cq2:'+u.id)){csLS.setItem('cq2:'+u.id,old);csLS.removeItem('cq2')}}catch(e){}},
+ async logout(){await this.api().logout();csSS.removeItem('cs_session');csLS.removeItem('cs_session');location.reload()}};
+Auth.cur=Auth.read();
+/* ===== PIXEL ICONS ('#' = solid, 'o' = dim) ===== */
+const PXI={
+shield:['..############..','.##############.','.##oooooooooo##.','.##oooo##oooo##.','.##ooo####ooo##.','.##ooo####ooo##.','.##oooo##oooo##.','.##oooo##oooo##.','..##ooo##ooo##..','..##oooooooo##..','...##oooooo##...','....##oooo##....','.....##oo##.....','......####......','.......##.......'],
+home:['.....##.....','....####....','...######...','..########..','.##########.','############','.##oooooo##.','.##o####o##.','.##o#..#o##.','.##o#..#o##.','.##o#..#o##.','.##########.'],
+map:['....####....','..##oooo##..','.#oo####oo#.','.#o##..##o#.','#o##....##o#','#o##....##o#','.#o##..##o#.','.#oo####oo#.','..#oooooo#..','...#oooo#...','....#oo#....','.....##.....'],
+book:['............','.####..####.','#oooo##oooo#','#o##o##o##o#','#oooo##oooo#','#o##o##o##o#','#oooo##oooo#','#o##o##o##o#','#oooo##oooo#','.####..####.','.....##.....','............'],
+term:['############','############','#oooooooooo#','#o#oooooooo#','#oo#ooooooo#','#ooo#oooooo#','#oo#ooooooo#','#o#oo####oo#','#oooooooooo#','#oooooooooo#','############','............'],
+pad:['............','............','.##########.','#oooooooooo#','#o#ooooo#oo#','###oooo#o#o#','#o#ooooo#oo#','#oooooooooo#','#oo######oo#','.##......##.','............','............'],
+trophy:['############','#.########.#','#.########.#','.#.######.#.','..########..','...######...','....####....','.....##.....','.....##.....','....####....','...######...','...######...'],
+bot:['.....##.....','.....##.....','..########..','.#oooooooo#.','.#o##oo##o#.','##o##oo##o##','##oooooooo##','.#oo####oo#.','.#oooooooo#.','..########..','...#....#...','..##....##..'],
+sound:['............','.....#....#.','....##..#..#','...###...#.#','#######..#.#','#######..#.#','#######..#.#','#######..#.#','...###...#.#','....##..#..#','.....#....#.','............'],
+mute:['............','.....#......','....##......','...###.#...#','#######.#.#.','#######..#..','#######..#..','#######.#.#.','...###.#...#','....##......','.....#......','............'],
+user:['....####....','...######...','...######...','...######...','....####....','............','..########..','.##########.','############','############','############','............'],
+lock:['....####....','...#....#...','..#......#..','..#......#..','############','#oooooooooo#','#oooo##oooo#','#oooo##oooo#','#ooooo#oooo#','#oooooooooo#','############','............'],
+out:['######......','#oooo#......','#oooo#..#...','#oooo#..##..','#oo#########','#oooo#..##..','#oooo#..#...','#oooo#......','######......','............','............','............'],
+star:['.....##.....','.....##.....','....####....','############','.##########.','..########..','...######...','...##..##...','..##....##..','.##......##.','............','............']};
+function pxIcon(n){const r=PXI[n]||PXI.star,h=r.length,w=r[0].length;let s=`<svg viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges" aria-hidden="true" focusable="false">`;
+ r.forEach((row,y)=>[...row].forEach((c,x)=>{if(c==='#')s+=`<rect x="${x}" y="${y}" width="1" height="1" fill="currentColor"/>`;else if(c==='o')s+=`<rect x="${x}" y="${y}" width="1" height="1" fill="currentColor" fill-opacity=".3"/>`}));return s+'</svg>'}
+function pxIcons(root){(root||document).querySelectorAll('[data-ic]').forEach(e=>{if(!e.firstChild)e.innerHTML=pxIcon(e.dataset.ic)})}
+/* ===== AUTH SCREEN ===== */
+const AuthUI={mode:'login',
+ q:id=>document.getElementById(id),
+ fails(){try{return JSON.parse(csSS.getItem('cs_fails')||'{"n":0,"until":0}')}catch(e){return {n:0,until:0}}},
+ setMode(m){const q=this.q;this.mode=m;const L=m==='login';q('atLogin').setAttribute('aria-selected',String(L));q('atSign').setAttribute('aria-selected',String(!L));
+  q('authh').textContent=L?'LOG IN':'CREATE ACCOUNT';q('asub').textContent=L?'LOG IN':'CREATE ACCOUNT';q('acwrap').hidden=L;q('aremw').hidden=!L;q('apwhelp').hidden=L;
+  q('apw').autocomplete=L?'current-password':'new-password';q('aswtxt').textContent=L?'New to CyberSentinel?':'Already have an account?';q('asw').textContent=L?'Create an account':'Log in';this.clear()},
+ clear(){['auid','apw','apw2'].forEach(i=>{this.q(i).removeAttribute('aria-invalid');this.q(i+'-e').textContent=''});this.q('aerr').textContent=''},
+ bad(i,msg){this.q(i).setAttribute('aria-invalid','true');this.q(i+'-e').textContent=msg},
+ validate(){const q=this.q,id=q('auid').value.trim(),pw=q('apw').value,pw2=q('apw2').value,L=this.mode==='login';let ok=true;
+  if(!id){this.bad('auid','Enter your username or email.');ok=false}
+  else if(id.includes('@')?!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(id):!/^[A-Za-z0-9_.-]{3,32}$/.test(id)){this.bad('auid',id.includes('@')?'That email address does not look valid.':'Usernames are 3-32 letters, numbers, dots, dashes or underscores.');ok=false}
+  if(!pw){this.bad('apw','Enter your password.');ok=false}
+  else if(!L){if(pw.length<8||!/[A-Za-z]/.test(pw)||!/\d/.test(pw)){this.bad('apw','Use at least 8 characters with at least one letter and one number.');ok=false}
+   else if(pw.length>128){this.bad('apw','Use 128 characters or fewer.');ok=false}else if(pw.toLowerCase()===id.toLowerCase()){this.bad('apw','Your password must be different from your username.');ok=false}
+   if(pw2!==pw){this.bad('apw2',pw2?'Passwords do not match.':'Type your password again.');ok=false}}
+  if(!ok){const f=document.querySelector('#authf [aria-invalid=true]');if(f)f.focus()}return ok?{id,pw}:null},
+ busy(on,txt){const b=this.q('asub');b.disabled=on;this.q('authf').setAttribute('aria-busy',String(on));if(on)b.innerHTML='<span class="spin" aria-hidden="true"></span>'+txt;else b.textContent=this.mode==='login'?'LOG IN':'CREATE ACCOUNT'},
+ async submit(e){e.preventDefault();this.clear();const v=this.validate();if(!v)return;const f=this.fails();
+  if(f.until>Date.now())return void(this.q('aerr').textContent=`Too many failed attempts. Try again in ${Math.ceil((f.until-Date.now())/1000)} seconds.`);
+  const L=this.mode==='login';this.busy(true,L?'CHECKING…':'CREATING ACCOUNT…');
+  try{const u=L?await Auth.api().login(v.id,v.pw):await Auth.api().register(v.id,v.pw);csSS.removeItem('cs_fails');Auth.start(u,L&&this.q('arem').checked);
+   this.q('asub').innerHTML='<span class="spin" aria-hidden="true"></span>'+(L?'WELCOME BACK!':'ACCOUNT CREATED!');setTimeout(()=>location.reload(),350)}
+  catch(err){if(L){f.n++;if(f.n>=AUTH_CONFIG.maxFails){f.until=Date.now()+AUTH_CONFIG.lockMs;f.n=0}csSS.setItem('cs_fails',JSON.stringify(f))}this.busy(false);this.q('aerr').textContent=err.message||'Something went wrong. Please try again.'}},
+ init(){const q=this.q;pxIcons(q('auth'));q('authmode').textContent=AUTH_CONFIG.mode==='local'?'LOCAL DEMO ACCOUNTS':'ONLINE ACCOUNTS';q('ademo').hidden=AUTH_CONFIG.mode!=='local';if(csTemp){const t=document.createElement('p');t.className='atemp';t.setAttribute('role','note');t.textContent='This browser is blocking saved data here, so your account and progress are temporary: they last only until you close this tab. For permanent saves, download the file and open it in Chrome, Edge, Firefox or Safari.';q('ademo').prepend(t)}
+  q('atLogin').onclick=()=>this.setMode('login');q('atSign').onclick=()=>this.setMode('signup');q('asw').onclick=()=>this.setMode(this.mode==='login'?'signup':'login');
+  q('apwt').onclick=()=>{const show=q('apw').type==='password';q('apw').type=q('apw2').type=show?'text':'password';q('apwt').textContent=show?'HIDE':'SHOW';q('apwt').setAttribute('aria-pressed',String(show));q('apwt').setAttribute('aria-label',show?'Hide password':'Show password')};
+  q('authf').addEventListener('submit',e=>this.submit(e));['auid','apw','apw2'].forEach(i=>q(i).addEventListener('input',()=>{q(i).removeAttribute('aria-invalid');q(i+'-e').textContent=''}));
+  this.setMode('login');if(!Auth.cur){document.body.classList.add('locked');q('auth').hidden=false;setTimeout(()=>q('auid').focus(),50)}}};
+AuthUI.init();
+/* ===== MAIN MENU, NAV, PROFILE, ACHIEVEMENTS ===== */
+const HOME_TILES=[['adv','map','ADVENTURE','Complete missions and explore cybersecurity challenges.'],['learn','book','LESSON','Learn cybersecurity concepts and command fundamentals.'],['lobby','term','TESTER','Practice your skills in safe, authorized exercises.'],['def','pad','PLAY','Play mini-games and test your cybersecurity knowledge.'],['ranks','trophy','RANKS','View your achievements, scores, and leaderboard.']];
+function goTab(t){showTab(t);render();window.scrollTo(0,0)}
+function tileStat(t){const ad=S.adv||{};return {adv:`${Object.keys(ad.beat||{}).length}/4 systems patched`,learn:`${MODS.filter(m=>S.learn[m.id]).length}/${MODS.length} lessons done`,lobby:`${pc()}/${MS.length} machines pwned`,def:`${S.tro||0} Duel trophies`,ranks:`${rank()[0]} · ${total()} coins`}[t]}
+function renderHome(){const n=document.getElementById('hmname');n.textContent=(Auth.cur?Auth.cur.name:'AGENT').toUpperCase();const g=document.getElementById('tiles');g.innerHTML='';
+ HOME_TILES.forEach(([t,ic,ti,d])=>{const b=document.createElement('button');b.className='tile';b.type='button';b.dataset.go=t;b.setAttribute('aria-label',ti+': '+d);
+  b.innerHTML=`<span class="ic" data-ic="${ic}"></span><b></b><span class="d"></span><small></small>`;b.querySelector('b').textContent=ti;b.querySelector('.d').textContent=d;b.querySelector('small').textContent=tileStat(t);
+  b.onclick=()=>{b.classList.add('sel');setTimeout(()=>{b.classList.remove('sel');goTab(t)},220)};g.append(b)});pxIcons(g);
+ document.getElementById('hmstat').textContent=`STREAK ${pgStats().streak} DAY(S) · ${AUTH_CONFIG.mode==='local'?'LOCAL DEMO ACCOUNT (THIS DEVICE)':'SIGNED IN'}`}
+function renderAch(){const c=document.getElementById('ach');if(!c)return;const s=pgStats(),ad=S.adv||{},L=[
+ ['First Steps','Finish your first lesson quiz',s.done.length>=1],['Scholar','Finish all 6 lessons',s.done.length===MODS.length],['Perfect Score','Get every answer right in a lesson quiz',MODS.some(m=>S.learn[m.id]&&S.learn[m.id].s===m.q.length)],
+ ['First Pwn','Pwn your first Tester machine',pc()>=1],['Root of All','Pwn all 4 Tester machines',pc()===MS.length],['Tool-mon Trainer','Patch a system in Adventure',Object.keys(ad.beat||{}).length>=1],
+ ['Portdex Collector','Beat 3 different wild threats',Object.keys(ad.dex||{}).length>=3],['Command Explorer','Explore 5 different commands',Object.keys(s.cmds).length>=5],['On a Streak','Learn 3 days in a row',s.streak>=3],['Duel Champion','Win a Duel tournament',(S.tro||0)>=1]];
+ c.innerHTML='';L.forEach(([t,d,on])=>{const e=document.createElement('div');e.className=on?'on':'';e.innerHTML='<span class="ic" data-ic="'+(on?'star':'lock')+'"></span><b></b><span></span>';e.querySelector('b').textContent=t;e.querySelector('span:last-child').textContent=(on?'Unlocked: ':'Locked: ')+d;c.append(e)});pxIcons(c);
+ document.getElementById('achn').textContent=`${L.filter(x=>x[2]).length}/${L.length} unlocked`}
+document.addEventListener('DOMContentLoaded',()=>{const q=id=>document.getElementById(id);pxIcons(document);
+ q('logo').onclick=()=>{if(Auth.cur)goTab('home')};
+ if(Auth.cur){q('profname').textContent=Auth.cur.name;q('profwho').textContent=Auth.cur.name;q('proftype').textContent=AUTH_CONFIG.mode==='local'?'Local demo account. Progress is saved in this browser on this device only.':'Online account.'}
+ const pm=q('profmenu'),pb=q('profbtn'),close=()=>{pm.hidden=true;pb.setAttribute('aria-expanded','false')};
+ pb.onclick=e=>{e.stopPropagation();pm.hidden=!pm.hidden;pb.setAttribute('aria-expanded',String(!pm.hidden));if(!pm.hidden)q('logout').focus()};
+ document.addEventListener('click',e=>{if(!pm.hidden&&!pm.contains(e.target))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!pm.hidden){close();pb.focus()}});
+ q('logout').onclick=()=>{q('logout').disabled=true;q('logout').textContent='LOGGING OUT…';Auth.logout()};
+ q('tiles').addEventListener('keydown',e=>{const t=[...q('tiles').children],i=t.indexOf(document.activeElement);if(i<0)return;const d={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(d){e.preventDefault();t[(i+d+t.length)%t.length].focus()}})});
+
+</script>
+<div class="wrap">
+<header class="hud" id="hud">
+ <button id="logo" class="logo" type="button" aria-label="CyberSentinel: back to main menu"><span class="ic" data-ic="shield"></span><span><span class="t">CYBER<em>SENTINEL</em></span><span class="s">LEARN. EXPLORE. DEFEND.</span></span></button>
+ <div class="hudst">COINS <b id="xp">0000</b><br>RANK <b id="rank"></b></div>
+ <button id="mute" type="button" title="Sound on/off" aria-label="Sound effects" aria-pressed="false"><span class="ic" data-ic="sound"></span></button>
+ <div class="prof"><button id="profbtn" class="hbtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="profmenu" title="Profile"><span class="ic" data-ic="user"></span><span id="profname">PROFILE</span></button>
+  <div id="profmenu" hidden><b id="profwho"></b><div class="mut" id="proftype"></div><button class="go" id="logout" type="button">LOG OUT</button></div></div>
+</header>
+<nav class="tabs" id="top" role="tablist" aria-label="Main sections"><button role="tab" data-t="home" data-g="home" title="Main menu"><span class="ic" data-ic="home"></span>Home</button><button role="tab" data-t="adv" data-g="adv" title="Adventure"><span class="ic" data-ic="map"></span>Adventure</button><button role="tab" data-t="learn" data-g="learn" title="Lessons"><span class="ic" data-ic="book"></span>Lessons</button><button role="tab" data-t="lobby" data-g="tester" title="Tester"><span class="ic" data-ic="term"></span>Tester</button><button role="tab" data-t="def" data-g="play" title="Play"><span class="ic" data-ic="pad"></span>Play</button><button role="tab" data-t="ranks" data-g="ranks" title="Ranks"><span class="ic" data-ic="trophy"></span>Ranks</button><button role="tab" data-t="tutor" data-g="tutor" title="AI Tutor"><span class="ic" data-ic="bot"></span>AI Tutor</button></nav>
+<nav class="tabs sub" id="subT" role="tablist" aria-label="Tester modes" hidden><button role="tab" data-t="lobby">Machines</button><button role="tab" data-t="lab">Lab terminal</button></nav>
+<nav class="tabs sub" id="subP" role="tablist" aria-label="Play modes" hidden><button role="tab" data-t="def">Defend</button><button role="tab" data-t="duel">Duel</button></nav>
+
+<section id="home" hidden>
+ <div class="hmlogo"><span class="ic" data-ic="shield"></span><div class="hmt">CYBER<span>SENTINEL</span></div></div>
+ <h1 class="hmw">WELCOME BACK, <span id="hmname"></span></h1>
+ <p class="hms">CHOOSE YOUR NEXT MISSION</p>
+ <div class="tiles" id="tiles" role="group" aria-label="Main menu"></div>
+ <div class="hmstat" id="hmstat"></div>
+</section>
+<section id="adv" hidden>
+ <div class="gb">
+  <div class="gbtop"><span class="gbled"></span><span class="gbdot r"></span><span class="gbdot y"></span><span class="gbdot g"></span><span class="gbtitle">CYBER REGION</span></div>
+  <div class="scr" id="advscr">
+   <canvas id="advcv" width="384" height="256" aria-label="Overworld map. Use arrow keys, the D-pad, or tap the map to walk."></canvas>
+   <div id="advbt" hidden>
+    <canvas id="advbcv" width="240" height="160" aria-hidden="true"></canvas><canvas id="advbbg" width="96" height="64"></canvas>
+    <div class="ib f"><div class="nm"><span id="bfn"></span><span id="bfl"></span></div><div class="hp"><b>HP</b><div class="bar"><i id="bfh"></i></div></div></div>
+    <canvas class="spr f" id="bfs" width="16" height="16" aria-hidden="true"></canvas>
+    <canvas class="spr m" id="bms" width="16" height="16" aria-hidden="true"></canvas>
+    <div class="ib m"><div class="nm"><span id="bmn"></span><span id="bml"></span></div><div class="hp"><b>HP</b><div class="bar"><i id="bmh"></i></div></div><div class="num" id="bmp"></div></div>
+   </div>
+  </div>
+  <div class="dlg" id="advdlg" role="status" aria-live="polite" tabindex="0"><span id="advtx"></span><span class="more" id="advmore" hidden>▼</span></div>
+  <div class="amenu" id="advmenu"></div>
+  <div id="advcodebox" hidden>
+   <div class="alert" id="advcode" role="log" aria-label="Code screen"></div>
+   <div class="row" id="advcrow"><input id="advin" aria-label="Type code" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="type code, e.g. nmap 10.10.11.10"><button class="go" id="advrun">RUN</button></div>
+  </div>
+  <div class="pad" id="advpad">
+   <div class="dpad"><button class="u" data-d="up" aria-label="Up">▲</button><button class="l" data-d="left" aria-label="Left">◀</button><span class="c"></span><button class="r" data-d="right" aria-label="Right">▶</button><button class="d" data-d="down" aria-label="Down">▼</button></div>
+   <div class="ab"><button id="advb" aria-label="B button">B</button><button id="adva" aria-label="A button">A</button></div>
+  </div>
+ </div>
+ <div class="card"><h2>YOUR TOOL-MONS</h2><div class="mut" id="advbag" style="margin-bottom:8px"></div><div class="party" id="advparty"></div><div class="mut" style="margin-top:8px">Tool-mons are hacking tools. Their moves are real commands (code). Heal them at the Patch Center (+).</div></div>
+ <div class="card"><h2>PARTS BAG: PORTDEX <span id="advdexn"></span></h2><div class="dex" id="advdex"></div></div>
+ <div class="card legend"><h2>HOW TO PLAY</h2>🚶 Walk with arrow keys / WASD, hold the D-pad, or tap the map next to your character. <b>A</b> (Enter/Space) talks and advances text, <b>B</b> (Esc) goes back.<br>🌿 Tall grass hides <b>wild problems</b> (attacks and alerts). Send out FIREWALRUS and pick the right defensive code.<br>🏢 Buildings are <b>problem systems</b> (the hacked machines). Battle them: your tool-mons' moves run commands that reveal <b>parts</b> (ports, IPs, passwords, flags). Throw the right part at the system's weakness to deal damage.<br>➕ The Patch Center heals your team. 🔴 Capsules on the map hold PATCH POTIONS to heal in battle.</div>
+</section>
+<section id="learn">
+ <div class="card" id="dash"></div>
+ <div class="card"><h2>RECOMMENDED FOR YOU</h2><div id="nextup"></div></div>
+ <div class="grid" id="mods"></div>
+ <div id="lesson" style="margin-top:12px"></div>
+ <div class="card"><h2>FLASHCARDS</h2><div id="fc"></div></div>
+</section>
+<section id="tutor" hidden>
+ <div class="card intro"><h2>AI TUTOR</h2>Ask anything about staying safe online, in English or Filipino. Paste a suspicious message to scam-check it. Ask how a command like nmap works, or what to study next. It uses a local AI on your device when one is found, otherwise its built-in notes, so it keeps working without internet.</div>
+ <div class="card" id="chat" role="log" aria-live="polite" aria-label="Tutor chat"></div>
+ <div class="row"><textarea id="tin" class="ti" rows="2" aria-label="Ask the tutor" enterkeyhint="send" autocomplete="off" placeholder="Ask a question or a command, e.g. nmap -sV 127.0.0.1" maxlength="2000"></textarea><button class="go" id="tsend">ASK</button></div><div class="acts"><button class="try" id="tclear" type="button">🗑 Clear chat</button></div>
+ <div class="chips" id="tchips"></div>
+ <div class="card aist" id="aistat" role="status" aria-live="polite"></div>
+</section>
+<section id="lobby" hidden>
+ <div class="card intro"><h2>HOW IT WORKS</h2>No laptop, VM or VPN needed. Pick a machine, <b>spawn</b> it, explore its fake terminal, answer the guided <b>tasks</b>, then capture the <b>flag</b> to pwn it. New here? Start with <b>SchoolSrv</b>.</div>
+ <div class="grid" id="cards"></div>
+</section>
+
+<section id="lab" hidden>
+ <div class="card" id="mhead"></div>
+ <div class="stage" id="stage" aria-hidden="true"><i class="cloud c1"></i><i class="cloud c2"></i><i class="hill h1"></i><i class="hill h2"></i><span id="hero">🏃</span><span class="flag">🚩</span><div class="ground"></div></div>
+ <div class="card"><h2>TASKS</h2><ul id="olist"></ul></div>
+ <div class="lip">WARP PIPE TERMINAL</div>
+ <div id="term" role="log" aria-live="polite" aria-label="Terminal output" tabindex="0"></div>
+ <div class="row"><input id="in" aria-label="Terminal command" enterkeyhint="go" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="type a command (try: help)"><button class="go" id="run">GO!</button></div>
+ <div class="tools"><button id="tabb" aria-label="Autocomplete">Tab &#8677;</button><button id="upb" aria-label="Previous command">&uarr; Prev</button><button id="clrb" aria-label="Clear screen">Clear</button></div>
+ <div class="chips" id="chips"></div>
+</section>
+
+<section id="def" hidden>
+ <div class="card intro"><h2>DEFENDER MODE (BLUE TEAM)</h2>You protect the school network. Alerts arrive one at a time. Choose the right response before the timer runs out. Some alerts are real attacks and some are normal activity. Wrong calls cost health. Survive every alert to win.</div>
+ <div class="grid" id="dmenu"></div>
+ <div id="darena"></div>
+</section>
+<section id="duel" hidden>
+ <div class="card intro"><h2>TOURNAMENT: YOU VS THE SYSTEM</h2>A 1v1 bracket against the system's AI. Each round the system attacks (pick the right DEFENSE in time), then you attack (it tries to block). At 0% health you lose. The system learns which attacks you struggle with and uses them more. Beat 3 opponents to become champion.</div>
+ <div class="card" id="bracket"></div>
+ <div id="arena"></div>
+</section>
+<section id="ranks" hidden>
+ <div class="card"><h2>YOUR RANK</h2><div id="rnk"></div></div>
+ <div class="card"><h2>LEADERBOARD</h2><div id="lb"></div><div class="mut" style="margin-top:8px">DEMO DATA: the other names are sample opponents, not real players. Only YOUR score is real (saved for your account on this device). A real class leaderboard needs a server.</div></div>
+ <div class="card"><h2>ACHIEVEMENTS <span class="mut" id="achn"></span></h2><div class="ach" id="ach"></div></div>
+</section>
+
+<footer>Everything here is simulated. No real systems are scanned or attacked. Only hack networks you own or have written permission to test. Progress is saved on this device.</footer>
+</div>
+<script>
+const T={
+port:'PORT: a numbered "door" on a computer. Each service listens on one: ssh=22, http=80, ftp=21, mysql=3306. Fewer open doors means a smaller attack surface.',
+ftp:'FTP: an old file-transfer service that sends data AND passwords as plain text. Anyone on the network can read them. Use SFTP or FTPS instead.',
+ssh:'SSH: encrypted remote login. Great, but only if passwords are strong or you use keys.',
+bruteforce:'BRUTE FORCE: trying many passwords until one works. Logs show it as many "Failed password" lines in a row from the same IP.',
+password:'PASSWORD: weak ones (admin123, password, 123456) are guessed in seconds. Use long, unique passphrases plus 2-factor login.',
+log:'LOG: a diary your server keeps of events. Reading logs is the first skill of a defender.',
+robots:'ROBOTS.TXT: a public file telling search engines which folders to skip. It also tells everyone where the interesting folders are. Never hide secrets with it.',
+backup:'BACKUP: a copy of data or code. Old backups left on a web server are a classic leak. Keep them offline or locked down.',
+flag:'FLAG: a secret text like CQ{...} hidden on a machine as proof you got in. Submit it with: flag CQ{...}',
+base64:'BASE64: a way to write data as plain letters. It is NOT encryption; anyone can decode it with: decode <text>',
+sqli:'SQL INJECTION: typing database commands into a form so the site runs them. Fix: prepared statements and input validation.',
+phishing:'PHISHING: a fake email or site that tricks you into giving a password. Check the sender and never click urgent links.'};
+const MS=[
+{id:'school',lv:1,req:0,name:'SchoolSrv',os:'🐧',diff:'Easy',ip:'10.10.11.10',host:'school-srv',max:500,start:'/home/analyst',bad:'10.0.0.66',
+ blurb:'The school server was breached and student grades were stolen. Follow the logs.',
+ nmap:`PORT      STATE  SERVICE
+21/tcp    open   ftp
+22/tcp    open   ssh
+80/tcp    open   http
+3306/tcp  open   mysql`,
+ fs:{'/':['home','var','etc','srv'],'/home':['analyst','admin'],'/home/analyst':['README.txt'],'/home/admin':['notes.txt','todo.txt'],'/var':['log'],'/var/log':['auth.log','access.log'],'/etc':['motd'],'/srv':['student_grades.db']},
+ files:{
+'/home/analyst/README.txt':`MISSION BRIEFING
+The school's server (10.10.11.10) was breached last night and student grades may be stolen.
+You are the security analyst. Answer the 4 tasks, then capture the flag.
+Type "status" to see them, "hint" if stuck, "learn" for concept cards.`,
+'/home/admin/notes.txt':`Reminders
+- renew domain name
+- admin password is admin123 (easy to remember!)
+- ask IT about the firewall`,
+'/home/admin/todo.txt':`- disable old services
+- update server software
+- back up grades database`,
+'/var/log/auth.log':`Oct 08 21:58:44 sshd[311]: Accepted password for teacher1 from 192.168.1.25
+Oct 08 22:14:01 sshd[402]: Failed password for admin from 10.0.0.66
+Oct 08 22:14:03 sshd[402]: Failed password for admin from 10.0.0.66
+Oct 08 22:14:04 sshd[402]: Failed password for admin from 10.0.0.66
+Oct 08 22:14:06 sshd[402]: Failed password for root from 10.0.0.66
+Oct 08 22:14:08 sshd[402]: Failed password for admin from 10.0.0.66
+Oct 08 22:14:09 sshd[402]: Accepted password for admin from 10.0.0.66
+Oct 08 22:16:40 vsftpd[517]: OK DOWNLOAD: Client "10.0.0.66", "/srv/student_grades.db"
+Oct 08 23:02:11 sshd[388]: Accepted password for teacher2 from 192.168.1.31`,
+'/var/log/access.log':`192.168.1.25 GET /index.html 200
+192.168.1.31 GET /grades.html 200
+192.168.1.25 GET /schedule.html 200`,
+'/etc/motd':`Welcome to school-srv (Ubuntu). Authorized use only.`,
+'/srv/student_grades.db':`-- student_grades.db (plain text export) --
+Reyes, Ana ........ 92
+Santos, Ben ....... 88
+Cruz, Carla ....... 95
+FLAG: CQ{plaintext_ftp_leaks}`},
+ tasks:[
+{t:'Find the insecure open port',q:'Q1: Which open port runs an unencrypted service that sends passwords as plain text?  -> answer 1 <port>',try:'nmap 10.10.11.10',a:['21','ftp'],
+ h:['Scan the server to see its open ports: nmap 10.10.11.10','Services: ssh=remote login (encrypted), http=website, mysql=database, ftp=file transfer.','FTP sends everything as plain text. Use: answer 1 21'],
+ l:'FTP (port 21) is unencrypted. Anyone sniffing the network can read the passwords. Fix: turn it off or switch to SFTP.'},
+{t:'Identify the attacker IP',q:'Q2: Which IP address kept guessing the admin password?  -> answer 2 <ip>',try:'grep Failed /var/log/auth.log',a:['10.0.0.66'],
+ h:['Servers record logins. Look inside /var/log.','Try: grep Failed /var/log/auth.log  (which address repeats?)','The repeated address starts with 10.0.0. Use: answer 2 10.0.0.66'],
+ l:'Five failed logins in seconds, then one success: a brute-force attack. Fix: lock accounts after a few failures and block the IP with a firewall.'},
+{t:'Find the weak password',q:'Q3: What weak password is the admin account using?  -> answer 3 <password>',try:'cat /home/admin/notes.txt',a:['admin123'],
+ h:['People leave notes lying around. Check the admin home folder.','Try: cat /home/admin/notes.txt','The password is written in that note. Use: answer 3 <password>'],
+ l:'admin123 is guessed in seconds, and writing passwords in files makes it worse. Fix: long unique passphrases, a password manager, and 2-factor login.'},
+{t:'Capture the flag',q:'Q4: The log shows what the attacker downloaded. Read that file and submit the flag.  -> flag CQ{...}',try:'cat /srv/student_grades.db',a:['cq{plaintext_ftp_leaks}'],
+ h:['The log says the attacker downloaded /srv/student_grades.db','Try: cat /srv/student_grades.db','Copy the CQ{...} text. Use: flag CQ{...}'],
+ l:'The flag is your proof you got in. In real life, the "flag" was the stolen student data.'}],
+ wu:`What happened: the attacker (10.0.0.66) brute-forced the admin SSH login, which used the weak password admin123, then downloaded the grades database through the unencrypted FTP service.
+
+How to prevent it:
+ 1. Disable FTP, use SFTP.
+ 2. Use strong unique passwords plus 2-factor login.
+ 3. Lock accounts after failed attempts and block repeat offenders (firewall / fail2ban).
+ 4. Close every port you do not need.`},
+{id:'library',lv:1,req:0,name:'LibraryBox',os:'🌐',diff:'Easy',ip:'10.10.11.20',host:'library-box',max:500,start:'/home/analyst',bad:'10.0.0.99',
+ blurb:'The town library website is leaking private data. Explore the web server.',
+ nmap:`PORT     STATE  SERVICE
+22/tcp   open   ssh
+80/tcp   open   http`,
+ fs:{'/':['home','var','etc'],'/home':['analyst','librarian'],'/home/analyst':['README.txt'],'/home/librarian':['notes.txt','user.txt'],'/var':['www'],'/var/www':['html','old-backup'],'/var/www/html':['index.html','robots.txt'],'/var/www/old-backup':['config.php.bak'],'/etc':['motd']},
+ files:{
+'/home/analyst/README.txt':`MISSION BRIEFING
+The town library website (10.10.11.20) is leaking private data.
+Find out how, then capture the flag.
+Type "status" for tasks. Tip: websites live in /var/www.`,
+'/var/www/html/index.html':`<h1>Welcome to the Town Library</h1>
+<p>Online catalog coming soon.</p>`,
+'/var/www/html/robots.txt':`User-agent: *
+Disallow: /old-backup/
+Disallow: /cgi-bin/`,
+'/var/www/old-backup/config.php.bak':`<?php
+$db_host='localhost';
+$db_user='librarian';
+$db_pass='lib2024!';
+?>`,
+'/home/librarian/notes.txt':`I use the same password for the database and my login. Easier that way!`,
+'/home/librarian/user.txt':`CQ{backups_belong_offline}`,
+'/etc/motd':`Welcome to library-box. Authorized use only.`},
+ tasks:[
+{t:'Count the open ports',q:'Q1: How many ports are open on this machine?  -> answer 1 <number>',try:'nmap 10.10.11.20',a:['2'],
+ h:['Scan the target: nmap 10.10.11.20','Count the lines marked "open".','Two lines say open (ssh and http). Use: answer 1 2'],
+ l:'Fewer open ports means a smaller attack surface. Only SSH (remote login) and HTTP (website) are exposed here.'},
+{t:'Find the hidden folder',q:'Q2: robots.txt lists a folder the owner wanted hidden from search engines. Its name?  -> answer 2 <folder>',try:'cat /var/www/html/robots.txt',a:['old-backup','/old-backup','/old-backup/'],
+ h:['Websites live in /var/www/html. Look for robots.txt.','Try: cat /var/www/html/robots.txt','Look at the Disallow lines. Use: answer 2 old-backup'],
+ l:'robots.txt is public, so it points attackers straight at what you wanted to hide. Use real access control instead.'},
+{t:'Dig up the password',q:'Q3: What database password is in the backup config file?  -> answer 3 <password>',try:'cat /var/www/old-backup/config.php.bak',a:['lib2024!'],
+ h:['Open the folder you just found: ls /var/www/old-backup','Try: cat /var/www/old-backup/config.php.bak','Find the line with $db_pass. Use: answer 3 <password>'],
+ l:'Old backups on a web server leak secrets. Keep backups offline or locked down, and never leave passwords in files.'},
+{t:'Capture the flag',q:'Q4: The librarian reuses that password for login. Read user.txt in their home folder.  -> flag CQ{...}',try:'cat /home/librarian/user.txt',a:['cq{backups_belong_offline}'],
+ h:["Check the librarian's home: ls /home/librarian",'Try: cat /home/librarian/user.txt','Copy the CQ{...} text. Use: flag CQ{...}'],
+ l:'Password reuse turns one leak into many. Use a unique password for every account.'}],
+ wu:`What happened: robots.txt revealed /old-backup/, whose config.php.bak held the database password. The librarian reused it for their login, giving access to private files.
+
+How to prevent it:
+ 1. Never rely on robots.txt to hide anything.
+ 2. Keep backups off the web server.
+ 3. Never store passwords in plain files.
+ 4. Use a unique password per account, plus 2-factor login.`},
+{id:'clinic',lv:2,req:1,name:'ClinicNet',os:'🏥',diff:'Medium',ip:'10.10.11.30',host:'clinic-net',max:500,start:'/home/analyst',bad:'185.220.101.5',
+ blurb:'Ransomware locked the clinic patient files. Trace the phishing email and decode the note.',
+ nmap:`PORT      STATE  SERVICE
+22/tcp    open   ssh
+80/tcp    open   http
+445/tcp   open   smb
+3389/tcp  open   rdp (Remote Desktop)`,
+ fs:{'/':['home','var','srv','etc'],'/home':['analyst'],'/home/analyst':['README.txt'],'/var':['log','mail'],'/var/log':['auth.log'],'/var/mail':['inbox.txt'],'/srv':['patients'],'/srv/patients':['records.csv','README_DECRYPT.txt'],'/etc':['motd']},
+ files:{
+'/home/analyst/README.txt':`MISSION BRIEFING
+ClinicNet's patient files were locked by ransomware. Staff say someone clicked a strange email.
+Trace it: scan the server, read the mail, check the logins, then read the ransom note.
+New skill: "decode <text>" turns Base64 text back into readable text.`,
+'/var/mail/inbox.txt':`From: it-support@cl1nic-net.com
+To: reception@clinicnet.org
+Subject: URGENT - password expires today!
+Click http://clinicnet-login.cl1nic-net.com to keep your account.
+
+From: dr.reyes@clinicnet.org
+To: reception@clinicnet.org
+Subject: Lunch order
+Usual place, 12:30?`,
+'/var/log/auth.log':`Oct 07 08:01:12 sshd: Accepted password for dr.reyes from 192.168.2.14
+Oct 07 09:33:40 rdp: Accepted password for reception from 192.168.2.20
+Oct 07 14:05:02 rdp: Accepted password for reception from 185.220.101.5
+Oct 07 14:09:17 smb: Mass rename *.docx -> *.locked by reception
+Oct 07 14:12:44 sshd: Accepted password for dr.reyes from 192.168.2.14`,
+'/srv/patients/records.csv':`[ENCRYPTED - 14,203 files locked]`,
+'/srv/patients/README_DECRYPT.txt':`YOUR FILES ARE LOCKED. Pay 2 BTC.
+Proof we are fair - here is a free hint:
+Q1F7dGhpbmtfYmVmb3JlX3lvdV9jbGlja30=`,
+'/etc/motd':`Welcome to clinic-net. Authorized use only.`},
+ tasks:[
+{t:'Spot the risky port',q:'Q1: Which open port is Remote Desktop (RDP), a favorite target for attackers?  -> answer 1 <port>',try:'nmap 10.10.11.30',a:['3389','rdp'],
+ h:['Scan the machine: nmap 10.10.11.30','Look for the service marked rdp (Remote Desktop).','It is the port next to rdp. Use: answer 1 3389'],
+ l:'RDP (3389) exposed to the internet is a top ransomware entry point. Fix: put it behind a VPN and require 2-factor login.'},
+{t:'Unmask the phishing email',q:'Q2: Which fake domain sent the phishing email?  -> answer 2 <domain>',try:'cat /var/mail/inbox.txt',a:['cl1nic-net.com'],
+ h:['Mail is stored in /var/mail.','Try: cat /var/mail/inbox.txt  (which sender looks fake?)','Look closely: "cl1nic" uses the number 1. Use: answer 2 cl1nic-net.com'],
+ l:'Lookalike domains (a 1 instead of an l) are a classic phishing sign. Always read the sender address carefully.'},
+{t:'Find the stolen login',q:'Q3: Which outside IP logged in with the receptionist account over RDP?  -> answer 3 <ip>',try:'grep reception /var/log/auth.log',a:['185.220.101.5'],
+ h:['Check the login log for the receptionist.','Try: grep reception /var/log/auth.log  (spot the unusual address)','Internal PCs start with 192.168. The odd one is the attacker. Use: answer 3 <ip>'],
+ l:'A login from an unfamiliar outside IP right after a phishing email means the password was stolen. Fix: reset it, enable 2FA, and restrict RDP.'},
+{t:'Decode the flag',q:'Q4: The ransom note hides the flag in Base64. Decode it and submit.  -> flag CQ{...}',try:'cat /srv/patients/README_DECRYPT.txt',a:['cq{think_before_you_click}'],
+ h:['The ransom note is in /srv/patients.','Try: cat /srv/patients/README_DECRYPT.txt  then  decode <the odd text>','The decoded text is the flag. Use: flag CQ{...}'],
+ l:'Base64 is an encoding, not encryption: anyone can decode it. Never use it to hide secrets.'}],
+ wu:`What happened: reception clicked a phishing email from cl1nic-net.com and gave away their password. The attacker (185.220.101.5) used it to log in over exposed RDP and ran ransomware.
+
+How to prevent it:
+ 1. Train staff to spot lookalike domains.
+ 2. Turn on 2-factor login.
+ 3. Never expose RDP to the internet; use a VPN.
+ 4. Keep offline backups so you never need to pay.`},
+{id:'bank',lv:3,req:3,name:'BankVault',os:'🏦',diff:'Hard',ip:'10.10.11.40',host:'bank-vault',max:500,start:'/home/analyst',bad:'10.0.0.77',
+ blurb:'A customer database was copied through the website. Long logs and double-encoded loot.',
+ nmap:`PORT      STATE  SERVICE
+22/tcp    open   ssh
+80/tcp    open   http
+443/tcp   open   https
+3306/tcp  open   mysql`,
+ fs:{'/':['home','var','tmp','etc'],'/home':['analyst'],'/home/analyst':['README.txt'],'/var':['log'],'/var/log':['apache','mysql'],'/var/log/apache':['access.log'],'/var/log/mysql':['query.log'],'/tmp':['loot.txt'],'/etc':['motd']},
+ files:{
+'/home/analyst/README.txt':`MISSION BRIEFING
+BankVault's customer database was copied. HARD mode: you get less help, and the loot is encoded twice.
+Tools you know: nmap, grep (not case-sensitive here), cat, decode.`,
+'/var/log/apache/access.log':`192.168.5.8 GET /index.php 200
+192.168.5.9 GET /accounts.php 200
+10.0.0.77 GET /login.php?user=admin' OR '1'='1 200
+10.0.0.77 GET /login.php?user=x' UNION SELECT * FROM customers-- 200
+192.168.5.8 GET /statement.php 200
+10.0.0.77 GET /backup/dump 403
+192.168.5.12 GET /help.php 200`,
+'/var/log/mysql/query.log':`10:02:11 user=web  SELECT balance FROM accounts WHERE id=12
+10:07:41 user=web  SELECT * FROM users WHERE name='admin' OR '1'='1'
+10:07:55 user=web  SELECT name FROM users WHERE name='x' UNION SELECT card_no FROM customers
+10:08:20 user=web  SELECT balance FROM accounts WHERE id=15`,
+'/tmp/loot.txt':`Exfil complete. Payload:
+UTFGN2MzRnNYMmx1YW1WamRHbHZibDlwYzE5d2NtVjJaVzUwWVdKc1pYMD0=`,
+'/etc/motd':`Welcome to bank-vault. Authorized use only.`},
+ tasks:[
+{t:'Find the exposed database',q:'Q1: Which open port is the database that should never face the internet?  -> answer 1 <port>',try:'nmap 10.10.11.40',a:['3306','mysql'],
+ h:['Scan the machine first.','Databases like MySQL have a well-known port.','It is the port marked mysql. Use: answer 1 3306'],
+ l:'A database should only talk to the web server, never the whole internet. Fix: firewall rule or bind it to localhost.'},
+{t:'Find the injected page',q:'Q2: Which web page was hit with a SQL injection?  -> answer 2 <page>',try:'grep OR /var/log/apache/access.log',a:['login.php','/login.php'],
+ h:['Web requests are logged by Apache in /var/log/apache.','Injection attacks contain text like OR and UNION. Try grep with those words.','The requests with \' OR \'1\'=\'1 all hit one page. Use: answer 2 <page>'],
+ l:'/login.php let user input run as SQL. Fix: prepared statements (parameterized queries) and input validation.'},
+{t:'Name the stolen table',q:'Q3: Which database table did the attacker steal with a UNION query?  -> answer 3 <table>',try:'grep union /var/log/mysql/query.log',a:['customers'],
+ h:['The database keeps its own log in /var/log/mysql.','Try: grep union /var/log/mysql/query.log','Read the table name after FROM. Use: answer 3 <table>'],
+ l:'UNION glues stolen data onto a normal answer. Giving the web app a low-privilege database account limits the damage.'},
+{t:'Decode the loot',q:'Q4: The attacker left loot in /tmp. It is Base64 encoded TWICE. Decode it and submit the flag.  -> flag CQ{...}',try:'cat /tmp/loot.txt',a:['cq{sql_injection_is_preventable}'],
+ h:['Attackers often leave stolen data in /tmp. Try: ls /tmp','Try: cat /tmp/loot.txt  then  decode <text>. The result still looks encoded.','Decode the result a second time. Use: flag CQ{...}'],
+ l:'Encoding is not encryption. Encrypt sensitive data and watch for large outbound transfers.'}],
+ wu:`What happened: the attacker (10.0.0.77) used SQL injection on /login.php to bypass the login, then a UNION query to read the customers table, and left the loot encoded in /tmp.
+
+How to prevent it:
+ 1. Use prepared statements and validate input.
+ 2. Give the web app a database account with minimal rights.
+ 3. Keep the database off the internet.
+ 4. Encrypt sensitive data and monitor logs for injection patterns.`}];
+const RK=[['Noob',0],['Script Kiddie',150],['Hacker',600],['Pro Hacker',1500],['Elite',2800]];
+const BOTS=[['NullByte',2900],['PacketPanda',2100],['ZeroCool_PH',1500],['SudoSam',900],['LogLlama',500],['PingPong',220],['n00bie',70]];
+const $=id=>document.getElementById(id),term=$('term'),inp=$('in');
+let S={pts:{},d:{},guided:true,def:{},t:{r:0,c:0},tro:0,learn:{},miss:{},fc:{},llm:{on:false,url:'http://127.0.0.1:11434',model:'llama3.2'}},M=null,done=[],hints=[],cwd='/',FS={},F={},hist=[],hi=0,AC,mute=csLS.getItem('cs_mute')==='1',sid=0;
+try{Object.assign(S,JSON.parse(Auth.dataKey()&&csLS.getItem(Auth.dataKey())||'{}'))}catch(e){}
+const save=()=>{const k=Auth.dataKey();if(k)try{csLS.setItem(k,JSON.stringify(S))}catch(e){}};
+const total=()=>Object.values(S.pts).reduce((a,b)=>a+b,0);
+const rank=()=>RK.filter(x=>total()>=x[1]).pop();
+function out(t,c){const d=document.createElement('div');d.className='l '+(c||'');d.textContent=t;term.appendChild(d);term.scrollTop=term.scrollHeight}
+function beep(f,d,t){if(mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=t||'square';o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
+function coin(){beep(988,.08);setTimeout(()=>beep(1319,.25),80)}
+function pop(t){const e=document.createElement('div');e.className='pop';e.textContent=t;$('stage').appendChild(e);setTimeout(()=>e.remove(),1200)}
+$('mute').onclick=()=>{mute=!mute;try{csLS.setItem('cs_mute',mute?'1':'0')}catch(e){}$('mute').innerHTML=pxIcon(mute?'mute':'sound');$('mute').setAttribute('aria-pressed',String(mute))};if(mute){$('mute').innerHTML=pxIcon('mute');$('mute').setAttribute('aria-pressed','true')}
+const GRP=t=>['lobby','lab'].includes(t)?'tester':['def','duel'].includes(t)?'play':t;
+function showTab(t){if(t!=='def')stopDef();if(t!=='duel')stopDuel();['home','adv','learn','tutor','lobby','lab','def','duel','ranks'].forEach(k=>{$(k).hidden=k!==t});$('subT').hidden=GRP(t)!=='tester';$('subP').hidden=GRP(t)!=='play';document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.g?b.dataset.g===GRP(t):b.dataset.t===t)));if(t==='home')renderHome();if(t==='adv'&&typeof advIntro==='function')advIntro()}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{if(b.dataset.t==='lab'&&!M)return spawn(0);showTab(b.dataset.t);render()});
+const pwned=m=>(S.d[m.id]||[]).filter(Boolean).length===4,pc=()=>MS.filter(pwned).length;
+function renderLobby(){const c=$('cards');c.innerHTML='';MS.forEach((m,i)=>{const n=(S.d[m.id]||[]).filter(Boolean).length,lk=pc()<m.req,e=document.createElement('div');e.className='mc'+(lk?' lock':'');
+ e.innerHTML=`<div class="mh"><span class="os">${lk?'🔒':m.os}</span><div><b>${m.name}</b><div class="mut">LEVEL ${m.lv} · ${m.ip}</div></div><span class="badge ${m.diff.toLowerCase()}">${m.diff}</span></div><p style="margin:0;font-size:14px">${m.blurb}</p>`;
+ const f=document.createElement('div');f.className='mf';const s=document.createElement('span');s.textContent=lk?`Pwn ${m.req-pc()} more machine(s) to unlock`:`🪙 ${S.pts[m.id]||0}/${m.max} · ${n}/4 tasks`;f.append(s);
+ if(!lk){const b=document.createElement('button');b.className='go';b.textContent=n===4?'REVIEW':n?'RESUME':'SPAWN';b.onclick=()=>spawn(i);f.append(b)}e.append(f);c.append(e)})}
+function renderRanks(){const t=total(),r=rank(),nx=RK.find(x=>x[1]>t);$('rnk').textContent=`${r[0]}: ${t} coins · 🏆 x${S.tro||0}`+(nx?`. Next rank, ${nx[0]}, needs ${nx[1]-t} more coins.`:'. You reached the top rank!');
+ const lb=$('lb');lb.innerHTML='';BOTS.concat([['YOU',t]]).sort((a,b)=>b[1]-a[1]).forEach((p,i)=>{const e=document.createElement('div');e.className='rk'+(p[0]==='YOU'?' me':'');const a=document.createElement('span');a.textContent=(['🥇','🥈','🥉'][i]||'#'+(i+1))+' '+p[0];const b=document.createElement('span');b.textContent='🪙 '+p[1];e.append(a,b);lb.append(e)});renderAch()}
+function renderLab(){$('mhead').innerHTML=`<div class="mh"><span class="os">${M.os}</span><div><b>${M.name}</b> <span class="badge ${M.diff.toLowerCase()}">${M.diff}</span><div class="mut">Target IP ${M.ip}</div></div><button id="mode" class="try"></button></div><div class="mut" id="mh" style="margin-top:6px"></div>`;
+ $('mode').textContent=S.guided?'🧭 GUIDED':'⚡ PRO';$('mh').textContent=S.guided?'Guided: hints are free and each task shows a suggested command. Tap the mode button to switch to Pro.':'Pro: hints cost coins and you get +50 for finishing with no hints. Tap the mode button for Guided.';
+ $('mode').onclick=()=>{S.guided=!S.guided;save();renderLab()};
+ const u=$('olist');u.innerHTML='';M.tasks.forEach((o,i)=>{const li=document.createElement('li');li.className=done[i]?'done':'';const q=document.createElement('span');q.className='qb';q.textContent=done[i]?'✓':'?';const x=document.createElement('div');x.className='tx';const a=document.createElement('div');a.className='tt';a.textContent=o.t;const b=document.createElement('div');b.className='tq';b.textContent=o.q;x.append(a,b);
+  if(S.guided&&!done[i]){const k=document.createElement('button');k.className='try';k.textContent='▶ '+o.try;k.onclick=()=>run(o.try);x.append(k)}li.append(q,x);u.append(li)});
+ $('hero').style.left=(4+done.filter(Boolean).length*21)+'%'}
+function render(){const r=rank();$('xp').textContent=String(total()).padStart(4,'0');$('rank').textContent=r[0];renderLobby();renderRanks();if(M)renderLab();renderDef();renderDuel();renderLearn()}
+function buildChips(){const c=$('chips');c.innerHTML='';['help','status','ls','cat README.txt','nmap '+M.ip,'hint','learn'].forEach(x=>{const b=document.createElement('button');b.textContent=x;b.onclick=()=>run(x);c.appendChild(b)})}
+function spawn(i){M=MS[i];FS=M.fs;F=M.files;cwd=M.start;done=[0,1,2,3].map(k=>!!(S.d[M.id]||[])[k]);hints=[0,0,0,0];hist=[];hi=0;S.pts[M.id]=S.pts[M.id]||0;const my=++sid;term.innerHTML='';$('stage').classList.toggle('win',done.every(Boolean));
+ showTab('lab');buildChips();render();
+ const L=[[`Spawning ${M.name} ...`,'info'],['[ok] network up   [ok] services started','dim'],[`Target IP: ${M.ip}    Your IP: 10.10.14.5`,'ok'],['No VPN or VM needed. Everything runs in this page.','dim'],['Start here: tap a ▶ button above, or type  cat README.txt','info']];
+ L.forEach((l,k)=>setTimeout(()=>{if(my===sid)out(l[0],l[1])},k*350));
+ if(done.every(Boolean))setTimeout(()=>{if(my===sid)out('You already pwned this machine. Write-up:\n'+M.wu,'ok')},L.length*350)}
+function resolve(p){const parts=p.startsWith('/')?[]:cwd.split('/').filter(Boolean);for(const s of p.split('/')){if(!s||s==='.')continue;if(s==='..')parts.pop();else parts.push(s)}return '/'+parts.join('/')}
+const C={
+help(){out(`Commands:
+  ls [dir]            list files        cd <dir>          change folder
+  pwd                 where am I        cat <file>        read a file
+  grep <word> <file>  search in a file  nmap <ip>         scan open ports
+  ping <ip>           test a host       whoami            who are you
+  status              show tasks        hint              get a hint
+  answer <n> <value>  submit an answer  flag CQ{...}      submit the flag
+  learn [term]        concept cards     decode <text>     decode Base64
+  clear               clear screen
+Tip: Tab autocompletes, Up/Down shows history. Stuck? Tap a ▶ button in TASKS.`,'info')},
+ls(a){const p=resolve(a[0]||'.');if(FS[p])out(FS[p].map(e=>FS[(p==='/'?'':p)+'/'+e]?e+'/':e).join('   '));else if(F[p])out(p.split('/').pop());else out(`ls: cannot access '${a[0]}': No such file or directory`,'err')},
+cd(a){const p=resolve(a[0]||M.start);if(FS[p])cwd=p;else out(`cd: ${a[0]}: No such directory`,'err')},
+pwd(){out(cwd)},
+whoami(){out('analyst (security team, read-only access)')},
+cat(a){if(!a[0])return out('usage: cat <file>','err');const p=resolve(a[0]);if(F[p])out(F[p]);else if(FS[p])out(`cat: ${a[0]}: Is a directory`,'err');else out(`cat: ${a[0]}: No such file`,'err')},
+grep(a){if(a.length<2)return out('usage: grep <word> <file>','err');const p=resolve(a[1]);if(!F[p])return out(`grep: ${a[1]}: No such file`,'err');const r=F[p].split('\n').filter(l=>l.toLowerCase().includes(a[0].toLowerCase()));out(r.length?r.join('\n'):'(no matches)')},
+ping(a){const h=a[0];if(!h)return out('usage: ping <ip>','err');if(h===M.ip)out(`Reply from ${h}: time=1ms\nReply from ${h}: time=1ms\nHost is alive.`);else if(h===M.bad)out('Request timed out. (Attacker host is offline now.)','dim');else out(`ping: unknown host ${h}`,'err')},
+nmap(a){const h=a[0];if(!h)return out('usage: nmap <ip>','err');if(h===M.ip)out(`Starting scan of ${h} ...\n${M.nmap}\nScan done.`);else out(`Scan blocked. You may only scan the lab machine (${M.ip}).\nIn real life, scanning networks you don't own can be illegal.`,'info')},
+status(){M.tasks.forEach((o,i)=>out((done[i]?'[x] ':'[ ] ')+o.q,done[i]?'ok':''))},
+hint(){const i=done.indexOf(false);if(i<0)return out('All tasks complete!','ok');if(hints[i]<3)hints[i]++;out(`Hint ${hints[i]}/3 for Q${i+1}: ${M.tasks[i].h[hints[i]-1]}`+(S.guided?'':'  (-10 coins on this answer)'),'info')},
+learn(a){const k=(a[0]||'').toLowerCase();if(T[k])out(T[k],'info');else out('Concept cards: '+Object.keys(T).join(', ')+'\nUse: learn <term>','info')},
+decode(a){const x=a.join(' ');if(!x)return out('usage: decode <base64 text>','err');try{out(atob(x))}catch(e){out('That is not valid Base64.','err')}},
+clear(){term.innerHTML=''},
+flag(a){C.answer(['4',...a])},
+answer(a){const n=parseInt(a[0],10)-1,v=a.slice(1).join(' ').toLowerCase();if(!(n>=0&&n<4)||!v)return out('usage: answer <1-4> <value>   or   flag CQ{...}','err');if(done[n])return out('Already solved.','dim');const o=M.tasks[n];
+ if(o.a.includes(v)){const base=n===3?150:100,pts=S.guided?base:Math.max(base-10*hints[n],20);done[n]=true;S.pts[M.id]=(S.pts[M.id]||0)+pts;S.d[M.id]=done.slice();save();out(`Correct! +${pts} coins`,'ok');out(o.l,'info');coin();pop('+'+pts);render();if(done.every(Boolean))finish()}
+ else{out('Not quite. Keep investigating, or type hint.','err');beep(150,.25,'sawtooth')}}};
+function finish(){const bonus=!S.guided&&hints.every(h=>h===0)?50:0;if(bonus){S.pts[M.id]+=bonus;save()}[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.2),i*150));$('stage').classList.add('win');render();
+ out(`\n=== MACHINE PWNED: ${M.name} ===\n${M.wu}\n\nCoins on this machine: ${S.pts[M.id]}${bonus?' (includes +50 no-hint bonus)':''}\nRank: ${rank()[0]}. Pick your next machine in the Machines tab.`,'ok')}
+function run(line){if(!M)return;line=line.trim();out(`analyst@${M.host}:${cwd}$ ${line}`,'cmd');if(!line)return;hist.push(line);hi=hist.length;const[c,...a]=line.split(/\s+/);if(C[c]){PG.cmd(c,'run');C[c](a)}else out(`${c}: command not found. Type help.`,'err')}
+function complete(){const v=inp.value,parts=v.split(/\s+/),last=parts.pop();let pool;if(!parts.length)pool=Object.keys(C);else{const i=last.lastIndexOf('/'),dir=i>=0?resolve(last.slice(0,i+1)):cwd;pool=(FS[dir]||[]).map(e=>(i>=0?last.slice(0,i+1):'')+e)}
+ const m=pool.filter(x=>x.startsWith(last));if(m.length===1)inp.value=[...parts,m[0]].join(' ')+(parts.length&&FS[resolve(m[0])]?'/':' ');else if(m.length>1)out(m.join('   '),'dim')}
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'){run(inp.value);inp.value=''}else if(e.key==='Tab'){e.preventDefault();complete()}else if(e.key==='ArrowUp'){e.preventDefault();if(hi>0)inp.value=hist[--hi]}else if(e.key==='ArrowDown'){e.preventDefault();inp.value=hi<hist.length-1?hist[++hi]:(hi=hist.length,'')}});
+$('run').onclick=()=>{run(inp.value);inp.value='';inp.focus()};
+$('tabb').onclick=()=>{complete();inp.focus()};
+$('upb').onclick=()=>{if(hi>0)inp.value=hist[--hi];inp.focus()};
+$('clrb').onclick=()=>{C.clear();inp.focus()};
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+/* ===== DEFENDER MODE ===== */
+const AL=[
+['Failed password for admin from 10.0.0.66 (40 tries in 10 seconds)','block','Dozens of failed logins in seconds from one IP is brute force. Block the IP.'],
+['Login OK: teacher1 from 192.168.1.25 (usual school PC, 8:05 AM)','allow','Normal activity. Blocking it would be a false positive and lock out a teacher.'],
+[`Email: "URGENT! Your account will be deleted. Click http://sch00l-login.net to verify"`,'report','Urgency plus a lookalike link is phishing. Report and delete it, and never click.'],
+['Port scan: 10.0.0.77 probed 1,000 ports in 3 seconds','block','A fast scan is an attacker mapping your doors. Block the source.'],
+['FTP (port 21) is open to the internet and sends passwords as plain text','close','Plain-text services leak passwords. Close the port or switch to SFTP.'],
+['Audit: the admin password is admin123','reset','Weak passwords get guessed in seconds. Force a reset to a strong passphrase.'],
+['Critical security patch released for the web server (exploited in the wild)','patch','Unpatched software is an open door. Apply the patch quickly.'],
+['Student printed 3 pages from a library PC','allow','Ordinary activity. Not every alert is an attack; good defenders ignore noise.'],
+['Login OK: admin from 10.0.0.66 right after 40 failed tries','reset','The password was probably guessed. Force a reset, then block the IP.'],
+['Email from principal@school.edu (internal): please approve the leave form','allow','Expected internal mail from a known sender. Safe to allow.'],
+[`Web request: GET /login.php?user=admin' OR '1'='1`,'block','That is a SQL injection attempt. Block the source and validate input.'],
+[`Old test account 'demo' still has admin rights`,'reset','Unused powerful accounts are risky. Reset or disable them.']];
+const ACT=[['block','🚫','Block IP'],['reset','🔒','Reset password'],['close','🚪','Close port'],['patch','🩹','Patch software'],['report','🗑️','Report email'],['allow','✅','Allow (safe)']];
+const LV=[['easy','Easy',8,14,20,150],['medium','Medium',10,10,20,250],['hard','Hard',12,7,25,400]];
+let G=null;
+function stopDef(){if(G){clearInterval(G.iv);G=null}}
+function renderDef(){if(G)return;const m=$('dmenu');m.innerHTML='';$('darena').innerHTML='';
+ LV.forEach((l,i)=>{const lk=i>0&&!(S.def[LV[i-1][0]]>0),e=el('div','mc'+(lk?' lock':''));
+  e.innerHTML=`<div class="mh"><span class="os">${lk?'🔒':'🛡️'}</span><div><b>Defend: ${l[1]}</b><div class="mut">${l[2]} alerts · ${l[3]}s each</div></div><span class="badge ${l[0]}">${l[1]}</span></div>`;
+  const f=el('div','mf'),s=el('span','',lk?'Win the previous level first':`Best: ${S.def[l[0]]||0}% health`);f.append(s);
+  if(!lk){const b=el('button','go','START');b.onclick=()=>startDef(i);f.append(b)}e.append(f);m.append(e)})}
+function startDef(i){const l=LV[i],q=[];while(q.length<l[2])q.push(...AL.slice().sort(()=>Math.random()-.5));G={l,q:q.slice(0,l[2]),n:0,hp:100,t:0,iv:null};$('dmenu').innerHTML='';defNext()}
+function defNext(){if(G.n>=G.q.length)return defEnd();G.t=G.l[3]*10;drawDef();clearInterval(G.iv);G.iv=setInterval(()=>{G.t--;const b=$('dtm');if(b)b.style.width=(G.t/(G.l[3]*10)*100)+'%';if(G.t<=0)defAct(null)},100)}
+function drawDef(){const a=G.q[G.n],r=$('darena');r.innerHTML='';const c=el('div','card');c.append(el('h2','',`ALERT ${G.n+1}/${G.q.length}   HEALTH ${G.hp}%`));
+ const hb=el('div','hpb'),hi_=el('i');hi_.style.width=G.hp+'%';hb.append(hi_);const tm=el('div','hpb tm'),ti=el('i');ti.id='dtm';ti.style.width='100%';tm.append(ti);
+ c.append(hb,el('div','alert',a[0]),tm);const g=el('div','acts');ACT.forEach(x=>{const b=el('button','try',x[1]+' '+x[2]);b.onclick=()=>defAct(x[0]);g.append(b)});
+ c.append(g,el('div','mut','Triage fast: some alerts are real attacks, some are normal. Pick the right response.'));r.append(c)}
+function defAct(k){clearInterval(G.iv);const a=G.q[G.n],ok=k===a[1];let dmg=0;if(!ok){dmg=G.l[4];G.hp=Math.max(0,G.hp-dmg)}
+ const r=$('darena');r.innerHTML='';const c=el('div','card');c.append(el('h2','',ok?'CORRECT':k===null?'TOO SLOW':'WRONG'),el('div','alert',a[0]),
+  el('div','',(ok?'✅ ':'❌ ')+a[2]+(ok?'':`  Correct response: ${ACT.find(x=>x[0]===a[1])[2]}. You lost ${dmg}% health.`)));
+ if(ok)coin();else beep(150,.25,'sawtooth');
+ const b=el('button','go',G.hp<=0?'SEE RESULT':'NEXT');b.onclick=()=>{G.n++;if(G.hp<=0)defEnd();else defNext()};c.append(b);r.append(c)}
+function defEnd(){clearInterval(G.iv);const l=G.l,win=G.hp>0,k=l[0];
+ if(win){S.def[k]=Math.max(S.def[k]||0,G.hp);S.pts['def-'+k]=Math.max(S.pts['def-'+k]||0,Math.round(S.def[k]/100*l[5]));save();coin()}
+ const r=$('darena');r.innerHTML='';const c=el('div','card');c.append(el('h2','',win?'SYSTEM DEFENDED!':'SYSTEM BREACHED'),
+  el('div','',win?`You finished with ${G.hp}% health. Coins from this level: ${S.pts['def-'+k]} (your best run counts).`:'Too many attacks got through. Read the lesson after each alert and try again.'));
+ const b=el('button','go','BACK');b.onclick=()=>{G=null;render()};c.append(b);r.append(c);render()}
+/* ===== TOURNAMENT: YOU VS THE SYSTEM ===== */
+const AT=[
+{id:'brute',n:'Brute Force',i:'🔨',d:'guesses passwords again and again',c:'mfa'},
+{id:'phish',n:'Phishing',i:'🎣',d:'tricks people with a fake email',c:'aware'},
+{id:'sqli',n:'SQL Injection',i:'💉',d:'sneaks database commands into a form',c:'valid'},
+{id:'mal',n:'Malware',i:'🦠',d:'runs a malicious program on a device',c:'av'},
+{id:'ddos',n:'DDoS',i:'🌊',d:'floods a site with fake traffic',c:'rate'}];
+const DF=[
+{id:'mfa',n:'Strong Password + 2FA',i:'🔐',d:'stops password guessing'},
+{id:'aware',n:'Email Filter + Training',i:'📧',d:'spots fake emails'},
+{id:'valid',n:'Input Validation',i:'🧼',d:'cleans what users type'},
+{id:'av',n:'Antivirus + Updates',i:'🛡️',d:'blocks and removes malware'},
+{id:'rate',n:'Rate Limit + CDN',i:'🚦',d:'absorbs traffic floods'}];
+const BT=[{n:'Byte',t:'Rookie bot',i:'🤖',q:.25,rw:100},{n:'Phantom',t:'Pro bot',i:'👻',q:.55,rw:200},{n:'THE SYSTEM',t:'Final boss',i:'👾',q:.8,rw:400}];
+const RN=['Quarterfinal','Semifinal','FINAL'];
+let D=null;
+function stopDuel(){if(D){clearInterval(D.iv);D=null}}
+function renderDuel(){if(D)return;const b=$('bracket');b.innerHTML='';$('arena').innerHTML='';
+ BT.forEach((o,i)=>{const e=el('div','rk'+(i===S.t.r?' me':''));e.append(el('span','',`${o.i} ${RN[i]}: ${o.n} (${o.t})`),el('span','',i<S.t.r?'✅':i===S.t.r?'▶ NEXT':'🔒'));b.append(e)});
+ const g=el('button','go',S.t.r?'NEXT MATCH':'START TOURNAMENT');g.style.marginTop='12px';g.onclick=startMatch;b.append(g,el('div','mut',`Trophies: ${S.tro||0}. Lose a match and the bracket resets.`))}
+function startMatch(){D={bot:BT[S.t.r],hp:100,eh:100,rd:1,iv:null,lock:false,atk:null,t:0};$('bracket').innerHTML='';duelRound()}
+function bars(){const w=el('div','card');w.append(el('h2','',`${RN[S.t.r]}  ROUND ${Math.min(D.rd,8)}/8`));
+ [['YOU 🧑‍💻',D.hp],[D.bot.n+' '+D.bot.i,D.eh]].forEach(p=>{w.append(el('div','mut',`${p[0]}  ${p[1]}%`));const h=el('div','hpb'),i=el('i');i.style.width=p[1]+'%';h.append(i);w.append(h)});return w}
+function duelMsg(m,next){const r=$('arena');r.innerHTML='';r.append(bars());const c=el('div','card');c.append(el('div','alert',m));const b=el('button','go','CONTINUE ▶');b.onclick=()=>{D.lock=false;next()};c.append(b);r.append(c)}
+function duelRound(){if(D.hp<=0||D.eh<=0||D.rd>8)return duelEnd();D.atk=pickAtk();D.t=100;const r=$('arena');r.innerHTML='';r.append(bars());
+ const c=el('div','card');c.append(el('h2','',`INCOMING: ${D.atk.i} ${D.atk.n}`));if(S.guided)c.append(el('div','mut',`It ${D.atk.d}.`));
+ const tm=el('div','hpb tm'),ti=el('i');ti.style.width='100%';tm.append(ti);c.append(tm,el('div','','Choose your DEFENSE (10 seconds):'));
+ const g=el('div','acts');DF.forEach(x=>{const b=el('button','try',x.i+' '+x.n+(S.guided?'  ('+x.d+')':''));b.onclick=()=>duelDef(x.id);g.append(b)});c.append(g);r.append(c);
+ clearInterval(D.iv);D.iv=setInterval(()=>{D.t--;ti.style.width=D.t+'%';if(D.t<=0)duelDef(null)},100)}
+function duelDef(id){if(!D||D.lock)return;D.lock=true;clearInterval(D.iv);const a=D.atk,ok=id===a.c,df=DF.find(x=>x.id===a.c);let m;
+ if(ok){S.miss[a.id]=Math.max(0,(S.miss[a.id]||0)-.5);D.eh=Math.max(0,D.eh-10);m=`🛡️ BLOCKED! ${df.i} ${df.n} ${df.d}. Counter-hit: enemy -10%.`;coin()}
+ else{S.miss[a.id]=(S.miss[a.id]||0)+1;D.hp=Math.max(0,D.hp-25);m=`💥 ${id===null?'TOO SLOW! ':''}HIT! ${a.n} (${a.d}) is countered by ${df.i} ${df.n}. You lose 25%.`;beep(150,.25,'sawtooth')}
+ duelMsg(m,duelAtt)}
+function duelAtt(){if(D.hp<=0||D.eh<=0)return duelEnd();const r=$('arena');r.innerHTML='';r.append(bars());const c=el('div','card');c.append(el('h2','','YOUR TURN: ATTACK!'));
+ if(S.guided)c.append(el('div','mut','The system will try to block. Mix up your attacks.'));const g=el('div','acts');
+ AT.forEach(x=>{const b=el('button','try',x.i+' '+x.n+(S.guided?'  ('+x.d+')':''));b.onclick=()=>duelHit(x);g.append(b)});c.append(g);r.append(c)}
+function duelHit(x){if(D.lock)return;D.lock=true;const d=Math.random()<D.bot.q?DF.find(y=>y.id===x.c):DF[Math.floor(Math.random()*5)];let m;
+ if(d.id===x.c){m=`🛡️ ${D.bot.n} blocked ${x.i} ${x.n} with ${d.i} ${d.n}. No damage.`;beep(300,.15)}
+ else{D.eh=Math.max(0,D.eh-25);m=`🎯 DIRECT HIT! ${D.bot.n} used ${d.i} ${d.n}, but it cannot stop ${x.n}. Enemy -25%.`;coin()}
+ D.rd++;duelMsg(m,duelRound)}
+function duelEnd(){clearInterval(D.iv);const win=D.hp>0&&D.hp>=D.eh,bot=D.bot;let t,msg;
+ if(win){S.t.c=(S.t.c||0)+bot.rw;S.t.r++;S.pts.duel=Math.max(S.pts.duel||0,S.t.c);
+  if(S.t.r>=3){S.tro=(S.tro||0)+1;t='🏆 CHAMPION!';msg=`You beat THE SYSTEM! Trophy earned. Tournament coins: ${S.t.c}.`;S.t={r:0,c:0};[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.2),i*150))}
+  else{t='MATCH WON!';msg=`+${bot.rw} coins. Next: ${RN[S.t.r]} vs ${BT[S.t.r].n}.`;coin()}}
+ else{t='DEFEATED';msg=`${bot.n} won this time and the bracket resets. Read the BLOCKED and HIT messages: each one teaches the right counter.`;S.t={r:0,c:0}}
+ save();const r=$('arena');r.innerHTML='';const c=el('div','card');c.append(el('h2','',t),el('div','',msg));const b=el('button','go','OK');b.onclick=()=>{D=null;render()};c.append(b);r.append(c);render()}
+/* ===== LEARNING MATERIALS ===== */
+const MODS=[
+{id:'basics',t:'Cybersecurity Basics',i:'🧭',go:'lobby',
+ p:['Cybersecurity means protecting devices, accounts and data from people who should not have access.',
+ 'The CIA triad: Confidentiality (only the right people see data), Integrity (it is not secretly changed), Availability (it works when you need it).',
+ 'A vulnerability is a weakness, a threat is someone or something that can exploit it, and risk is the chance and the damage of that happening.',
+ 'Most attacks target people, not machines: weak passwords, fake messages and old software cause most breaches.',
+ 'Good defense is layers: strong passwords, updates, backups and careful habits together, so one failure is not a disaster.'],
+ tip:'Start with the habits that stop the most attacks: unique passwords, 2FA, updates, and thinking before you click.',
+ q:[{q:'Which part of the CIA triad means only the right people can see data?',o:['Confidentiality','Integrity','Availability'],a:0,w:'Confidentiality keeps data private. Integrity means it is not changed, and availability means it is accessible.'},
+    {q:'What is a vulnerability?',o:['An attacker','A weakness that can be exploited','A strong password'],a:1,w:'A vulnerability is a weakness. The attacker is the threat that exploits it.'}]},
+{id:'pass',t:'Passwords and 2FA',i:'🔐',go:'lobby',
+ p:['Length beats complexity: a passphrase like "blue-carabao-dances-9" is stronger and easier to remember than "P@ssw0rd!".',
+ 'Use a different password for every account. If one site leaks, attackers try that password everywhere (credential stuffing).',
+ 'A password manager remembers everything, so you only memorize one strong master passphrase.',
+ 'Turn on 2-factor authentication (2FA). Even with your password, an attacker also needs your phone or app code. Never share an OTP with anyone.',
+ 'Passkeys replace passwords with a secure key on your device and are very hard to phish.'],
+ tip:'Start with your email and bank: make them long, unique and protected with 2FA.',
+ q:[{q:'Which password is strongest?',o:['P@ssw0rd!','blue-carabao-dances-9','admin123'],a:1,w:'Length and randomness win. Common patterns like P@ssw0rd! are guessed quickly.'},
+    {q:'Someone texts asking for the OTP "to verify your account". What do you do?',o:['Send it, they seem official','Never share it; it is a scam','Send it only if they know your name'],a:1,w:'OTPs are for you only. Real banks and apps never ask you to share them.'}]},
+{id:'phish',t:'Phishing and Scams',i:'🎣',go:'def',
+ p:['Phishing and smishing (SMS) trick you into giving passwords, OTPs or money by pretending to be a bank, GCash, a courier or your boss.',
+ 'Red flags: urgency ("your account will be blocked today"), prizes you never entered, odd sender addresses (cl1nic with a number 1), shortened links, and requests for an OTP or PIN.',
+ 'Check before you click: open the official app or type the website yourself instead of using the link in the message.',
+ 'Fake job offers, love scams and "send money and I will pay back double" are social engineering: they use emotion and pressure.',
+ 'If you already clicked: change the password, turn on 2FA, tell your bank, and report the message.'],
+ tip:'Pause for 10 seconds. Scammers need you to hurry.',
+ q:[{q:'A text says "Your account will be blocked in 1 hour! Click here". What is the biggest red flag?',o:['It mentions your bank','Urgency and a link','It was sent in the morning'],a:1,w:'Fake urgency pushes you to act without thinking. Go to the official app instead.'},
+    {q:'What is smishing?',o:['Phishing through SMS or text messages','A kind of firewall','Slow internet'],a:0,w:'Smishing is phishing sent by SMS.'}]},
+{id:'net',t:'Networks and Wi-Fi',i:'📡',go:'lobby',
+ p:['Every device on a network has an IP address, and services listen on numbered ports (web 80 and 443, SSH 22).',
+ 'HTTPS encrypts traffic between you and a website. The lock icon is good, but it does not prove the site is honest.',
+ 'Public Wi-Fi can be watched or faked. Avoid banking on it, or use a VPN or your mobile data.',
+ 'A firewall allows only the traffic you expect. Close ports and services you do not use.',
+ 'At home: change the router default password, use WPA2 or WPA3, and keep the router updated.'],
+ tip:'Fewer open ports means fewer ways in.',
+ q:[{q:'Which is safest for online banking?',o:['Free public Wi-Fi','Your mobile data or trusted home Wi-Fi','Any open network with a nice name'],a:1,w:'Public Wi-Fi can be spied on or faked.'},
+    {q:'What does a firewall do?',o:['Speeds up the internet','Allows only expected traffic and blocks the rest','Removes viruses'],a:1,w:'Firewalls filter traffic using rules.'}]},
+{id:'mal',t:'Malware and Backups',i:'🦠',go:'lobby',
+ p:['Malware is harmful software: viruses, trojans (look useful but are not), spyware, and ransomware that locks files for money.',
+ 'It arrives through fake downloads, cracked software, email attachments and unsafe USB drives.',
+ 'Keep your system and apps updated, since updates fix holes attackers use, and use a trusted antivirus.',
+ 'Follow the 3-2-1 backup rule: 3 copies, on 2 different types of storage, with 1 kept offline or away. Then ransomware cannot hurt you much.',
+ 'Only install apps from official stores and check what permissions they ask for.'],
+ tip:'A good backup turns a disaster into an annoyance.',
+ q:[{q:'What is ransomware?',o:['Malware that locks your files and demands payment','A fast Wi-Fi tool','A password manager'],a:0,w:'Ransomware locks files and demands payment. Offline backups are the best defense.'},
+    {q:'What does the 3-2-1 backup rule mean?',o:['3 passwords, 2 devices, 1 account','3 copies, 2 storage types, 1 kept offline or away','3 antivirus, 2 firewalls, 1 VPN'],a:1,w:'Three copies on two kinds of storage, one stored away from the others.'}]},
+{id:'web',t:'Web Attacks and Crypto',i:'💉',go:'lobby',
+ p:['SQL injection: an attacker types database commands into a form and the site runs them. Fix it with prepared statements and input validation.',
+ 'XSS (cross-site scripting): a malicious script gets placed in a web page and runs in other visitors browsers. Fix it by escaping output.',
+ 'Encoding (like Base64) is not security. Hashing is one-way and is used to store passwords. Encryption is two-way and needs a key.',
+ 'Public-key cryptography uses a public key to lock and a private key to unlock. It is how HTTPS starts a secure connection.',
+ 'Least privilege: give every account and program only the access it needs, so one break-in cannot reach everything.'],
+ tip:'Never trust input from users, and never put secrets (passwords, keys) in code or public repos.',
+ q:[{q:'Which best protects against SQL injection?',o:['Prepared statements and input validation','A longer website name','Hiding the login page'],a:0,w:'Prepared statements keep user input from being run as database commands.'},
+    {q:'Which statement is true?',o:['Base64 is strong encryption','Hashing is one-way and is used to store passwords','Encryption cannot be reversed'],a:1,w:'Hashes cannot be reversed, which is why sites store them instead of passwords.'}]}];
+Object.assign(T,{
+mfa:'2FA / MFA: a second proof besides your password, like a code from an app. Even if your password leaks, attackers are stuck.',
+firewall:'FIREWALL: a filter that allows only expected network traffic and blocks the rest.',
+vpn:'VPN: an encrypted tunnel for your traffic. Useful on public Wi-Fi, but it does not make you invincible.',
+malware:'MALWARE: harmful software such as viruses, trojans, spyware and ransomware.',
+ransomware:'RANSOMWARE: malware that locks your files and demands payment. Offline backups are the best defense.',
+hash:'HASH: a one-way scramble of data. Sites store password hashes instead of passwords, and the same input always gives the same hash.',
+encryption:'ENCRYPTION: scrambling data so only someone with the key can read it. Unlike encoding, it needs a secret key.',
+xss:'XSS: attackers plant a script in a web page that runs in other visitors browsers. Fix it by escaping output.',
+smishing:'SMISHING: phishing sent by SMS or text message, such as fake delivery or bank alerts.',
+ddos:'DDOS: flooding a site with fake traffic so real users cannot get in. Rate limits and CDNs help.',
+otp:'OTP: a one-time code sent to you for login or payment. Never share it with anyone, ever.',
+passkey:'PASSKEY: a login method that uses a secure key on your device instead of a password. Very hard to phish.'});
+const WEAK={brute:'pass',phish:'phish',sqli:'web',mal:'mal',ddos:'net'};
+function pickAtk(){const w=AT.map(a=>1+3*(S.miss[a.id]||0)),s=w.reduce((x,y)=>x+y,0);let r=Math.random()*s;for(let i=0;i<AT.length;i++){r-=w[i];if(r<=0)return AT[i]}return AT[4]}
+function nextUp(){const w=Object.entries(S.miss).filter(x=>x[1]>=2).sort((a,b)=>b[1]-a[1])[0];
+ if(w&&WEAK[w[0]])return [MODS.find(x=>x.id===WEAK[w[0]]),`You keep missing ${AT.find(a=>a.id===w[0]).n} in the Duel, so review this next.`];
+ const u=MODS.find(m=>!S.learn[m.id]);if(u)return [u,'Next lesson on your path.'];
+ return [MODS.slice().sort((a,b)=>S.learn[a.id].s-S.learn[b.id].s)[0],'All lessons done! Retake the one with your lowest quiz score.']}
+function renderLearn(){renderDash();
+ const g=$('mods');g.innerHTML='';MODS.forEach(x=>{const e=el('div','mc'),d=S.learn[x.id];
+  e.innerHTML=`<div class="mh"><span class="os">${x.i}</span><div><b>${x.t}</b><div class="mut">${d?'Quiz '+d.s+'/2 done':'Not started'}</div></div></div>`;
+  const f=el('div','mf'),bb=el('button','go',d?'REVIEW':'START');bb.onclick=()=>openMod(x.id);f.append(el('span','',`🪙 ${S.pts['learn-'+x.id]||0}/40`),bb);e.append(f);g.append(e)})}
+function openMod(id){const m=MODS.find(x=>x.id===id),r=$('lesson');PG.open(id);r.innerHTML='';const c=el('div','card');c.append(el('h2','',`${m.i} ${m.t}`));m.p.forEach(t=>c.append(el('div','pt','• '+t)));c.append(el('div','alert','💡 '+m.tip));
+ const g=el('div','acts'),q=el('button','go','TAKE THE QUIZ'),pr=el('button','try',m.go==='def'?'🛡️ Practice in Defender mode':'🧪 Practice on a machine'),x=el('button','try','✕ Close');
+ q.onclick=()=>quiz(m,0,0);pr.onclick=()=>showTab(m.go);x.onclick=()=>{r.innerHTML=''};g.append(q,pr,x);c.append(g);r.append(c);r.scrollIntoView({block:'start'})}
+function quiz(m,i,s){const r=$('lesson');if(i===0)PG.qt++;PG.cur={id:m.id,quiz:true,q:m.q[i].q};r.innerHTML='';const c=el('div','card'),k=m.q[i];c.append(el('h2','',`QUIZ ${i+1}/${m.q.length}: ${m.t}`),el('div','',k.q));const g=el('div','acts');
+ k.o.forEach((o,j)=>{const b=el('button','try',o);b.onclick=()=>{const ok=j===k.a;PG.answer(m.id,ok);if(ok)coin();else beep(150,.25,'sawtooth');g.querySelectorAll('button').forEach(x=>x.disabled=true);
+  c.append(el('div','alert',(ok?'✅ Correct! ':'❌ Not quite. ')+k.w));const n=el('button','go',i+1<m.q.length?'NEXT':'FINISH');n.onclick=()=>{if(i+1<m.q.length)quiz(m,i+1,s+(ok?1:0));else quizEnd(m,s+(ok?1:0))};c.append(n)};g.append(b)});c.append(g);r.append(c)}
+function quizEnd(m,s){if(PG.qdone===PG.qt)return;PG.qdone=PG.qt;const p=S.learn[m.id];S.learn[m.id]={s:Math.max(s,p?p.s:0)};S.pts['learn-'+m.id]=Math.max(S.pts['learn-'+m.id]||0,s*20);PG.quizDone(m.id,s,m.q.length);save();render();
+ const r=$('lesson');r.innerHTML='';const c=el('div','card');c.append(el('h2','',s===m.q.length?'PERFECT!':'LESSON COMPLETE'),el('div','',`Score ${s}/${m.q.length}. Coins from this lesson: ${S.pts['learn-'+m.id]}/40.`));
+ const b=el('button','go','OK');b.onclick=()=>{r.innerHTML=''};c.append(b);r.append(c);if(s)coin()}
+/* flashcards (cards you miss come back more often) */
+let fcCur=null,fcFlip=false;
+function fcNext(){const ks=Object.keys(T).sort(()=>Math.random()-.5).sort((a,b)=>(S.fc[a]||0)-(S.fc[b]||0));fcCur=ks[0];fcFlip=false;drawFc()}
+function drawFc(){const b=$('fc');b.innerHTML='';
+ if(!fcCur){const s=el('button','go','START FLASHCARDS');s.onclick=fcNext;b.append(el('div','mut','Flip cards to review key terms. Cards you miss come back more often.'),s);return}
+ const c=el('button','fcard',fcFlip?T[fcCur]:fcCur.toUpperCase()+'   (tap to flip)');c.onclick=()=>{fcFlip=true;drawFc()};b.append(c);
+ if(fcFlip){const r=el('div','acts'),k=el('button','try','✅ I knew it'),a=el('button','try','🔁 Again');
+  k.onclick=()=>{S.fc[fcCur]=Math.min(5,(S.fc[fcCur]||0)+1);save();fcNext()};a.onclick=()=>{S.fc[fcCur]=Math.max(-3,(S.fc[fcCur]||0)-1);save();fcNext()};r.append(k,a);b.append(r)}}
+/* ===== AI TUTOR: works offline ===== */
+const STOP=new Set('the a an is are of to in on and or for with what how do does i you me my it this that can should ang ano paano ba ng sa mga na ko ako po ay yung para ito ni kay at'.split(' '));
+const tok=s=>s.toLowerCase().replace(/wi-?fi/g,'wi fi').replace(/[^a-z0-9 ]+/g,' ').split(/\s+/).filter(w=>w.length>1&&!STOP.has(w)).map(w=>w.length>3&&w.endsWith('s')?w.slice(0,-1):w);
+const KB=[];MODS.forEach(m=>m.p.forEach(t=>KB.push({t,m:m.id,tt:m.t})));Object.entries(T).forEach(([k,v])=>KB.push({t:v,m:null,tt:k}));
+const DFQ={};KB.forEach(d=>{d.w=tok(d.t+' '+d.tt);new Set(d.w).forEach(w=>{DFQ[w]=(DFQ[w]||0)+1})});
+function search(q){const qt=tok(q),N=KB.length;return KB.map(d=>{let s=0;qt.forEach(w=>{const tf=d.w.filter(x=>x===w).length;if(tf)s+=(1+Math.log(tf))*Math.log(1+N/(DFQ[w]||1))});return [s,d]}).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).slice(0,3)}
+const RF=[[/urgent|immediately|within \d+ ?(hour|hr|minute|min)|today only|last chance|\bagad\b|ngayon na|ma-?block|masususpinde|suspended|blocked/i,'Fake urgency or threats to rush you'],
+[/\botp\b|\bpin\b|password|\bcvv\b|verification code/i,'Asks for an OTP, PIN or password (real companies never do)'],
+[/https?:\/\/\S+|www\.\S+|bit\.ly|tinyurl|\.xyz|\.top\b|\.click/i,'Contains a link or an odd or shortened web address'],
+[/congratulations|you won|panalo|winner|\bclaim\b|prize|\blibre\b|free (gcash|load|cash)/i,'Promises a prize or free money'],
+[/\b(gcash|maya|bdo|bpi|unionbank|metrobank|landbank|paypal|lazada|shopee|lbc|dhl)\b/i,'Pretends to be a bank, e-wallet, shop or courier (check the official app instead)'],
+[/send (money|payment)|\bpadala\b|\bbayad\b|\bfee\b|deposit|reservation/i,'Asks you to send money or pay a fee first'],
+[/verify|confirm your|update your (account|details|info)|i-?verify|i-?update/i,'Asks you to verify or update account details'],
+[/work from home|part[- ]?time job|\bearn\b|kumita|sideline/i,'Too-good-to-be-true job or income offer']];
+function scamCheck(t){const hit=RF.filter(r=>r[0].test(t)).map(r=>r[1]),n=hit.length,lvl=n>=4?'HIGH RISK':n>=2?'SUSPICIOUS':n===1?'A BIT SUSPICIOUS':'NO OBVIOUS RED FLAGS';
+ return `🔎 Scam check: ${lvl}\n`+(n?hit.map(x=>'• '+x).join('\n')+'\n\nDo not click or reply. Open the official app or website yourself, and report the message.':'I found none of the common red flags, but scams can be clever. When unsure, contact the company using its official number.')+'\n\n(This is a learning aid that looks for common patterns. It is not a guarantee.)'}
+/* ===== PROGRESS TRACKING (stored in S.prog via save(); swap PG.d/save for a backend later) ===== */
+const PG={cur:null,qt:0,qdone:-1,
+ d(){S.prog=Object.assign({open:{},qa:{},att:{},cmds:{},days:[],recent:[]},S.prog||{});return S.prog},
+ day(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},
+ touch(type,id,label){const p=this.d(),t=this.day();if(!p.days.includes(t)){p.days.push(t);p.days=p.days.slice(-400)}
+  p.recent.unshift({type,id,label,ts:Date.now()});p.recent=p.recent.slice(0,40);save();if(!$('learn').hidden)renderDash()},
+ open(id){const p=this.d();p.open[id]=(p.open[id]||0)+1;this.cur={id,quiz:false};this.touch('open',id,'Opened lesson')},
+ answer(id,ok){const q=this.d().qa[id]=this.d().qa[id]||{r:0,w:0};ok?q.r++:q.w++;this.touch('answer',id,ok?'Correct quiz answer':'Missed quiz answer')},
+ quizDone(id,s,n){const p=this.d();(p.att[id]=p.att[id]||[]).push({s,n,ts:Date.now()});p.att[id]=p.att[id].slice(-20);if(this.cur)this.cur.quiz=false;this.touch('quiz',id,`Finished quiz ${s}/${n}`)},
+ cmd(c,src){const k=String(c||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20);if(!k)return;const p=this.d(),e=p.cmds[k]=p.cmds[k]||{run:0,ask:0};e[src==='ask'?'ask':'run']++;this.touch('cmd',k,(src==='ask'?'Asked about ':'Ran ')+k)},
+ reset(){S.prog=null;S.learn={};S.miss={};S.fc={};this.cur=null;this.d();save()}};
+const CMDTOPIC={nmap:'net',ping:'net',traceroute:'net',tracert:'net',netstat:'net',ss:'net',ssh:'net',curl:'web',decode:'web',base64:'web',grep:'basics',cat:'basics',ls:'basics',cd:'basics',pwd:'basics',whoami:'basics',chmod:'basics'};
+const LVL=i=>i<2?'Beginner':i<4?'Beginner+':'Intermediate';
+function topicOf(e){return e.type==='cmd'?CMDTOPIC[e.id]:e.id}
+function pgStats(){const p=PG.d(),done=MODS.filter(m=>S.learn[m.id]),tt=MS.length*4,tasks=MS.reduce((a,m)=>a+(S.d[m.id]||[]).filter(Boolean).length,0);let r=0,w=0;const top={};
+ MODS.forEach(m=>{const q=p.qa[m.id]||{r:0,w:0};r+=q.r;w+=q.w;top[m.id]={m,r:q.r,w:q.w,n:q.r+q.w,acc:q.r+q.w?q.r/(q.r+q.w):null,miss:0,atk:[]}});
+ Object.entries(S.miss||{}).forEach(([a,v])=>{const t=WEAK[a];if(t&&top[t]&&v>=1){top[t].miss+=Math.round(v);top[t].atk.push(AT.find(x=>x.id===a).n)}});
+ const ds=new Set(p.days),d=new Date();let st=0;if(!ds.has(PG.day(d)))d.setDate(d.getDate()-1);while(ds.has(PG.day(d))){st++;d.setDate(d.getDate()-1)}
+ const seen=new Set(),recent=[];p.recent.forEach(e=>{const t=topicOf(e);if(t&&!seen.has(t)&&MODS.find(m=>m.id===t)){seen.add(t);recent.push({m:MODS.find(m=>m.id===t),ts:e.ts,label:e.label})}});
+ const T_=Object.values(top),strong=T_.filter(t=>t.n>=2&&t.acc>=.8).sort((a,b)=>b.acc-a.acc||b.n-a.n),weak=T_.filter(t=>(t.n>=2&&t.acc<.6)||t.miss>=2).sort((a,b)=>(a.acc??1)-(b.acc??1)||b.miss-a.miss);
+ return {done,total:MODS.length,tasks,tt,overall:Math.round(100*(.6*done.length/MODS.length+.4*tasks/tt)),acc:r+w?Math.round(100*r/(r+w)):null,r,w,streak:st,recent:recent.slice(0,4),strong,weak,top,cmds:p.cmds,active:p.recent.length>0||done.length>0||tasks>0}}
+/* ===== RECOMMENDATIONS: scored from recorded activity only ===== */
+function recommend(){const s=pgStats(),p=PG.d();
+ if(!s.active)return MODS.slice(0,3).map((m,i)=>({m,lvl:LVL(i),general:true,why:'General recommendation for new learners: '+['start here to learn the core ideas.','strong passwords and 2FA stop most account takeovers.','most real attacks start with a fake message.'][i]}));
+ const out=[];MODS.forEach((m,i)=>{const t=s.top[m.id],dn=!!S.learn[m.id],why=[];let sc=0;
+  if(!dn){const prereq=MODS.slice(0,i).every(x=>S.learn[x.id]);sc+=40-i*4+(prereq?10:0);why.push(prereq?'It is the next lesson on your path.':'You have not completed it yet.')}
+  if(!dn&&p.open[m.id]){sc+=10;why.push(`You opened it ${p.open[m.id]}× but have not finished its quiz.`)}
+  if(t.n>=2&&t.acc<.6){sc+=60+(.6-t.acc)*100;why.push(`Your quiz accuracy here is ${Math.round(t.acc*100)}% (${t.r}/${t.n} correct).`)}
+  if(t.miss>=2){sc+=15*t.miss;why.push(`You missed ${t.atk.join(' and ')} in the Duel ${t.miss} times.`)}
+  const cm=Object.keys(p.cmds).filter(c=>CMDTOPIC[c]===m.id&&m.id!=='basics');if(cm.length&&!dn){sc+=20;why.push(`You have been using ${cm.join(', ')}; this lesson explains the ideas behind it.`)}
+  if(dn&&!why.length&&S.learn[m.id].s<m.q.length){sc+=8;why.push(`Your best quiz score is ${S.learn[m.id].s}/${m.q.length}. Retake it for full marks.`)}
+  const rq=p.recent.find(e=>e.type==='quiz'&&e.id===m.id);if(dn&&rq&&Date.now()-rq.ts<864e5&&!(t.n>=2&&t.acc<.6))sc-=30;
+  if(sc>0&&why.length)out.push({m,lvl:LVL(i),why:why.join(' '),sc})});
+ out.sort((a,b)=>b.sc-a.sc);
+ if(!out.length)return [{m:MODS[3],lvl:'Practice',why:'You completed every lesson with full marks. Try the Lab machines for hands-on practice.',lab:true}];
+ return out.slice(0,3)}
+const ago=ts=>{const m=Math.round((Date.now()-ts)/6e4);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' d ago'};
+function recCard(r,i){const c=el('div','rec');c.append(el('b','',`${i+1}. ${r.m.i} ${r.m.t} — ${r.lvl}`),el('div','mut',r.why));const b=el('button','go',r.lab?'OPEN THE LAB':'START LEARNING');b.onclick=()=>{if(r.lab){showTab('lobby');render()}else{showTab('learn');openMod(r.m.id)}};c.append(b);return c}
+function renderDash(){const d=$('dash');if(!d)return;const s=pgStats();d.innerHTML='';d.append(el('h2','','YOUR CYBERSECURITY PROGRESS'));
+ const g=el('div','pgrid'),tile=(v,l,sub)=>{const t=el('div','ptile');t.append(el('b','',v),el('span','',l),el('small','mut',sub));g.append(t)};
+ tile(s.overall+'%','Overall progress',`Lessons count 60%, lab tasks 40% (${s.tasks}/${s.tt} tasks)`);
+ tile(s.done.length+'/'+s.total,'Lessons completed','A lesson counts when you finish its quiz');
+ tile(s.acc==null?'—':s.acc+'%','Quiz accuracy',s.r+s.w?`${s.r} right, ${s.w} wrong`:'No quiz answers yet');
+ tile(s.streak+(s.streak===1?' day':' days'),'Learning streak',s.streak?'Keep it going tomorrow!':'Do a lesson or quiz today to start one');
+ const bar=el('div','pbar');bar.setAttribute('role','progressbar');bar.setAttribute('aria-valuenow',s.overall);bar.setAttribute('aria-valuemin','0');bar.setAttribute('aria-valuemax','100');const bi=el('i');bi.style.width=s.overall+'%';bar.append(bi);d.append(bar,g);
+ const sec=(h,items,empty)=>{const b=el('div','plist');b.append(el('b','',h));if(!items.length)b.append(el('span','mut',empty));else items.forEach(x=>b.append(el('span','tagl',x)));d.append(b)};
+ sec('Recently studied',s.recent.map(x=>`${x.m.i} ${x.m.t} · ${ago(x.ts)}`),'Nothing recorded yet.');
+ sec('Strongest skills',s.strong.map(t=>`${t.m.i} ${t.m.t} ${Math.round(t.acc*100)}%`),'Answer at least 2 quiz questions in a topic with 80%+ to show a strength.');
+ sec('Needs improvement',s.weak.map(t=>`${t.m.i} ${t.m.t}`+(t.acc!=null&&t.n>=2?` ${Math.round(t.acc*100)}%`:'')+(t.miss>=2?` · ${t.miss} Duel misses`:'')),'No weak topics recorded.');
+ const cm=Object.entries(s.cmds);sec('Commands explored',cm.map(([k,v])=>`${k} (${v.run} run${v.ask?', '+v.ask+' asked':''})`),'Run commands in the Lab or ask the Tutor about one.');
+ const rs=el('button','try','↺ Reset learning progress');rs.onclick=()=>{if(confirm('Reset your learning progress? This clears lessons, quiz results, commands explored, streak and Duel misses. Coins, lab machines and Adventure are kept.')){PG.reset();render()}};d.append(rs);
+ const n=$('nextup');n.innerHTML='';const rec=recommend();if(rec[0].general)n.append(el('div','mut','No activity recorded yet, so these are general picks for beginners.'));else n.append(el('div','mut','Based on your recorded lessons, quiz answers, Duel results and commands.'));rec.forEach((r,i)=>n.append(recCard(r,i)))}
+
+/* ===== COMMAND EXPLAINER DATA ===== */
+const SAFE='Only use this on systems you own or have written permission to test. Practise on 127.0.0.1 (your own computer), the CyberSentinel lab machines (10.10.11.x), or deliberately vulnerable labs.';
+const CMDX={
+nmap:{n:'Nmap',p:'Finds which hosts are up and which network ports and services are open on them.',h:'It sends small probe packets to a target and watches the replies. A reply that accepts the connection means a port is open, a reset means closed, and silence usually means a firewall is filtering it.',
+ w:'At the start of an authorized test or lab, to map what is running before looking deeper. Also to check your own computer for services you did not mean to expose.',cs:'In the Lab (and with NMAPPER in Adventure), run `nmap <machine IP>` first. The open ports it lists answer the first task on every machine.',
+ syn:'nmap [options] <target>',v:['-p','--top-ports','-oN','-oX','--script'],
+ f:{'-sV':'Detects the service and version running on each open port.','-sS':'SYN "half-open" scan. Fast and quieter; needs admin/root.','-sT':'Full TCP connect scan. Works without admin rights.','-sU':'Scans UDP ports. Much slower.','-sn':'Ping scan only: finds live hosts without scanning ports.','-sC':'Runs the default set of safe NSE scripts.','-p':'Chooses ports, e.g. -p 22,80 or -p 1-1000.','-p-':'Scans all 65,535 TCP ports.','-F':'Fast mode: only the 100 most common ports.','--top-ports':'Scans the N most common ports.','-A':'Aggressive: OS detection, versions, scripts and traceroute together. Noisy.','-O':'Guesses the operating system. Needs admin/root.','-Pn':'Skips the "is it up?" check and treats the host as online.','-T':'Timing template -T0 (slowest) to -T5 (fastest). -T4 is common in labs.','-v':'Verbose: shows more detail while scanning.','-oN':'Saves normal output to a file.','-oX':'Saves XML output to a file.','--script':'Runs specific NSE scripts. Some are intrusive.'},
+ risk:{'-A':'-A is loud and easy to detect.','-T5':'-T5 is very aggressive and can overload weak devices or miss results.','--script':'Some NSE scripts actively test for vulnerabilities; read what a script does first.','-sU':'UDP scans can take a very long time.'},
+ ex:'nmap -sV 127.0.0.1',exo:'PORT    STATE SERVICE VERSION\n22/tcp  open  ssh     OpenSSH 8.9\n80/tcp  open  http    nginx 1.18',exi:'Each line is one port: number/protocol, its STATE (open, closed or filtered), the SERVICE name and, with -sV, the software VERSION. Old versions are worth looking up for known vulnerabilities.',
+ simple:'Nmap knocks on every door of a computer and tells you which doors are open and who answers.',drill:'In the Lab, spawn SchoolSrv and run `nmap 10.10.11.10`. Count the open ports and note the service on each, then type `status` and answer the first task with `answer 1 <value>`.'},
+ping:{n:'Ping',p:'Checks whether a host is reachable and how long replies take.',h:'It sends ICMP "echo request" packets and waits for "echo reply" packets. The time in ms is the round-trip delay. No reply can mean the host is down or ICMP is blocked.',
+ w:'Troubleshooting connections, or checking a lab machine is up before you scan it.',cs:'In the Lab, `ping <machine IP>` confirms the machine is alive.',syn:'ping [options] <host>',v:['-c','-n','-i','-W','-w'],
+ f:{'-c':'Number of pings to send (Linux/macOS).','-n':'Number of pings to send (Windows).','-i':'Seconds to wait between pings.','-W':'Seconds to wait for each reply.','-w':'Total time limit in seconds.','-t':'Windows: keep pinging until you stop it.','-4':'Use IPv4 only.','-6':'Use IPv6 only.'},risk:{'-f':'-f (flood) sends pings as fast as possible: that is a denial-of-service attack.'},
+ ex:'ping -c 4 127.0.0.1',exo:'64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.05 ms\n...\n4 packets transmitted, 4 received, 0% packet loss',exi:'"0% packet loss" means every ping got a reply. "Request timed out" or 100% loss means no reply came back.',
+ simple:'Ping is like shouting "are you there?" and timing how fast the answer comes back.',drill:'In the Lab, ping the machine IP shown in the status bar, then ping 1.2.3.4 and compare the results.'},
+ls:{n:'ls',p:'Lists the files and folders in a directory.',h:'It reads the directory and prints its entries.',w:'Whenever you arrive in a folder and want to see what is there.',cs:'In the Lab, `ls` shows files; folders end with /.',syn:'ls [options] [folder]',v:[],f:{'-l':'Long format: permissions, owner, size and date.','-a':'Also shows hidden files (names starting with a dot).','-h':'Human-readable sizes (with -l).','-R':'Lists sub-folders too.'},ex:'ls -la /home',exo:'drwxr-xr-x  3 analyst analyst 4096 notes/\n-rw-r--r--  1 analyst analyst  220 .bashrc',exi:'The first column shows permissions (d = directory). Hidden files like .bashrc only appear with -a.',simple:'ls is like opening a folder to look inside.',drill:'In the Lab, run `ls`, then `ls /` and find the home folder.'},
+cd:{n:'cd',p:'Changes your current folder.',h:'It moves your shell into another directory so later commands work from there.',w:'Navigating around a file system.',cs:'In the Lab, `cd <folder>` moves you; `cd ..` goes up one level.',syn:'cd <folder>',v:[],f:{'..':'The parent folder (one level up).','~':'Your home folder.','/':'The top (root) of the file system.','-':'The folder you were in before.'},ex:'cd /var/log',exo:'(no output when it works)',exi:'Run `pwd` afterwards to confirm where you are.',simple:'cd is walking into another room.',drill:'In the Lab, `cd /` then `ls`, then cd into a folder you see and run `pwd`.'},
+pwd:{n:'pwd',p:'Prints the folder you are currently in.',h:'It shows the full path of your working directory.',w:'When you are lost in the file system.',cs:'In the Lab, `pwd` shows your location.',syn:'pwd',v:[],f:{},ex:'pwd',exo:'/home/analyst',exi:'That is the full path from the root /.',simple:'pwd answers "where am I?".',drill:'Run `pwd`, then `cd ..` and `pwd` again.'},
+cat:{n:'cat',p:'Prints the contents of a file.',h:'It reads the file and writes it to the screen.',w:'Reading notes, configs and logs during an investigation.',cs:'In the Lab (and CATTERPILLAR in Adventure), `cat <file>` reads clues such as notes and logs.',syn:'cat [options] <file>',v:[],f:{'-n':'Numbers every line.'},ex:'cat README.txt',exo:'(the text inside the file)',exi:'Long files scroll by; combine with grep to find the line you need.',simple:'cat opens a file and reads it out loud.',drill:'In the Lab, run `ls`, then `cat` each .txt file and look for usernames or IPs.'},
+grep:{n:'grep',p:'Searches files for lines containing a word or pattern.',h:'It reads each line and prints only the ones that match.',w:'Finding a needle in big logs, e.g. failed logins or an IP address.',cs:'In the Lab (and GREPLING in Adventure), `grep <word> <file>` searches a file.',syn:'grep [options] <pattern> <file>',v:['-e','-A','-B'],pos:['the word or pattern to search for','the file to search in'],f:{'-i':'Ignores upper/lower case.','-n':'Shows line numbers.','-v':'Shows lines that do NOT match.','-c':'Only counts matching lines.','-r':'Searches all files in a folder.','-E':'Extended regular expressions.','-A':'Also shows N lines after each match.','-B':'Also shows N lines before each match.'},ex:'grep -i failed auth.log',exo:'Mar 3 02:14 Failed password for admin from 10.0.0.66',exi:'Each printed line contains your word. Repeated failures from one IP suggest brute force.',simple:'grep is the "find" button for text files.',drill:'In the Lab, find a log file and `grep` it for "fail" or an IP address.'},
+whoami:{n:'whoami',p:'Shows which user account you are logged in as.',h:'It prints the current user name.',w:'Checking your privileges before running commands.',cs:'In the Lab, `whoami` shows you are the read-only analyst.',syn:'whoami',v:[],f:{},ex:'whoami',exo:'analyst',exi:'Root or admin would mean full control; a normal user has limited rights.',simple:'whoami answers "who am I logged in as?".',drill:'Run `whoami` in the Lab.'},
+decode:{n:'decode (CyberSentinel)',p:'Decodes Base64 text in the CyberSentinel lab.',h:'Base64 turns data into letters and numbers. It is an encoding, not encryption, so anyone can reverse it.',w:'When you find text ending in = or that looks like random letters in a file.',cs:'In the Lab (and DECODEX in Adventure), `decode <text>` reverses Base64. On real Linux the same thing is `echo <text> | base64 -d`.',syn:'decode <base64 text>',v:[],f:{},ex:'decode SGVsbG8=',exo:'Hello',exi:'If the result is still Base64-looking, decode it again.',simple:'decode turns scrambled-looking Base64 back into normal text.',drill:'Run `decode Q3liZXI=` in the Lab.'},
+base64:{n:'base64',p:'Encodes or decodes Base64 on Linux/macOS.',h:'It converts data to and from Base64 text. It is NOT encryption.',w:'Reading encoded strings found in files, emails or web traffic.',cs:'The Lab uses `decode <text>` for this.',syn:'base64 [-d] [file]',v:[],f:{'-d':'Decode instead of encode.'},ex:'echo SGVsbG8= | base64 -d',exo:'Hello',exi:'Readable text means it was only encoded, not protected.',simple:'base64 swaps text into a safe alphabet and back.',drill:'In the Lab, try `decode` on a Base64 string you find.'},
+curl:{n:'curl',p:'Sends web (HTTP) requests from the terminal and shows the response.',h:'It connects to a URL and prints what the server sends back.',w:'Testing your own web apps or APIs, checking headers.',cs:'Not available in the Lab; learn it on your own computer against localhost.',syn:'curl [options] <url>',v:['-X','-H','-d','-o'],f:{'-I':'Shows only the response headers.','-X':'HTTP method, e.g. -X POST.','-H':'Adds a header.','-d':'Sends data in the body.','-o':'Saves output to a file.','-L':'Follows redirects.','-v':'Verbose: shows the full exchange.'},ex:'curl -I http://127.0.0.1:8080',exo:'HTTP/1.1 200 OK\nContent-Type: text/html',exi:'200 means OK, 404 not found, 500 server error.',simple:'curl is a web browser without the pictures.',drill:'Run a local web server and `curl -I` it.'},
+ssh:{n:'ssh',p:'Logs in to another computer securely over the network.',h:'It creates an encrypted connection and gives you a remote shell.',w:'Managing servers you are allowed to access.',cs:'Not available in the Lab.',syn:'ssh [options] user@host',v:['-p','-i'],f:{'-p':'Port to connect to (default 22).','-i':'Private key file to log in with.','-v':'Verbose, for troubleshooting.'},ex:'ssh analyst@127.0.0.1',exo:'analyst@127.0.0.1\'s password:',exi:'A password or key prompt means the SSH service is reachable.',simple:'ssh is a secure remote control for another computer.',drill:'If you have SSH enabled on your own machine, connect to 127.0.0.1.'},
+netstat:{n:'netstat',p:'Shows network connections and listening ports on your own computer.',h:'It lists the sockets your system has open.',w:'Checking which services your machine exposes.',cs:'Not available in the Lab; try it on your own computer.',syn:'netstat [options]',v:[],f:{'-t':'TCP.','-u':'UDP.','-l':'Only listening ports.','-n':'Numbers instead of names.','-p':'Shows the program using each port.','-a':'All connections.'},ex:'netstat -tuln',exo:'tcp  0  0 0.0.0.0:22  0.0.0.0:*  LISTEN',exi:'LISTEN means a service is waiting for connections on that port.',simple:'netstat lists the doors your own computer has open.',drill:'Run `netstat -tuln` (or `ss -tuln`) on your computer and identify each port.'},
+traceroute:{n:'traceroute',p:'Shows each network hop between you and a host.',h:'It sends packets with increasing TTL so every router on the path replies.',w:'Finding where a connection slows down or breaks.',cs:'Not available in the Lab.',syn:'traceroute <host>  (Windows: tracert <host>)',v:[],f:{'-n':'Shows IPs without looking up names.'},ex:'traceroute 127.0.0.1',exo:' 1  localhost (127.0.0.1)  0.04 ms',exi:'Each numbered line is one router; * * * means that hop did not answer.',simple:'traceroute draws the road map your data travels.',drill:'Run it to your home router (often 192.168.1.1).'}};
+CMDX.tracert=CMDX.traceroute;CMDX.ss=CMDX.netstat;
+
+/* ===== AI PROVIDER: configured here, auto-detected on this device (no keys, nothing to type) ===== */
+/* AI endpoints are tried in this order: your saved address, the built-in proxy of server.js (same address as this page), then localhost. */
+const AI_KEY='cs_ai_url';
+function aiCustom(){try{return String(csLS.getItem(AI_KEY)||'').trim().replace(/\/+$/,'')}catch(e){return ''}}
+const AI_CONFIG={providers:[{name:'Ollama',api:'ollama',k:'/ollama',d:['http://127.0.0.1:11434','http://localhost:11434']},{name:'LM Studio',api:'openai',k:'/lmstudio',d:['http://127.0.0.1:1234','http://localhost:1234']}],
+ prefer:['llama3.2:3b','llama3.2','llama3.1','qwen2.5','phi3','gemma2','mistral'],timeoutMs:180000,recheckMs:30000};
+function aiBases(p){const a=[],c=aiCustom();if(c)a.push(c);if(/^https?:$/.test(location.protocol)&&location.hostname!=='github.io'&&!/\.github\.io$/.test(location.hostname))a.push(location.origin+p.k);return a.concat(p.d)}
+const AI={state:'checking',prov:'',base:'',api:'',model:'',models:[],at:0,p:null};
+function aiPretty(m){if(!m)return '—';const [n,t]=m.split(':');let s=n.replace(/^([a-z]+)([\d.]+)?/i,(x,a,b)=>a[0].toUpperCase()+a.slice(1)+(b?' '+b:'')).replace(/[-_]/g,' ');if(t&&t!=='latest')s+=' '+t.toUpperCase();return s}
+async function aiGet(u){const ac=new AbortController(),t=setTimeout(()=>ac.abort(),4000);try{const r=await fetch(u,{signal:ac.signal,cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}}
+function aiPick(ms){for(const w of AI_CONFIG.prefer){const m=ms.find(x=>x===w)||ms.find(x=>x===w+':latest')||ms.find(x=>x.startsWith(w+':'));if(m)return m}return ms[0]||''}
+function aiDetect(){if(AI.p)return AI.p;AI.state='checking';renderAiStat();
+ AI.p=(async()=>{for(const p of AI_CONFIG.providers)for(const b of aiBases(p)){try{const j=await aiGet(b+(p.api==='ollama'?'/api/tags':'/v1/models'));const ms=p.api==='ollama'?(j.models||[]).map(m=>m.name||m.model):(j.data||[]).map(m=>m.id);
+   Object.assign(AI,{prov:p.name,base:b,api:p.api,models:ms,model:aiPick(ms),state:ms.length?'on':'nomodel'});return}catch(e){}}
+  Object.assign(AI,{state:'off',prov:'',base:'',model:'',models:[]})})().finally(()=>{AI.at=Date.now();AI.p=null;renderAiStat()});return AI.p}
+function renderAiStat(){const c=$('aistat');if(!c)return;c.innerHTML='';c.append(el('h2','','AI ASSISTANT STATUS'));
+ const row=(k,v)=>{const d=el('div','airow');d.append(el('b','',k+': '),el('span','',v));c.append(d)},st=AI.state;
+ row('Provider',st==='on'||st==='nomodel'?AI.prov+' (local, on this device)':st==='checking'?'Checking…':'Built-in offline tutor');
+ row('Model',st==='on'?`${aiPretty(AI.model)} (${AI.model})`:st==='nomodel'?'No model installed':'Built-in cybersecurity notes (no AI model)');
+ row('Connection',{on:'🟢 Connected',nomodel:'🟠 Connected, but no model installed',off:'🔴 Disconnected',checking:'🟡 Checking…'}[st]);
+ c.append(el('div','mut',st==='on'?'Answers marked "Local AI" come from this model. Command explanations and progress advice come from CyberSentinel itself. Works offline.':st==='off'?'No local AI was found on this device, so the tutor uses its built-in cybersecurity notes. Everything still works offline.':st==='nomodel'?'Run "ollama pull llama3.2:3b" once while online; after that it works with no internet.':''));
+ {const cr=el('div','row'),ci=el('input'),cb=el('button','go','SAVE');ci.type='url';ci.id='aiurl';ci.value=aiCustom();ci.placeholder='AI server, e.g. http://192.168.1.10:8080/ollama';ci.setAttribute('aria-label','AI server address');ci.setAttribute('autocapitalize','none');ci.setAttribute('spellcheck','false');
+  cb.onclick=()=>{try{const v=ci.value.trim();v?csLS.setItem(AI_KEY,v):csLS.removeItem(AI_KEY)}catch(e){}aiDetect()};cr.append(ci,cb);c.append(el('div','mut','AI server address (needed on phones and other devices; leave empty on the computer that runs the AI):'),cr)}
+ if(st==='off'||st==='nomodel'){const h=el('details');h.append(el('summary','','How to turn on local AI'),el('div','alert','SAME COMPUTER\n1) Install Ollama, then: ollama pull llama3.2:3b\n2) Run: node server.js   (in the CyberSentinel folder)\n3) Open http://localhost:8080\n\nPHONE / TABLET / OTHER PC (same Wi-Fi)\n1) On the AI computer run: node server.js\n2) On the other device open the Network address it prints, e.g. http://192.168.1.10:8080\n   The AI is found automatically.\n\nFROM ANYWHERE, OR THE GITHUB PAGES VERSION\n1) Run: node server.js\n2) Make it reachable over HTTPS with Tailscale Funnel or: cloudflared tunnel --url http://localhost:8080\n3) Paste https://YOUR-ADDRESS/ollama in the box above and press SAVE.\n   (GitHub Pages is https, so it cannot use plain http:// addresses.)\n\nNo server.js? Start Ollama with OLLAMA_ORIGINS=* and OLLAMA_HOST=0.0.0.0 instead.'));c.append(h)}
+ const b=el('button','go',st==='checking'?'CHECKING…':'CHECK AGAIN');b.disabled=st==='checking';b.onclick=()=>aiDetect();c.append(b);if(AI.at)c.append(el('span','mut',' Last checked '+new Date(AI.at).toLocaleTimeString()))}
+async function aiChat(msgs){const ac=new AbortController(),to=setTimeout(()=>ac.abort(),AI_CONFIG.timeoutMs),oll=AI.api==='ollama';
+ try{const r=await fetch(AI.base+(oll?'/api/chat':'/v1/chat/completions'),{method:'POST',signal:ac.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify({model:AI.model,stream:false,messages:msgs})});
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error((j.error&&(j.error.message||j.error))||'HTTP '+r.status);
+  const o=oll?j.message&&j.message.content:j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;if(!o)throw new Error('empty reply');return o}
+ finally{clearTimeout(to)}}
+/* ===== CHAT RENDERING (safe: textContent only) ===== */
+function say(t,c){const d=el('div','msg '+c,t);$('chat').append(d);$('chat').scrollTop=1e6;return d}
+function copyTxt(t,b){const ok=()=>{b.textContent='COPIED ✓';setTimeout(()=>b.textContent='COPY',1500)},a=el('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;opacity:0';document.body.append(a);a.select();let done=false;try{done=document.execCommand('copy')}catch(e){}a.remove();
+ if(done)ok();else if(navigator.clipboard)navigator.clipboard.writeText(t).then(ok,()=>{b.textContent='SELECT & COPY'})}
+function codeBlock(t){const d=el('div','code'),p=el('pre','',t),b=el('button','','COPY');b.type='button';b.setAttribute('aria-label','Copy command');b.onclick=()=>copyTxt(t,b);d.append(p,b);return d}
+function inline(box,s){s.split(/(`[^`\n]+`|\*\*[^*\n]+\*\*)/).forEach(x=>{if(!x)return;if(/^`.*`$/.test(x))box.append(el('code','',x.slice(1,-1)));else if(/^\*\*.*\*\*$/.test(x))box.append(el('b','',x.slice(2,-2)));else box.append(document.createTextNode(x))})}
+function rich(box,text){String(text).split('```').forEach((seg,i)=>{if(i%2){box.append(codeBlock(seg.replace(/^[a-z]*\n/i,'').replace(/^\n|\n$/g,'')));return}
+ seg=seg.replace(/^\n/,'').replace(/\n$/,'');if(!seg)return;const p=el('div','rt');seg.split('\n').forEach((ln,j)=>{if(j)p.append(document.createTextNode('\n'));if(/^#{1,3} /.test(ln))p.append(el('span','th',ln.replace(/^#+ /,'')));else inline(p,ln)});box.append(p)})}
+function link(bub,h){const d=h.map(x=>x[1]).find(x=>x.m);if(!d)return;const m=MODS.find(x=>x.id===d.m),b=el('button','try','📖 Open lesson: '+m.t);b.onclick=()=>{showTab('learn');openMod(m.id)};bub.append(b)}
+function botMsg(text,src,fu,box){const d=box||say('','bot');d.className='msg bot';d.textContent='';d.append(el('div','src',src));rich(d,text);
+ if(fu&&fu.length){const f=el('div','fus');fu.forEach(q=>{const b=el('button','',q);b.onclick=()=>ask(q);f.append(b)});d.append(f)}$('chat').scrollTop=1e6;return d}
+/* ===== ASSISTANT LOGIC ===== */
+const TUT={hist:[],last:null};
+const SRC={ai:()=>'🤖 Local AI · '+aiPretty(AI.model),kb:'📚 Built-in notes',cmd:'🧰 Command explainer (built-in)',prog:'📈 Your progress data',scam:'🔎 Scam checker (built-in)'};
+const CMDFU=['Explain each flag','Show example output','Give me a beginner practice exercise'];
+function tgt(t){if(/^(127\.\d+\.\d+\.\d+|localhost|::1)$/i.test(t))return 'your own computer (localhost). Safe to practise on.';
+ if(/^10\.10\.11\.\d+$/.test(t))return 'a CyberSentinel lab machine (simulated and safe).';
+ if(/^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)[\d.\/]+$/.test(t))return 'an address on a private network'+(t.includes('/')?' range':'')+'. Only test it if it is your own network or you have permission.';
+ if(/^[\d.]+(\/\d+)?$/.test(t)||/^[a-z0-9-]+(\.[a-z0-9-]+)+$/i.test(t))return '⚠ a public target. Do NOT scan or attack it without written permission from its owner.';return null}
+function parseCmd(text){const bt=text.match(/`([^`]+)`/),src=bt?bt[1]:text,m=src.match(/(?:^|[\s"'(])(nmap|ping|ls|cd|pwd|cat|grep|whoami|decode|base64|curl|ssh|netstat|ss|traceroute|tracert)(?=$|[\s?.!,"')])/i);
+ if(!m)return null;const k=m[1].toLowerCase(),rest=src.slice(src.toLowerCase().indexOf(k,m.index)).split(/[?!"']|\s(?:do|mean|means|work|does|in simple)\b/i)[0].trim().replace(/[.,]+$/,'');return {k,def:CMDX[k],line:rest}}
+function tokRows(c){const d=c.def,tk=c.line.split(/\s+/).slice(1),rows=[],warn=[];let pos=0;
+ for(let i=0;i<tk.length;i++){let t=tk[i],v='';
+  if(t.startsWith('-')){let key=d.f[t]?t:/^-T[0-5]$/.test(t)?'-T':(Object.keys(d.f).filter(k=>k.startsWith('-')&&k.length>1&&t.startsWith(k)).sort((a,b)=>b.length-a.length)[0]||'');
+   if(key&&d.v.includes(key)&&t===key&&tk[i+1]){v=tk[++i];t+=' '+v}
+   rows.push([t,key?d.f[key]+(v?` (value: ${v})`:''):`Not in my notes. Check "man ${c.k}" or "${c.k} --help".`]);const r=d.risk&&(d.risk[t]||d.risk[key]);if(r)warn.push(r)}
+  else{const g=tgt(t);if(g){rows.push([t,'Target: '+g]);if(g.startsWith('⚠'))warn.push(`${t} looks like a public system. Scanning it without permission can be illegal. Use 127.0.0.1 or a lab IP instead.`)}
+   else rows.push([t,d.pos&&d.pos[pos]?'This is '+d.pos[pos]+'.':d.f[t]||'A file, folder or value for the command.']);pos++}}
+ return {rows,warn}}
+function cmdExplain(c,mode){const d=c.def,{rows,warn}=tokRows(c),fl=rows.length?rows.map(r=>`• \`${r[0]}\` — ${r[1]}`).join('\n'):Object.entries(d.f).slice(0,5).map(([k,v])=>`• \`${k}\` — ${v}`).join('\n')||'• (no options)';
+ if(mode==='flags')return `## Every option of ${d.n}\n`+(rows.length?fl+'\n\nOther useful options:\n':'')+Object.entries(d.f).map(([k,v])=>`• \`${k}\` — ${v}`).join('\n');
+ if(mode==='output')return `## Example output of ${d.n}\n\`\`\`\n${d.ex}\n${d.exo}\n\`\`\`\n${d.exi}`;
+ if(mode==='drill')return `## Beginner practice: ${d.n}\n${d.drill}\n\n**Safety reminder:** ${SAFE}`;
+ if(mode==='simple')return `## ${c.line||d.n} in simple terms\n${d.simple}`+(rows.length?'\n\n'+fl:'');
+ if(mode==='example')return `## Beginner example: ${d.n}\n\`\`\`\n${d.ex}\n\`\`\`\n${d.exi}\n\n**Try it safely:** ${d.drill}`;
+ return `## Command: ${d.n}${c.line&&c.line.includes(' ')?`\n\`\`\`\n${c.line}\n\`\`\``:''}\n**Purpose:** ${d.p}\n**How it works:** ${d.h}\n**When to use it:** ${d.w}\n**In CyberSentinel:** ${d.cs}\n**Syntax:**\n\`\`\`\n${d.syn}\n\`\`\`\n**Parameter breakdown:**\n${fl}\n**Example:**\n\`\`\`\n${d.ex}\n\`\`\`\n**Expected output:**\n\`\`\`\n${d.exo}\n\`\`\`\n${d.exi}\n**Safety reminder:** ${SAFE}`+(warn.length?'\n⚠ '+warn.join('\n⚠ '):'')}
+function errExplain(text){const lines=[...$('term').children],ei=lines.map(x=>x.classList.contains('err')).lastIndexOf(true),pasted=/not found|no such|permission denied|usage:|invalid|blocked/i.test(text)?text:'';
+ let err=pasted,cmd='';if(!err&&ei>=0){err=lines[ei].textContent;for(let i=ei;i>=0;i--)if(lines[i].classList.contains('cmd')){cmd=lines[i].textContent.split('$ ').slice(1).join('$ ');break}}
+ if(!err)return 'I could not find an error in the Lab terminal yet. Paste the command and the error message here and I will explain it.';
+ const c=parseCmd(cmd||err),k=c&&c.def;let why;
+ if(/command not found/i.test(err))why='The Lab does not know that command. It may be a typo or a tool the Lab does not simulate. Type `help` to see the commands it supports.';
+ else if(/usage:/i.test(err))why='The command is missing something it needs, like a file name or IP address.'+(k?` The correct form is \`${k.syn}\`.`:'');
+ else if(/no such|cannot access/i.test(err))why='That file or folder does not exist where you are. Names are case-sensitive. Run `pwd` to see where you are and `ls` to see what is there.';
+ else if(/is a directory/i.test(err))why='You pointed the command at a folder instead of a file. Use `ls <folder>` to look inside, or `cd` into it.';
+ else if(/blocked|only scan/i.test(err))why='CyberSentinel only lets you scan the current lab machine, just like a real authorized test limits your scope. Use the IP shown in the status bar.';
+ else if(/not valid base64/i.test(err))why='The text is not Base64. Copy only the encoded part (letters, numbers, + / and = at the end).';
+ else if(/permission denied/i.test(err))why='Your account is not allowed to do that. In the Lab you are a read-only analyst.';
+ else why='Check the spelling, the order of the parts and the target.'+(k?` The usual form is \`${k.syn}\`.`:'');
+ return `## Why that command failed\n${cmd?`You ran:\n\`\`\`\n${cmd}\n\`\`\`\n`:''}The error was:\n\`\`\`\n${err}\n\`\`\`\n${why}`}
+function progAnswer(){const s=pgStats(),rec=recommend();let t;
+ if(rec[0].general)t='I have no activity recorded for you yet, so here are general recommendations for new learners.';
+ else t=`## Based on your recorded progress\nLessons completed: ${s.done.length}/${s.total}\nQuiz accuracy: ${s.acc==null?'no answers yet':s.acc+'%'}\nLearning streak: ${s.streak} day(s)`+(s.weak.length?`\nNeeds work: ${s.weak.map(x=>x.m.t).join(', ')}`:'')+'\n\nWhat to study next:';
+ return {t:t+'\n'+rec.map((r,i)=>`${i+1}. ${r.m.t} — ${r.why}`).join('\n'),rec}}
+function searchCtx(q){const h=search(q),cur=PG.cur&&PG.cur.id;if(!cur)return h;return h.map(x=>[x[0]*(x[1].m===cur?1.5:1),x[1]]).sort((a,b)=>b[0]-a[0])}
+function offline(h){if(!h.length)return 'I do not have that in my offline notes yet. Try asking about passwords, phishing, 2FA, Wi-Fi, malware, backups, SQL injection, encryption, or a command like `nmap -sV 127.0.0.1`. You can also paste a suspicious message and I will scam-check it.';
+ return h.slice(0,2).map(x=>x[1].t).join('\n\n')}
+function fuFor(h){const m=h.map(x=>x[1]).find(x=>x.m),t=m?MODS.find(x=>x.id===m.m).t:'';return ['Can you give me a beginner-friendly example?','What should I study next?'].concat(t?['Quiz me on '+t]:[])}
+function sysPrompt(h,text){const s=pgStats(),cur=PG.cur&&MODS.find(m=>m.id===PG.cur.id);let p='You are CyberSentinel\'s friendly cybersecurity tutor for beginners in the Philippines. Answer briefly in the same language as the user (English or Filipino), in simple words and short paragraphs. Put commands in ``` code blocks. Use only localhost/127.0.0.1, the CyberSentinel lab machines (10.10.11.x) or deliberately vulnerable labs in examples, and remind the user to get permission before scanning or testing any system. Never help attack systems the user is not authorized to test. Explain the risks of disruptive commands. You cannot run commands.';
+ if(cur)p+=`\nThe student is currently studying the lesson "${cur.t}"; prioritise that topic.`;
+ if(PG.cur&&PG.cur.quiz)p+=`\nThe student is taking a quiz with the question "${PG.cur.q}". Explain the underlying concept but do NOT reveal or hint which option is correct.`;
+ if(s.active)p+=`\nRecorded progress: ${s.done.length}/${s.total} lessons, quiz accuracy ${s.acc==null?'n/a':s.acc+'%'}`+(s.weak.length?`, weak topics: ${s.weak.map(x=>x.m.t).join(', ')}`:'')+'.';
+ return p+'\nUse these notes when helpful:\n'+h.map(x=>x[1].t).join('\n')}
+function remember(u,a){TUT.hist.push({role:'user',content:u},{role:'assistant',content:String(a).slice(0,600)});TUT.hist=TUT.hist.slice(-12)}
+async function ask(raw){let text=String(raw||'').replace(/\r/g,'').trim();if(!text)return;if(text.length>2000)text=text.slice(0,2000);say(text,'me');const lo=text.toLowerCase();
+ if(/^(check|scam\??)\b/i.test(text)||(text.length>=80&&!/\?\s*$/.test(text)&&RF.some(r=>r[0].test(text)))){const r=scamCheck(text.replace(/^(check|scam\??)\s*:?\s*/i,''));botMsg(r,SRC.scam);remember(text,r);return}
+ if(/(study|learn|focus on|do).{0,25}next|recommend|what should i (study|learn)|my progress|how am i doing|anong (susunod|aaralin)/i.test(lo)){const a=progAnswer(),b=botMsg(a.t,SRC.prog,['Explain nmap -sV 127.0.0.1','What is phishing?']);a.rec.forEach((r,i)=>b.insertBefore(recCard(r,i),b.querySelector('.fus')));remember(text,a.t);return}
+ if(/^quiz me on /i.test(text)){const m=MODS.find(x=>lo.includes(x.t.toLowerCase()));if(m){showTab('learn');openMod(m.id);quiz(m,0,0);botMsg(`Opened the ${m.t} quiz in the Learn tab. Good luck!`,SRC.kb);return}}
+ if(/(why|what).{0,40}(error|fail|didn.?t work|not work|wrong with)|^why did/i.test(lo)){const r=errExplain(text);botMsg(r,SRC.cmd,['Explain each flag','What should I study next?']);remember(text,r);return}
+ const c=parseCmd(text),fm=/each (flag|option)|every (flag|option)|(explain|what are) (the )?(flags|options)|each part/i.test(lo)?'flags':/example (of the )?output|show .*output|what (will|would) i see/i.test(lo)?'output':/practice|exercise|drill/i.test(lo)?'drill':/simple terms|simpler|eli5|in plain/i.test(lo)?'simple':/example/i.test(lo)?'example':'';
+ if(c||(fm&&TUT.last)){const cc=c||TUT.last;if(c){TUT.last=c;PG.cmd(c.k,'ask')}const r=cmdExplain(cc,c&&!fm?'':fm||'');botMsg(r,SRC.cmd,mfu(fm));remember(text,r);return}
+ const hits=searchCtx(text);if(AI.state!=='on'&&Date.now()-AI.at>AI_CONFIG.recheckMs)await aiDetect();
+ if(AI.state==='on'){const th=say('','bot load');th.append(el('span','dots','Thinking with '+aiPretty(AI.model)));
+  try{const r=await aiChat([{role:'system',content:sysPrompt(hits,text)},...TUT.hist,{role:'user',content:text}]);botMsg(r,SRC.ai(),fuFor(hits),th);link(th,hits);remember(text,r)}
+  catch(e){const why=e.name==='AbortError'?'it took too long to answer':/fetch|network/i.test(e.message)?'it stopped responding':e.message;if(!/model/i.test(why)){AI.state='off';AI.at=Date.now();renderAiStat()}
+   botMsg(`The local AI could not answer (${why}), so here are my built-in notes instead.\n\n`+offline(hits),SRC.kb,fuFor(hits),th);link(th,hits);remember(text,offline(hits))}return}
+ const r=(PG.cur&&PG.cur.quiz?'You are in a quiz, so I will explain the idea without giving away the answer.\n\n':'')+offline(hits),b=botMsg(r,SRC.kb,fuFor(hits));link(b,hits);remember(text,r)}
+function mfu(m){return CMDFU.filter(x=>!(m==='flags'&&/flag/.test(x))&&!(m==='output'&&/output/.test(x))&&!(m==='drill'&&/exercise/.test(x))).concat(m?[]:['Explain this command in simple terms'])}
+function tutGreet(){botMsg('Hi! I am your cyber tutor. Ask me anything about staying safe online, ask how a command works (try `nmap -sV 127.0.0.1`), ask "What should I study next?", or paste a suspicious message to scam-check it. I work offline.',SRC.kb)}
+const send=()=>{const v=$('tin').value;$('tin').value='';ask(v)};
+$('tsend').onclick=send;$('tin').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send()}});
+$('tclear').onclick=()=>{if($('chat').children.length<2||confirm('Clear the chat? Your learning progress is not affected.')){$('chat').innerHTML='';TUT.hist=[];TUT.last=null;tutGreet()}};
+['What is phishing?','How do I make a strong password?','What is 2FA?','Is public Wi-Fi safe?','What is SQL injection?','What is Nmap?','Explain nmap -sV 127.0.0.1','What should I study next?'].forEach(x=>{const b=el('button','',x);b.onclick=()=>ask(x);$('tchips').append(b)});
+{const b=el('button','','🔎 Check a message');b.onclick=()=>{$('tin').value='check: ';$('tin').focus()};$('tchips').append(b)}
+tutGreet();renderAiStat();aiDetect();document.querySelector('#top [data-t="tutor"]').addEventListener('click',()=>{if(Date.now()-AI.at>AI_CONFIG.recheckMs)aiDetect()});
+
+drawFc();
+/* ===== POKEMON-STYLE ADVENTURE MODE ===== */
+const TS=16,MW=24,MH=16;
+let MAP=[
+'TTTTTTTTTTTTTTTTTTTTTTTT',
+'T,,,,,,,,,,,,,,,,,,,,,,T',
+'T,~~~~,,,1,,,,,,,,2,,,,T',
+'T,~~~~,,,,,,TT,,,,,,,,,T',
+'T,~~~~,,,,,,TT,,,,,,,,,T',
+'T,,,,,,,,,,,,,,,,,,,,,,T',
+'T,,,,,o,,,,,,,,,,,o,,,,T',
+'T,,,,,,,,,,C,,,,,,,,,,,T',
+'T,,,,,,,,,,,,,,,,,,,,,,T',
+'TWWWW,,,,,,,,,,,,,,,,,,T',
+'TWWWW,,,,~~~~~~,,,,,,,,T',
+'TWWWW,,,,~~~~~~,,,,,,3,T',
+'T,,,,,,,,~~~~~~,,,,,,,,T',
+'T,,,,4,,,,,,,,,,,o,,,,,T',
+'T,,,,,,,,,,,,,,,,,,,,,,T',
+'TTTTTTTTTTTTTTTTTTTTTTTT'].map((r,y)=>{r=(r+',,,,,,,,,,,,,,,,,,,,,,,,').slice(0,MW);if(y===0||y===MH-1)r='T'.repeat(MW);return 'T'+r.slice(1,MW-1)+'T'});
+MAP=MAP.map(r=>r.split(''));MAP.forEach((r,y)=>r.forEach((c,x)=>{if('1234C'.includes(c))[[-1,0],[1,0],[-1,-1],[0,-1],[1,-1]].forEach(([i,j])=>{const R=MAP[y+j];if(R&&R[x+i]!=='T'&&!'1234C'.includes(R[x+i]))R[x+i]='#'})}));MAP=MAP.map(r=>r.join(''));
+const SOLID=c=>'TW#'.includes(c);
+const cv=$('advcv'),cx=cv.getContext('2d');
+const TMON=[
+{id:'fire',n:'FIREWALRUS',e:'🦭',mx:70,d:'Tanky defender. Knows the counter-move for every wild attack.'},
+{id:'nmap',n:'NMAPPER',e:'🛰️',mx:50,d:'Scans a system and reveals its open ports.'},
+{id:'cat',n:'CATTERPILLAR',e:'🐛',mx:50,d:'Reads files and digs notes out of folders.'},
+{id:'grep',n:'GREPLING',e:'🔍',mx:50,d:'Hunts a word through long log files.'},
+{id:'dec',n:'DECODEX',e:'🔓',mx:50,d:'Un-scrambles Base64 loot, even when it is encoded twice.'}];
+const MONOF=c=>({nmap:'nmap',ping:'nmap',cat:'cat',ls:'cat',grep:'grep',decode:'dec'}[c.split(/\s+/)[0]]||'cat');
+S.adv=Object.assign({x:11,y:9,hp:{},bag:{},dex:{},got:{},beat:{}},S.adv||{});
+const A={mode:'map',dir:'down',step:0,b:null,q:[],cap:null,raw:''};
+const hpOf=t=>S.adv.hp[t.id]==null?t.mx:S.adv.hp[t.id];
+const alive=()=>TMON.filter(t=>hpOf(t)>0);
+/* ---------- overworld drawing ---------- */
+function gl(x,y,s,g){cx.font=(s||13)+'px system-ui,"Noto Color Emoji",sans-serif';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(g,x*TS+TS/2,y*TS+TS/2+1)}
+function px(rows,pal,ox,oy,flip){rows.forEach((r,j)=>{for(let i=0;i<r.length;i++){const c=r[flip?r.length-1-i:i];if(c!=='.'){cx.fillStyle=pal[c];cx.fillRect(ox+i,oy+j,1,1)}}})}
+const HERO_PAL={k:'#202020',r:'#e83838',R:'#a01818',s:'#f8c890',b:'#3868d8',w:'#ffffff',n:'#583010',g:'#404048',y:'#ffd400'};
+const HD=['...kkkkkk...','..krrrrrrk..','.krrrwwrrrk.','.kRRRRRRRRk.','.knssssssnk.','.ksksssskskk'.slice(0,12),'.kssssssssk.','..kssssssk..','.kbbbyybbbk.','kbbbbbbbbbbk','ksbbbbbbbbsk','kskbbbbbbksk','.kkggggggkk.','..kggkkggk..'];
+const HU=HD.slice();HU[4]='.knnnnnnnnk.';HU[5]='.knnnnnnnnk.';HU[6]='.knnnnnnnnk.';HU[8]='.kbbbbbbbbk.';
+const HL=HD.slice();HL[4]='.knnsssssnk.';HL[5]='.kksssssssk.';HL[5]='.ksksssssnk.';
+const LEGS=[['..kggkkggk..','..kkk..kkk..'],['..kggk.kggk.','..kkk...kk..'],['.kggk.kggk..','..kk...kkk..']];
+function hero(x,y){const f=A.dir==='up'?HU:A.dir==='down'?HD:HL,w=A.anim?1+(A.step%2):0,rows=f.slice(0,12).concat(LEGS[w]);
+ cx.fillStyle='#0003';cx.fillRect(x+3,y+14,10,2);px(rows,HERO_PAL,x+2,y+(w?-1:0),A.dir==='right')}
+function tree(x,y){const X=x*TS,Y=y*TS;cx.fillStyle='#6b4423';cx.fillRect(X+6,Y+11,4,5);cx.fillStyle='#1e6b2e';cx.fillRect(X+2,Y+3,12,9);cx.fillRect(X+4,Y+1,8,13);cx.fillStyle='#2f9a44';cx.fillRect(X+4,Y+3,5,5);cx.fillStyle='#103d18';cx.fillRect(X+2,Y+11,12,1)}
+function house(x,y,roof,label,icon){const X=x*TS-8,Y=y*TS-10;cx.fillStyle='#000';cx.fillRect(X-1,Y-1,34,28);cx.fillStyle=roof;cx.fillRect(X,Y,32,12);cx.fillStyle='#0003';for(let i=0;i<32;i+=4)cx.fillRect(X+i,Y+3,2,1),cx.fillRect(X+i+2,Y+8,2,1);
+ cx.fillStyle='#f0e6d2';cx.fillRect(X+1,Y+12,30,14);cx.fillStyle='#7ab8f0';cx.fillRect(X+4,Y+15,6,5);cx.fillRect(X+22,Y+15,6,5);cx.fillStyle='#5a3a1a';cx.fillRect(X+12,Y+16,8,10);cx.fillStyle='#ffd400';cx.fillRect(X+18,Y+21,1,1);
+ if(icon)gl(x,y-1,9,icon);cx.fillStyle='#fff';cx.font='5px "Press Start 2P",monospace';cx.textAlign='center';cx.textBaseline='alphabetic';const tw=cx.measureText(label).width+4;cx.fillStyle='#000a';cx.fillRect(x*TS+8-tw/2,Y-9,tw,8);cx.fillStyle='#fff';cx.fillText(label,x*TS+8,Y-3)}
+function drawMap(){cx.imageSmoothingEnabled=false;const tm=Date.now();
+ for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const c=MAP[y][x];
+  cx.fillStyle=c==='W'?'#3a7bd5':c==='~'?'#2f8f3f':'#7fcb5a';cx.fillRect(x*TS,y*TS,TS,TS);
+  if(c!=='W'&&c!=='~'&&(x*7+y*3)%5===0){cx.fillStyle='#6cba4c';cx.fillRect(x*TS+4,y*TS+9,2,3);cx.fillRect(x*TS+8,y*TS+8,2,4)}
+  if(c!=='W'&&c!=='~'&&(x*5+y*11)%13===0){cx.fillStyle=(x+y)%2?'#ff7070':'#fff';cx.fillRect(x*TS+10,y*TS+4,2,2)}
+  if(c==='~'){cx.fillStyle='#246f30';cx.fillRect(x*TS,y*TS+10,TS,6);cx.fillStyle='#43b047';cx.fillRect(x*TS+1,y*TS+4,3,8);cx.fillRect(x*TS+6,y*TS+2,3,10);cx.fillRect(x*TS+11,y*TS+5,3,7);cx.fillStyle='#7be07f';cx.fillRect(x*TS+7,y*TS+2,1,3)}
+  if(c==='W'){cx.fillStyle='#6fb0ff';cx.fillRect(x*TS+2+((tm/400|0)+x)%4,y*TS+4+((x+y)%2)*6,7,2)}
+  if(c==='T')tree(x,y);
+  if(c==='o'&&!S.adv.got[x+','+y]){const X=x*TS,Y=y*TS;cx.fillStyle='#000';cx.fillRect(X+3,Y+3,10,10);cx.fillStyle='#e83838';cx.fillRect(X+4,Y+4,8,4);cx.fillStyle='#fff';cx.fillRect(X+4,Y+8,8,4);cx.fillStyle='#000';cx.fillRect(X+4,Y+7,8,2);cx.fillStyle='#fff';cx.fillRect(X+7,Y+7,2,2)}}
+ for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const c=MAP[y][x];
+  if(c==='C')house(x,y,'#e04848','PATCH CENTER','➕');
+  if('1234'.includes(c)){const m=MS[+c-1],lk=pc()<m.req;house(x,y,lk?'#707070':{Easy:'#3aa63a',Medium:'#e0a020',Hard:'#7a3ad8'}[m.diff],m.name.toUpperCase(),lk?'🔒':S.adv.beat[m.id]?'🏁':m.os)}}
+ const p=S.adv;let hx=p.x*TS,hy=p.y*TS;if(A.anim){const k=Math.min(1,(tm-A.anim.t)/140);hx=(A.anim.fx+(p.x-A.anim.fx)*k)*TS;hy=(A.anim.fy+(p.y-A.anim.fy)*k)*TS}
+ hero(hx,hy)}
+setInterval(()=>{if(!$('adv').hidden&&A.mode==='map')drawMap()},120);
+function near(){const p=S.adv,d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[A.dir];return [p.x+d[0],p.y+d[1]]}
+function tileAt(x,y){return (MAP[y]||'')[x]||'T'}
+function move(d){if(A.mode!=='map')return;A.dir=d;const [nx,ny]=near();const c=tileAt(nx,ny);
+ if(SOLID(c)||'1234C'.includes(c)){drawMap();if('1234C'.includes(c))interact();return}
+ A.anim={fx:S.adv.x,fy:S.adv.y,t:Date.now()};S.adv.x=nx;S.adv.y=ny;A.step++;save();const an_=A.anim;(function an(){if(A.anim!==an_)return;drawMap();if(Date.now()-an_.t<140)requestAnimationFrame(an);else{A.anim=null;drawMap()}})();
+ if(c==='o'&&!S.adv.got[nx+','+ny]){S.adv.got[nx+','+ny]=1;const port=['22 (ssh)','80 (http)','443 (https)','21 (ftp)'][Math.floor(Math.random()*4)];S.adv.bag.potion=(S.adv.bag.potion||0)+1;
+  S.pts['adv-explore']=(S.pts['adv-explore']||0)+10;save();render();tell(['You found a CAPSULE!','It held a PATCH POTION (heals a tool-mon 30 HP in battle) and a note about port '+port+'.\n+10 coins.'])}
+ else if(c==='~'&&Math.random()<.22)wild();
+ else if(A.mode==='map')tell([])}
+function interact(){const [nx,ny]=near(),c=tileAt(nx,ny);
+ if(c==='C')return heal();
+ if('1234'.includes(c)){const i=+c-1,m=MS[i];
+  if(pc()<m.req)return tell(['The door is locked.','The region council only opens '+m.name+' after you clear '+m.req+' system(s).']);
+  tell(['PROBLEM SYSTEM: '+m.name+' ('+m.ip+')',m.blurb,'The system looks angry. Send out a TOOL-MON!'],()=>sysBattle(i))}}
+function heal(){TMON.forEach(t=>S.adv.hp[t.id]=t.mx);save();renderAdv();tell(['PATCH CENTER','We patched your tool-mons back to full health.','We hope to see you again!'])}
+/* ---------- dialog ---------- */
+function tell(lines,done){A.q=(lines||[]).slice();A.after=done||null;nextLine()}
+function nextLine(){const t=$('advtx');
+ if(!A.q.length){$('advmore').hidden=true;const f=A.after;A.after=null;
+  menu([]);if(f)f();else if(A.mode==='map')t.textContent='CYBER REGION  —  walk into tall grass to meet wild problems, or into a building to challenge its system.';
+  return}
+ t.textContent=A.q.shift();const more=A.q.length>0||!!A.after;$('advmore').hidden=!more;menu(more?[{t:'▶ CONTINUE  (A)',cls:'k cont',f:()=>adv()}]:[])}
+function adv(){if(A.q.length||A.after){nextLine();return true}return false}
+
+/* ---------- pixel battle sprites (16x16) ---------- */
+const SYM=r=>r.map(x=>x+[...x].reverse().join(''));
+const SPR={
+fire:{p:{b:'#8a5a3a',n:'#e0b890',w:'#ffffff',r:'#d83030',R:'#7a1414',e:'#202020'},r:SYM([
+'........','.....kkk','....kbbb','...kbbbb','..kbbkwb','..kbbkkb','..kbbbnn','..kbnnnn','..kbnnnk','.kbbbwnn','.kbbbwbb','kbbbbwbb','kbrrrrrr','kbrRrrrR','kkbbbkkk','..kkk...'])},
+nmap:{p:{c:'#3868d8',C:'#90c0ff',g:'#a8a8b8',G:'#686878',y:'#ffd400',w:'#ffffff',r:'#ff5050'},r:SYM([
+'.......k','......ky','.......k','kkkk...k','kccck.kk','kCcck.kg','kcCckkgg','kccck.kg','kcCckkgw','kccck.kg','kkkk..kg','......kG','.....kGG','....krkk','...kr...','..kr....'])},
+cat:{p:{g:'#48b048',G:'#287828',y:'#f8d838',r:'#e83838',w:'#ffffff'},r:[
+'................','..........k...k.','...........k.k..','.........kkkkkk.','........kyyyyyyk','........kykwykwk','........kyyyyyyk','..kkk.kkkyyrryk.','.kgggkgggkyyyk..','kgGggkgGggkkk...','kggggkggggk.....','kgggkgggggk.....','.kkkkkkkkkk.....','..k..k..k.k.....','................','................']},
+grep:{p:{c:'#90d8f8',w:'#ffffff',n:'#8a5a3a',r:'#e83838'},r:[
+'.....kkkkk......','...kkwwwwwkk....','..kwwccccwwk....','.kwcccccccwk....','.kwckwcckwck....','.kwcckcckcck....','.kwcccccccwk....','..kwccrrcwk.....','...kkwwwwkk.....','.....kkkkkkk....','..........knk...','...........knk..','............knk.','.............knk','..............kk','................']},
+dec:{p:{g:'#b8b8c8',y:'#f8c838',Y:'#fff0a0',w:'#ffffff',d:'#806010'},r:SYM([
+'.....kkk','....kggg','...kgkkk','...kgk..','...kgk..','.kkkkkkk','.kyyyyyy','.kyYyyyy','.kyykwyy','.kyykkyy','.kyyyyyk','.kyyyydk','.kyYyyyk','.kyyyyyy','.kkkkkkk','........'])},
+brute:{p:{g:'#909098',G:'#d0d0d8',w:'#ffffff',r:'#e83838',n:'#8a5a3a'},r:SYM([
+'........','kkkkkkkk','kGgggggg','kggkrggg','kgggkggg','kggggggg','kkkkkkkk','......kn','......kn','......kn','......kn','......kn','......kn','.....kkn','.....kkk','........'])},
+phish:{p:{w:'#f8f8f8',r:'#e83838',b:'#3868d8'},r:[
+'.........kk.....','.........kr.....','.........kr.....','.........kr.....','.kkkkkkkkkrkkk..','.kwwwwwwwkrwwk..','.kkwwwwwwkrwkk..','.kwkwwwwwkrkwk..','.kwwkwwwwkrwwk..','.kwwwkkkkkrkwk..','.kwwwwwwwkrwwk..','.kkkkkkkkkrkkk..','.........kr.....','.......kbkr.....','.......kkkk.....','................']},
+sqli:{p:{w:'#e8f4ff',b:'#38a8f8',r:'#e83838',g:'#909098',c:'#f8d838'},r:[
+'................','............kk..','...........kgk..','..........kgk...','.........kwk....','........kwwk....','.......kwbwk....','......kwbbwk....','.....kwbbwk.....','....kwbbwk......','...kkwwwk.......','..kkkkkk........','.kk.............','kccccck.........','kckkkck.........','kccccck.........']},
+mal:{p:{p:'#48b048',g:'#1e5a1e',r:'#ff3030'},r:SYM([
+'..k.....','...k..kk','....kkpp','...kpppp','k.kpprkp','.kkppkkp','..kpgppp','kkkpgggg','..kpgppp','.kkppppp','k.kpgggg','..kppppp','.kkppppp','k..kpppp','....kkkk','........'])},
+ddos:{p:{g:'#686878',G:'#9898a8',r:'#ff3030',y:'#ffd400'},r:SYM([
+'........','....kkkk','..kkGGGG','.kGggggg','kGgggggg','kggrkggg','kggggrrg','kggggggg','.kkkkkkk','........','..y...y.','.y...y..','........','...y...y','..y...y.','........'])}};
+['#3aa63a','#e0a020','#d83030','#7a3ad8'].forEach((c,i)=>SPR['sys'+i]={p:{s:'#c8c8d0',d:'#203838',r:'#ff4040',c,L:'#ffffff'},r:SYM([
+'.kkkkkkk','.kssssss','.ksddddd','.ksdrrdd','.ksddrdd','.ksddddd','.ksdddrr','.ksddddd','.kssssss','.kkkkkkk','......ks','...kkkkk','..kccccc','..kcLcLc','..kccccc','..kkkkkk'])});
+function sprOn(c,key,sil){const s=SPR[key]||SPR.sys0;c.width=16;c.height=16;const g=c.getContext('2d');g.clearRect(0,0,16,16);
+ s.r.forEach((row,j)=>{for(let i=0;i<16;i++){const ch=row[i];if(ch&&ch!=='.'){g.fillStyle=sil?'#30303060':ch==='k'?'#202020':s.p[ch]||'#ff00ff';g.fillRect(i,j,1,1)}}})}
+function drawBBg(){const c=$('advbbg');if(!c)return;const g=c.getContext('2d');
+ g.fillStyle='#f8f8e0';g.fillRect(0,0,96,64);g.fillStyle='#e8ecc8';for(let y=3;y<34;y+=4)g.fillRect(0,y,96,1);
+ g.fillStyle='#c0e498';g.fillRect(0,34,96,30);g.fillStyle='#a8d080';for(let y=36;y<64;y+=3)for(let x=(y*5)%7;x<96;x+=7)g.fillRect(x,y,2,1);
+ const plat=(cx,cy,rx,ry)=>{for(let y=-ry-1;y<=ry+1;y++){const w=Math.round((rx+1)*Math.sqrt(Math.max(0,1-(y*y)/((ry+1)*(ry+1)))));g.fillStyle='#4a7a3a';g.fillRect(cx-w,cy+y,w*2,1)}
+  for(let y=-ry;y<=ry;y++){const w=Math.round(rx*Math.sqrt(Math.max(0,1-(y*y)/(ry*ry))));g.fillStyle=y<0?'#98d070':'#78b858';g.fillRect(cx-w,cy+y,w*2,1)}};
+ plat(70,29,20,4);plat(26,56,22,5)}
+
+/* ---------- Game Boy style battle renderer (240x160) ---------- */
+const FONT={A:[124,18,17,18,124],B:[127,73,73,73,54],C:[62,65,65,65,34],D:[127,65,65,34,28],E:[127,73,73,73,65],F:[127,9,9,9,1],G:[62,65,73,73,122],H:[127,8,8,8,127],I:[0,65,127,65,0],J:[32,64,65,63,1],K:[127,8,20,34,65],L:[127,64,64,64,64],M:[127,2,12,2,127],N:[127,4,8,16,127],O:[62,65,65,65,62],P:[127,9,9,9,6],Q:[62,65,81,33,94],R:[127,9,25,41,70],S:[70,73,73,73,49],T:[1,1,127,1,1],U:[63,64,64,64,63],V:[31,32,64,32,31],W:[63,64,56,64,63],X:[99,20,8,20,99],Y:[7,8,112,8,7],Z:[97,81,73,69,67],
+'0':[62,81,73,69,62],'1':[0,66,127,64,0],'2':[66,97,81,73,70],'3':[33,65,69,75,49],'4':[24,20,18,127,16],'5':[39,69,69,69,57],'6':[60,74,73,73,48],'7':[1,113,9,5,3],'8':[54,73,73,73,54],'9':[6,73,73,41,30],
+'/':[32,16,8,4,2],':':[0,54,54,0,0],'.':[0,96,96,0,0],'-':[8,8,8,8,8],'!':[0,0,95,0,0],'?':[2,1,81,9,6],'+':[8,8,62,8,8],v:[28,32,64,32,28],' ':[0,0,0,0,0]};
+const BC=$('advbcv'),bx=BC.getContext('2d'),BV={f:100,m:100,t0:0,fz:0};
+function ptx(t,x,y,col){bx.fillStyle=col||'#383030';[...String(t)].forEach((ch,n)=>{const g=FONT[ch]||FONT[ch.toUpperCase()]||FONT['?'];g.forEach((c,i)=>{for(let j=0;j<7;j++)if(c>>j&1)bx.fillRect(x+n*6+i,y+j,1,1)})})}
+function pbox(x,y,w,h){bx.fillStyle='#50483a';bx.fillRect(x+2,y,w-4,h);bx.fillRect(x,y+2,w,h-4);bx.fillRect(x+1,y+1,w-2,h-2);
+ bx.fillStyle='#f8f8d8';bx.fillRect(x+3,y+2,w-6,h-4);bx.fillRect(x+2,y+3,w-4,h-6);bx.fillStyle='#d8d0a8';bx.fillRect(x+3,y+h-4,w-6,2)}
+function phb(x,y,w,p){bx.fillStyle='#50483a';bx.fillRect(x,y,w+17,9);ptx('HP',x+2,y+1,'#f8b000');
+ bx.fillStyle='#506858';bx.fillRect(x+15,y+2,w,5);const v=Math.max(0,Math.round(w*p/100));bx.fillStyle=p>50?'#58d080':p>20?'#f8c800':'#f85838';bx.fillRect(x+15,y+2,v,5);
+ bx.fillStyle=p>50?'#70f8a8':p>20?'#f8e038':'#f8a880';bx.fillRect(x+15,y+2,v,2)}
+function psp(key,x,y,sc,flip){const s=SPR[key]||SPR.sys0;s.r.forEach((row,j)=>{for(let i=0;i<16;i++){const ch=row[flip?15-i:i];if(ch&&ch!=='.'){bx.fillStyle=ch==='k'?'#202020':s.p[ch]||'#ff00ff';bx.fillRect(Math.round(x+i*sc),Math.round(y+j*sc),sc,sc)}}})}
+function pplat(cx,cy,rx,ry){for(let y=-ry-1;y<=ry+1;y++){const w=Math.round((rx+2)*Math.sqrt(Math.max(0,1-(y*y)/((ry+1)*(ry+1)))));bx.fillStyle='#507838';bx.fillRect(cx-w,cy+y,w*2,1)}
+ for(let y=-ry;y<=ry;y++){const w=Math.round(rx*Math.sqrt(Math.max(0,1-(y*y)/(ry*ry))));bx.fillStyle=y<-ry/3?'#b0e080':y<ry/3?'#90c860':'#70a848';bx.fillRect(cx-w,cy+y,w*2,1)}}
+function battleFrame(){const b=A.b;if(!b||$('advbt').hidden)return;const now=Date.now(),k=Math.min(1,(now-BV.t0)/650);
+ bx.imageSmoothingEnabled=false;bx.fillStyle='#f8f8e8';bx.fillRect(0,0,240,160);
+ [[0,'#e8f0f8'],[12,'#f0f4f0'],[30,'#f8f8e8']].forEach(([y,c])=>{bx.fillStyle=c;bx.fillRect(0,y,240,12)});
+ bx.fillStyle='#c8e8a0';bx.fillRect(0,84,240,76);bx.fillStyle='#b0d888';for(let y=88;y<160;y+=4)for(let x=(y*3)%9;x<240;x+=9)bx.fillRect(x,y,3,1);
+ bx.fillStyle='#d8ecb8';bx.fillRect(0,84,240,2);
+ const fx=Math.round(-70+(176+70)*k),mx=Math.round(260+(64-260)*k);
+ pplat(fx,74,44,10);pplat(mx,146,52,11);
+ const fc=$('bfs').classList,mc=$('bms').classList;
+ if(fc.contains('faint')){BV.fz=BV.fz||now}else BV.fz=0;
+ const sink=BV.fz?Math.min(52,(now-BV.fz)/450*52):0,blinkF=fc.contains('hit')&&((now/70|0)%2),blinkM=mc.contains('hit')&&((now/70|0)%2);
+ const lf=fc.contains('lunge')?-10:0,lm=mc.contains('lunge')?10:0;
+ if(!blinkF&&sink<52){bx.save();bx.beginPath();bx.rect(0,0,240,74);bx.clip();psp(b.foe.k,fx-24+lf,74-46+sink-lf/2,3,false);bx.restore()}
+ if(!blinkM){bx.save();bx.beginPath();bx.rect(0,0,240,160);bx.clip();psp(b.mon.id,mx-32+lm,92-lm/2,4.5,true);bx.restore()}
+ const tf=b.fhp,tm=Math.round(hpOf(b.mon)/b.mon.mx*100);BV.f+=Math.sign(tf-BV.f)*Math.min(Math.abs(tf-BV.f),1.5);BV.m+=Math.sign(tm-BV.m)*Math.min(Math.abs(tm-BV.m),1.5);
+ const ib=Math.round((1-k)*-130);
+ pbox(8+ib,8,112,32);ptx(b.foe.n.slice(0,13),15+ib,13);ptx((b.foe.lv||'').replace(' ',''),ib+113-(b.foe.lv||'').replace(' ','').length*6,13);phb(26+ib,26,74,BV.f);
+ bx.fillStyle='#50483a';bx.fillRect(8+ib,42,112,2);bx.fillRect(118+ib,30,2,14);
+ const px_=124-ib;pbox(px_,96,110,40);ptx(b.mon.n.slice(0,12),px_+7,101);ptx('Lv'+(b.type==='sys'?20:12),px_+80,101);phb(px_+20,112,74,BV.m);
+ const hp=hpOf(b.mon)+'/'+b.mon.mx;ptx(hp,px_+104-hp.length*6,124);
+ bx.fillStyle='#50483a';bx.fillRect(px_-4,138,114,2);bx.fillRect(px_-4,126,2,14);
+ requestAnimationFrame(battleFrame)}
+/* ---------- battle shell ---------- */
+function bt(on){const was=!$('advbt').hidden;$('advbt').hidden=!on;if(on&&!was&&A.b){BV.t0=Date.now();BV.f=A.b.fhp;BV.m=Math.round(hpOf(A.b.mon)/A.b.mon.mx*100);requestAnimationFrame(battleFrame)}if(on){drawBBg();const e=$('advbt');e.classList.remove('enter');void e.offsetWidth;e.classList.add('enter')}cv.style.visibility=on?'hidden':'visible'}
+function barcol(i,p){i.className=p>50?'':p>20?'y':'r'}
+function drawB(){const b=A.b;if(!b)return;const f=b.foe,m=b.mon,ph=Math.round(hpOf(m)/m.mx*100);
+ $('bfn').textContent=f.n;$('bfl').textContent=f.lv||'';sprOn($('bfs'),f.k);sprOn($('bms'),m.id);
+ $('bmn').textContent=m.n;$('bml').textContent='Lv '+(b.type==='sys'?'20':'12');$('bmp').textContent=hpOf(m)+'/'+m.mx;
+ const fh=$('bfh'),mh=$('bmh');fh.style.width=b.fhp+'%';mh.style.width=ph+'%';barcol(fh,b.fhp);barcol(mh,ph)}
+function menu(items){const g=$('advmenu');g.innerHTML='';items.forEach(it=>{if(it.note){const d=el('div','note',it.note);g.append(d);return}
+ const b=el('button',it.cls||'',it.t);if(it.sub){b.className=(it.cls||'')+' mv';b.innerHTML='<small>'+it.sub+'</small>'+it.t}b.onclick=it.f;g.append(b)})}
+function shake(who){const s=$(who==='foe'?'bfs':'bms');s.classList.add('hit');$('advscr').classList.add('flash');setTimeout(()=>{s.classList.remove('hit');$('advscr').classList.remove('flash')},500)}
+function lunge(who){const s=$(who==='foe'?'bfs':'bms');s.classList.add('lunge');setTimeout(()=>s.classList.remove('lunge'),220)}
+function hurtMon(n,then){const m=A.b.mon;S.adv.hp[m.id]=Math.max(0,hpOf(m)-n);save();shake('me');beep(150,.25,'sawtooth');drawB();renderAdv();
+ if(hpOf(m)>0)return then();
+ tell([m.n+' fainted!'],()=>{const left=alive();if(!left.length)return blackout();A.b.mon=left[0];drawB();tell(['Go, '+left[0].n+'!'],then)})}
+function blackout(){bt(false);A.mode='map';A.b=null;$('advcodebox').hidden=true;menu([]);S.adv.x=11;S.adv.y=8;TMON.forEach(t=>S.adv.hp[t.id]=Math.round(t.mx/2));save();drawMap();renderAdv();
+ tell(['All your tool-mons fainted...','You scrambled back to the PATCH CENTER.'])}
+function endBattle(lines){tell(lines,()=>{bt(false);A.mode='map';A.b=null;$('advcodebox').hidden=true;menu([]);drawMap();renderAdv();render();tell([])})}
+/* ---------- wild battle (attacks vs defenses) ---------- */
+function wild(){const a=pickAtk(),mon=hpOf(TMON[0])>0?TMON[0]:alive()[0];A.mode='battle';
+ A.b={type:'wild',atk:a,fhp:100,mon,foe:{n:a.n.toUpperCase(),e:a.i,k:a.id,lv:'Lv 12'}};bt(true);$('advcodebox').hidden=true;drawB();renderAdv();
+ tell(['A wild '+a.n.toUpperCase()+' appeared!','It '+a.d+'.','Go, '+mon.n+'!'],wildMenu)}
+function wildMenu(){menu(DF.map(d=>({t:d.i+' '+d.n,sub:'DEFENSE MOVE',f:()=>wildHit(d)})).concat([{t:'🔁 TOOL-MONS',cls:'k',f:switchMenu},{t:'🧪 POTION ('+(S.adv.bag.potion||0)+')',cls:'k',f:potion},{t:'🏃 RUN',cls:'k',f:()=>endBattle(['You got away safely!'])}]))}
+const backMenu=()=>A.b&&A.b.type==='sys'?sysMenu():wildMenu();
+function potion(){const m=A.b.mon;if(!(S.adv.bag.potion>0))return tell(['You have no PATCH POTIONS.','Find capsules (red and white balls) on the map.'],backMenu);if(hpOf(m)>=m.mx)return tell([m.n+' is already at full HP.'],backMenu);
+ S.adv.bag.potion--;S.adv.hp[m.id]=Math.min(m.mx,hpOf(m)+30);save();drawB();renderAdv();coin();tell(['You used a PATCH POTION.',m.n+' recovered HP!'],backMenu)}
+function wildMenu2(){menu([]);wildMenu()}
+function wildHit(d){const b=A.b,a=b.atk,ok=d.id===a.c;menu([]);lunge('me');
+ if(ok){b.fhp=0;S.miss[a.id]=Math.max(0,(S.miss[a.id]||0)-.5);S.adv.dex[a.id]=1;S.pts['adv-wild']=(S.pts['adv-wild']||0)+25;save();coin();shake('foe');drawB();$('bfs').classList.add('faint');
+  tell([mon_(b)+' used '+d.n.toUpperCase()+'!','It is super effective! '+d.d.charAt(0).toUpperCase()+d.d.slice(1)+'.','Wild '+a.n.toUpperCase()+' fainted!','+25 coins. '+a.n+' was added to your PORTDEX.'],()=>{$('bfs').classList.remove('faint');endBattle([])})}
+ else{S.miss[a.id]=(S.miss[a.id]||0)+1;save();
+  tell([mon_(b)+' used '+d.n.toUpperCase()+'...','It had no effect on '+a.n.toUpperCase()+'!','The wild '+a.n.toUpperCase()+' struck back!'],()=>hurtMon(20,()=>tell(['Hint: '+a.n+' '+a.d+'.'],wildMenu2)))}}
+const mon_=b=>b.mon.n;
+/* ---------- system (gym) battle ---------- */
+function capOn(){A.cap=true;A.raw=''}
+const logAll=()=>A.b?(A.b.log=(A.b.log||'')+A.raw):'';
+const realOut=out;
+out=function(t,c){if(A.cap){A.raw+='\n'+t;const d=el('div','l '+(c||''),t);$('advcode').append(d);$('advcode').scrollTop=1e6;return}realOut(t,c)};
+function sysBattle(i){spawn(i);showTab('adv');A.mode='battle';
+ const solved=done.filter(Boolean).length,mon=alive().find(t=>t.id!=='fire')||alive()[0]||TMON[1];
+ A.b={type:'sys',mi:i,fhp:100-solved*25,mon,foe:{n:MS[i].name.toUpperCase(),e:MS[i].os,k:'sys'+i,lv:'Lv 20'},parts:[],seen:{}};
+ bt(true);$('advcodebox').hidden=false;$('advcode').innerHTML='';drawB();renderAdv();
+ if(A.b.fhp<=0)return endBattle([MS[i].name+' is already patched. Nothing left to fix here.']);
+ tell(['The '+MS[i].name.toUpperCase()+' system blocks your way!','Use FIGHT to run tool-mon code, collect PARTS, then throw the right part at the system.'],sysMenu)}
+function curTask(){return M.tasks[done.indexOf(false)]}
+function movesFor(mon){const base={nmap:[['nmap '+M.ip,'Port Scan'],['ping '+M.ip,'Echo Pulse']],cat:[['ls /','Dir Sweep'],['cat '+M.start+'/README.txt','Brief Read']],grep:[['grep Failed /var/log/auth.log','Log Hunt']],dec:[['decode','Double Decode']]}[mon.id]||[];
+ const own=M.tasks.filter(t=>MONOF(t.try)===mon.id).map(t=>[t.try,t.t]);
+ const all=own.concat(base),seen={};return all.filter(m=>!seen[m[0]]&&(seen[m[0]]=1)).slice(0,5)}
+function sysMenu(){const t=curTask();menu([
+ {note:'SYSTEM WEAKNESS: '+(t?t.q.split('->')[0].trim():'none left')},
+ {t:'⚔️ FIGHT (run code)',cls:'k',f:fightMenu},
+ {t:'🎒 PARTS ('+A.b.parts.length+')',cls:'k',f:partMenu},
+ {t:'🔁 TOOL-MONS',cls:'k',f:switchMenu},
+ {t:'🧪 POTION ('+(S.adv.bag.potion||0)+')',cls:'k',f:potion},
+ {t:'🏃 RUN',cls:'k',f:()=>endBattle(['You slipped out of '+M.name+'.'])}])}
+function fightMenu(){const ms=movesFor(A.b.mon);
+ if(!ms.length)return menu([{note:A.b.mon.n+' is a defender: it shines against wild attacks in tall grass. Switch to a command tool-mon (NMAPPER, CATTERPILLAR, GREPLING, DECODEX).'},{t:'🔁 TOOL-MONS',cls:'k',f:switchMenu},{t:'◀ BACK',cls:'k',f:sysMenu}]);
+ menu(ms.map(m=>({t:m[0],sub:m[1],f:()=>useMove(m)})).concat([{t:'◀ BACK',cls:'k',f:sysMenu}]))}
+function useMove(m){menu([]);lunge('me');capOn();
+ if(m[0]==='decode'){const toks=((A.b.log||'').match(/[A-Za-z0-9+/]{16,}={0,2}/g)||[]);let n=0;
+  toks.forEach(t=>{let v=t;for(let k=0;k<3;k++){try{const d=atob(v);if(!/^[\x20-\x7e\n]+$/.test(d))break;out('decode -> '+d,'ok');v=d;n++}catch(e){break}}});
+  if(!n)out('DECODEX found nothing encoded yet. Read a file first.','err')}
+ else run(m[0]);
+ A.cap=false;logAll();const found=grab(A.raw);
+ tell([A.b.mon.n+' used '+m[1].toUpperCase()+'!','> '+m[0]].concat(found.length?['Found '+found.length+' new part(s): '+found.join(', ')]:['No new parts. Try another tool-mon or move.']),sysMenu)}
+function grab(txt){const out_=[],add=(v,l)=>{const k=v.toLowerCase();if(A.b.seen[k])return;A.b.seen[k]=1;A.b.parts.push({v,l});out_.push(l)};
+ (txt.match(/(\d{1,5})\/tcp/g)||[]).forEach(p=>add(p.split('/')[0],'port '+p.split('/')[0]));
+ (txt.match(/\/tcp\s+open\s+[a-z]+/g)||[]).forEach(p=>{const v=p.split(/\s+/).pop();add(v,'service '+v)});
+ const nopen=(txt.match(/open/g)||[]).length;if(nopen)add(String(nopen),nopen+' open ports');
+ (txt.match(/\b\d{1,3}(\.\d{1,3}){3}\b/g)||[]).forEach(ip=>add(ip,'IP '+ip));
+ (txt.match(/CQ\{[^}]+\}/g)||[]).forEach(f=>add(f,'flag '+f));
+ (txt.match(/[a-z0-9_-]+\.(com|org|net|php|txt|db|log|bak)\b/gi)||[]).forEach(d=>add(d,d));
+ M.tasks.forEach(t=>t.a.forEach(a=>{if(a.length>1&&txt.toLowerCase().includes(a.toLowerCase()))add(a,a)}));
+ return out_}
+function partMenu(){if(!A.b.parts.length)return tell(['Your bag is empty.','Use FIGHT to run code and reveal parts.'],sysMenu);
+ menu(A.b.parts.map(p=>({t:'🔩 '+p.l,sub:'THROW AT SYSTEM',f:()=>throwPart(p)})).concat([{t:'◀ BACK',cls:'k',f:sysMenu}]))}
+function throwPart(p){menu([]);const n=done.indexOf(false),t=M.tasks[n];lunge('me');
+ if(t.a.includes(p.v.toLowerCase())){capOn();C.answer([String(n+1),p.v]);A.cap=false;A.b.fhp=Math.max(0,100-done.filter(Boolean).length*25);shake('foe');drawB();
+  if(A.b.fhp<=0){S.adv.beat[M.id]=1;save();$('bfs').classList.add('faint');
+   return tell(['You threw '+p.l+'!','A critical hit! '+t.l,'The '+M.name.toUpperCase()+' system is patched!','WRITE-UP:\n'+M.wu],()=>{$('bfs').classList.remove('faint');endBattle(['You earned the '+M.name+' badge and '+S.pts[M.id]+' coins here.'])})}
+  tell(['You threw '+p.l+'!','It hit the weak point! '+t.l,M.name.toUpperCase()+' lost 25% integrity.'],sysMenu)}
+ else{const h=t.h[Math.min(2,hints[n]||0)];hints[n]=Math.min(3,(hints[n]||0)+1);
+  tell(['You threw '+p.l+'!','It missed the weak point.','The system fired back!'],()=>hurtMon(15,()=>tell(['Hint: '+h],sysMenu)))}}
+function switchMenu(){menu(TMON.map(t=>({t:t.e+' '+t.n,sub:hpOf(t)>0?'HP '+hpOf(t)+'/'+t.mx:'FAINTED',f:()=>{if(hpOf(t)<=0)return tell([t.n+' has no energy left!'],switchMenu);A.b.mon=t;drawB();renderAdv();tell(['Go, '+t.n+'!'],A.b.type==='sys'?sysMenu:wildMenu)}})).concat([{t:'◀ BACK',cls:'k',f:A.b.type==='sys'?sysMenu:wildMenu}]))}
+/* ---------- party / dex panels ---------- */
+function renderAdv(){const p=$('advparty');p.innerHTML='';
+ TMON.forEach(t=>{const h=hpOf(t),e=el('div','pm'+(A.b&&A.b.mon.id===t.id?' me':'')),s=document.createElement('canvas'),d=el('div','');
+  s.className='e';sprOn(s,t.id);d.append(el('b','',t.n),el('div','mut',t.d));const hb=el('div','hpb'),i=el('i');i.style.width=(h/t.mx*100)+'%';i.style.background=h/t.mx>.5?'#43b047':h/t.mx>.2?'#ffd400':'#ff5050';hb.append(i);
+  d.append(hb,el('div','mut','HP '+h+'/'+t.mx));e.append(s,d);p.append(e)});
+ const dx=$('advdex');dx.innerHTML='';AT.forEach(a=>{const got=S.adv.dex[a.id],e=el('div',got?'':'no'),dc=document.createElement('canvas');dc.className='dx';sprOn(dc,a.id,!got);e.append(dc);
+  e.append(el('b','',(got?a.i+' ':'❓ ')+a.n),el('div','',got?'It '+a.d+'. Counter: '+DF.find(x=>x.id===a.c).n+'.':'Not encountered yet. Search the tall grass.'));dx.append(e)});
+ $('advdexn').textContent=Object.keys(S.adv.dex).length+'/'+AT.length;$('advbag').textContent='🧪 Patch Potions: '+(S.adv.bag.potion||0)+'   🏁 Systems patched: '+Object.keys(S.adv.beat).length+'/'+MS.length}
+/* ---------- input ---------- */
+const KD={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right',W:'up',S:'down',A:'left',D:'right'};
+document.addEventListener('keydown',e=>{if($('adv').hidden)return;const tag=(e.target.tagName||'').toLowerCase();if(tag==='input'||tag==='textarea')return;
+ if(KD[e.key]){e.preventDefault();step(KD[e.key]);return}
+ if(e.key==='Escape'||e.key==='b'||e.key==='B'){e.preventDefault();$('advb').onclick();return}
+ if(e.key==='Enter'||e.key===' '){e.preventDefault();if(!adv()&&A.mode==='map')interact()}});
+let lastStep=0;function step(d){if(A.mode!=='map')return;if(A.q.length||A.after){if(Date.now()-lastStep>250){lastStep=Date.now();adv()}return}if(Date.now()-lastStep<130)return;lastStep=Date.now();move(d)}
+let hold=null;const stopHold=()=>{clearInterval(hold);hold=null};
+document.querySelectorAll('#advpad .dpad button').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();stopHold();lastStep=0;step(b.dataset.d);hold=setInterval(()=>step(b.dataset.d),170)});['pointerup','pointerleave','pointercancel'].forEach(t=>b.addEventListener(t,stopHold));b.addEventListener('contextmenu',e=>e.preventDefault())});
+window.addEventListener('blur',stopHold);
+cv.addEventListener('click',e=>{if(A.mode!=='map')return;if(A.q.length||A.after)return void adv();const r=cv.getBoundingClientRect(),tx=(e.clientX-r.left)/r.width*MW,ty=(e.clientY-r.top)/r.height*MH,dx=tx-(S.adv.x+.5),dy=ty-(S.adv.y+.5);
+ if(Math.abs(dx)<.6&&Math.abs(dy)<.6)return interact();lastStep=0;step(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'))});
+$('adva').onclick=()=>{if(!adv()&&A.mode==='map')interact()};
+$('advb').onclick=()=>{if(A.mode==='battle'&&A.b){if(!A.q.length&&!A.after)backMenu()}else if(!A.after)tell([])};
+$('advdlg').onclick=()=>{if(!adv()&&A.mode==='map')interact()};
+$('advrun').onclick=()=>{const v=$('advin').value.trim();$('advin').value='';if(!v||!M||A.mode!=='battle')return;menu([]);capOn();run(v);A.cap=false;logAll();const f=grab(A.raw);tell(['> '+v].concat(f.length?['New parts: '+f.join(', ')]:['No new parts.']),A.b.type==='sys'?sysMenu:wildMenu)};
+$('advin').addEventListener('keydown',e=>{if(e.key==='Enter')$('advrun').onclick()});
+function startAdv(){bt(!!A.b);drawMap();renderAdv();if(A.mode==='map')tell([])}
+const _render=render;render=function(){_render();renderAdv();if(A.mode==='map')drawMap()};
+document.fonts&&document.fonts.ready.then(()=>{if(A.mode==='map')drawMap()});
+
+function advIntro(){if(!S.adv.intro){S.adv.intro=1;save();tell(['Welcome to the CYBER REGION!','I am PROF. SENTINEL. Hacked systems are popping up all over town.','Your TOOL-MONS are hacking tools. Their moves are real commands: nmap, cat, grep, decode.','Walk into tall grass to fight wild attacks, and into buildings to fix problem systems. Start with SchoolSrv (top left)!'])}}
+showTab('home');render();startAdv();
+if('serviceWorker' in navigator&&window.isSecureContext&&/^https?:$/.test(location.protocol)){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+</script>
+</body>
+</html>
